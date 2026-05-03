@@ -7,19 +7,20 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
+
+/* GLOBAL */
 body {
     margin:0;
     font-family: 'Segoe UI', sans-serif;
-    background:#eef1f5;
+    background:#f0f2f5;
 }
 
-/* HEADER */
+/* HEADER (IDENTIQUE STYLE CALENDRIER) */
 header {
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    background: linear-gradient(135deg, #1d3557, #457b9d);
     color:white;
-    padding:30px;
     text-align:center;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    padding:30px 20px;
 }
 
 header h1 {
@@ -29,45 +30,39 @@ header h1 {
 
 /* CONTAINER */
 .container {
-    max-width:1100px;
+    max-width:1000px;
     margin:40px auto;
-    padding:20px;
+    padding:0 20px;
 }
 
-/* CARDS */
-.section {
+/* CARD STYLE */
+.card {
     background:white;
-    border-radius:15px;
+    border-radius:12px;
     padding:20px;
-    margin-bottom:30px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
-    transition:0.3s;
+    margin-bottom:25px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.08);
 }
 
-.section:hover {
-    transform:translateY(-3px);
-}
-
-/* TITRES */
-.section h2 {
+/* TITRE */
+.card h2 {
     margin-top:0;
-    color:#2a5298;
+    color:#1d3557;
 }
 
 /* SEARCH */
-input {
+.search {
     width:100%;
-    padding:12px;
-    margin:10px 0 15px;
+    padding:10px;
     border-radius:8px;
     border:1px solid #ccc;
+    margin:10px 0 15px;
 }
 
 /* TABLE */
-.table-container {
-    max-height:400px;
+.table-wrapper {
     overflow:auto;
-    border-radius:10px;
+    max-height:400px;
 }
 
 table {
@@ -77,11 +72,10 @@ table {
 
 th, td {
     padding:10px;
-    text-align:left;
 }
 
 th {
-    background:#2a5298;
+    background:#457b9d;
     color:white;
     position:sticky;
     top:0;
@@ -89,59 +83,61 @@ th {
 }
 
 tr:nth-child(even) {
-    background:#f7f9fc;
+    background:#f8f9fa;
 }
 
 tr:hover {
-    background:#e3ecff;
+    background:#e6f0ff;
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>Classements 2026</h1>
+<h1>Classements 2026</h1>
 </header>
 
 <div class="container">
 
-<div class="section">
+<!-- SECTION TEMPLATE -->
+<div class="card">
 <h2>Seniors</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('senior', this.value)">
-<div class="table-container">
+<input class="search" placeholder="Rechercher..." onkeyup="filter('senior', this.value)">
+<div class="table-wrapper">
 <table id="senior"></table>
 </div>
 </div>
 
-<div class="section">
+<div class="card">
 <h2>Clubs</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('clubs', this.value)">
-<div class="table-container">
+<input class="search" placeholder="Rechercher..." onkeyup="filter('clubs', this.value)">
+<div class="table-wrapper">
 <table id="clubs"></table>
 </div>
 </div>
 
-<div class="section">
+<div class="card">
 <h2>Vétérans</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('vet', this.value)">
-<div class="table-container">
+<input class="search" placeholder="Rechercher..." onkeyup="filter('vet', this.value)">
+<div class="table-wrapper">
 <table id="vet"></table>
 </div>
 </div>
 
-<div class="section">
+<div class="card">
 <h2>Féminines</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('fem', this.value)">
-<div class="table-container">
+<input class="search" placeholder="Rechercher..." onkeyup="filter('fem', this.value)">
+<div class="table-wrapper">
 <table id="fem"></table>
 </div>
 </div>
 
-<div class="section">
+<div class="card">
 <h2>Jeunes</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('jeunes', this.value)">
-<div class="table-container">
+<input class="search" placeholder="Rechercher..." onkeyup="filter('jeunes', this.value)">
+<div class="table-wrapper">
 <table id="jeunes"></table>
 </div>
 </div>
@@ -149,19 +145,22 @@ tr:hover {
 </div>
 
 <script>
-function loadExcel(file, tableId) {
+
+/* LOAD EXCEL */
+function loadExcel(file, id) {
     fetch(file)
-    .then(res => res.arrayBuffer())
+    .then(r => r.arrayBuffer())
     .then(data => {
         let wb = XLSX.read(data);
         let sheet = wb.Sheets[wb.SheetNames[0]];
         let json = XLSX.utils.sheet_to_json(sheet);
 
-        displayTable(json, tableId);
+        renderTable(json, id);
     });
 }
 
-function displayTable(data, id) {
+/* RENDER */
+function renderTable(data, id) {
     let table = document.getElementById(id);
     if (!data.length) return;
 
@@ -169,7 +168,7 @@ function displayTable(data, id) {
 
     let html = "<thead><tr>";
     headers.forEach(h => {
-        html += `<th onclick="sortTable('${id}', '${h}')">${h}</th>`;
+        html += `<th onclick="sort('${id}','${h}')">${h}</th>`;
     });
     html += "</tr></thead><tbody>";
 
@@ -185,7 +184,8 @@ function displayTable(data, id) {
     table.innerHTML = html;
 }
 
-function filterTable(id, value) {
+/* SEARCH */
+function filter(id, value) {
     let rows = document.querySelectorAll(`#${id} tbody tr`);
     value = value.toLowerCase();
 
@@ -194,12 +194,13 @@ function filterTable(id, value) {
     });
 }
 
-function sortTable(id, col) {
+/* SORT */
+function sort(id, col) {
     let table = document.getElementById(id);
     let rows = Array.from(table.querySelectorAll("tbody tr"));
     let index = Array.from(table.querySelectorAll("th")).findIndex(th => th.innerText === col);
 
-    rows.sort((a, b) => {
+    rows.sort((a,b) => {
         let A = a.children[index].innerText;
         let B = b.children[index].innerText;
         return isNaN(A) ? A.localeCompare(B) : B - A;
@@ -216,6 +217,7 @@ loadExcel("point-clubs-21042026.xlsx", "clubs");
 loadExcel("point-vet-21042026.xlsx", "vet");
 loadExcel("point-fem-21042026.xlsx", "fem");
 loadExcel("point-jeunes-19032026.xlsx", "jeunes");
+
 </script>
 
 </body>
