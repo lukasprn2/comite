@@ -19,1009 +19,176 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--blanc);
-    color: var(--texte);
-    overflow-x: hidden;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--blanc); color: var(--texte); overflow-x: hidden; }
 
   /* ── NAVBAR ── */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(10, 35, 66, 0.97);
-    backdrop-filter: blur(12px);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,35,66,0.97); backdrop-filter: blur(12px);
     border-bottom: 2px solid var(--or);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2.5rem;
-    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 68px;
   }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-brand img { height: 46px; width: auto; filter: drop-shadow(0 2px 6px rgba(201,168,76,0.5)); }
+  .nav-brand-text { line-height: 1.1; }
+  .nav-brand-text span { display: block; font-family: 'Bebas Neue', sans-serif; color: var(--or); font-size: 1.25rem; letter-spacing: 1.5px; }
+  .nav-brand-text small { color: rgba(255,255,255,0.55); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; }
 
-  .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-  }
-
-  .nav-brand img {
-    height: 46px;
-    width: auto;
-    filter: drop-shadow(0 2px 6px rgba(201,168,76,0.5));
-  }
-
-  .nav-brand-text {
-    line-height: 1.1;
-  }
-
-  .nav-brand-text span {
-    display: block;
-    font-family: 'Bebas Neue', sans-serif;
-    color: var(--or);
-    font-size: 1.25rem;
-    letter-spacing: 1.5px;
-  }
-
-  .nav-brand-text small {
-    color: rgba(255,255,255,0.55);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    list-style: none;
-  }
-
+  .nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
   .nav-links a {
-    color: rgba(255,255,255,0.8);
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    padding: 0.5rem 1rem;
-    position: relative;
-    transition: color 0.2s;
+    color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.82rem;
+    font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 0.5rem 1rem; position: relative; transition: color 0.2s;
   }
-
   .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 50%; right: 50%;
-    height: 2px;
-    background: var(--or);
-    transition: left 0.25s, right 0.25s;
+    content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%;
+    height: 2px; background: var(--or); transition: left 0.25s, right 0.25s;
   }
-
   .nav-links a:hover { color: var(--or-light); }
   .nav-links a:hover::after { left: 0.5rem; right: 0.5rem; }
 
   /* Dropdown */
   .nav-links li { position: relative; }
   .dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    background: var(--bleu);
-    border: 1px solid var(--or);
-    border-radius: 6px;
-    min-width: 200px;
-    padding: 0.5rem 0;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    display: none; position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--bleu); border: 1px solid var(--or); border-radius: 6px;
+    min-width: 200px; padding: 0.5rem 0; box-shadow: 0 12px 40px rgba(0,0,0,0.4);
   }
   .nav-links li:hover .dropdown { display: block; }
-  .dropdown a {
-    display: block;
-    padding: 0.5rem 1.2rem;
-    font-size: 0.8rem;
-    text-transform: none;
-    letter-spacing: 0;
-    border-bottom: none;
-  }
+  .dropdown a { display: block; padding: 0.5rem 1.2rem; font-size: 0.8rem; text-transform: none; letter-spacing: 0; }
   .dropdown a::after { display: none; }
 
   .nav-cta {
-    background: var(--or);
-    color: var(--bleu) !important;
-    font-weight: 600 !important;
-    padding: 0.45rem 1.2rem !important;
-    border-radius: 4px;
-    transition: background 0.2s !important;
+    background: var(--or); color: var(--bleu) !important; font-weight: 600 !important;
+    padding: 0.45rem 1.2rem !important; border-radius: 4px; transition: background 0.2s !important;
   }
   .nav-cta:hover { background: var(--or-light) !important; color: var(--bleu) !important; }
 
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 4px;
-  }
-  .hamburger span {
-    display: block;
-    width: 26px;
-    height: 2px;
-    background: var(--or);
-    border-radius: 2px;
-    transition: 0.3s;
-  }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 26px; height: 2px; background: var(--or); border-radius: 2px; transition: 0.3s; }
 
   /* ── HERO ── */
   #hero {
-    height: 100vh;
-    min-height: 600px;
+    height: 100vh; min-height: 600px;
     background: linear-gradient(160deg, var(--bleu) 0%, #0d3060 55%, #1a5276 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 100px 2rem 2rem;
-    position: relative;
-    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 100px 2rem 2rem; position: relative; overflow: hidden;
   }
-
   #hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(201,168,76,0.12) 0%, transparent 70%),
-      radial-gradient(circle at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(201,168,76,0.12) 0%, transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
   }
-
-  /* Boules décoratives */
-  .boule {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.08;
-    background: radial-gradient(circle at 35% 35%, var(--or), var(--bleu-mid));
-  }
+  .boule { position: absolute; border-radius: 50%; opacity: 0.08; background: radial-gradient(circle at 35% 35%, var(--or), var(--bleu-mid)); }
   .boule-1 { width: 320px; height: 320px; top: -80px; right: -80px; }
   .boule-2 { width: 180px; height: 180px; bottom: 60px; left: 5%; opacity: 0.05; }
   .boule-3 { width: 80px; height: 80px; top: 35%; left: 8%; opacity: 0.1; }
 
-  .hero-badge {
-    display: inline-block;
-    background: rgba(201,168,76,0.15);
-    border: 1px solid rgba(201,168,76,0.4);
-    color: var(--or-light);
-    font-size: 0.72rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 0.35rem 1.2rem;
-    border-radius: 40px;
-    margin-bottom: 1.8rem;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  .hero-logo {
-    width: 120px;
-    height: auto;
-    margin-bottom: 1.5rem;
-    filter: drop-shadow(0 4px 20px rgba(201,168,76,0.4));
-    animation: fadeUp 0.9s ease both;
-    animation-delay: 0.1s;
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3rem, 8vw, 6.5rem);
-    color: #fff;
-    letter-spacing: 3px;
-    line-height: 0.95;
-    margin-bottom: 0.5rem;
-    animation: fadeUp 1s ease both;
-    animation-delay: 0.2s;
-  }
-
-  .hero-title em {
-    color: var(--or);
-    font-style: normal;
-  }
-
-  .hero-sub {
-    color: rgba(255,255,255,0.6);
-    font-size: 1rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    animation: fadeUp 1s ease both;
-    animation-delay: 0.3s;
-  }
-
-  .hero-desc {
-    max-width: 520px;
-    margin: 0 auto 2.5rem;
-    color: rgba(255,255,255,0.75);
-    font-size: 1rem;
-    line-height: 1.7;
-    animation: fadeUp 1s ease both;
-    animation-delay: 0.4s;
-  }
-
-  .hero-btns {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeUp 1s ease both;
-    animation-delay: 0.5s;
-  }
-
-  .btn-primary {
-    background: var(--or);
-    color: var(--bleu);
-    font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    padding: 0.85rem 2rem;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.2s;
-    text-transform: uppercase;
-  }
+  .hero-logo { width: 120px; height: auto; margin-bottom: 1.5rem; filter: drop-shadow(0 4px 20px rgba(201,168,76,0.4)); animation: fadeUp 0.9s ease both; animation-delay: 0.1s; }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 6.5rem); color: #fff; letter-spacing: 3px; line-height: 0.95; margin-bottom: 0.5rem; animation: fadeUp 1s ease both; animation-delay: 0.2s; }
+  .hero-title em { color: var(--or); font-style: normal; }
+  .hero-sub { color: rgba(255,255,255,0.6); font-size: 1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2rem; animation: fadeUp 1s ease both; animation-delay: 0.3s; }
+  .hero-desc { max-width: 520px; margin: 0 auto 2.5rem; color: rgba(255,255,255,0.75); font-size: 1rem; line-height: 1.7; animation: fadeUp 1s ease both; animation-delay: 0.4s; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeUp 1s ease both; animation-delay: 0.5s; }
+  .btn-primary { background: var(--or); color: var(--bleu); font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; padding: 0.85rem 2rem; border-radius: 5px; text-decoration: none; transition: background 0.2s, transform 0.2s; text-transform: uppercase; }
   .btn-primary:hover { background: var(--or-light); transform: translateY(-2px); }
-
-  .btn-outline {
-    border: 1.5px solid rgba(255,255,255,0.35);
-    color: #fff;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    padding: 0.85rem 2rem;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: border-color 0.2s, transform 0.2s;
-    text-transform: uppercase;
-  }
+  .btn-outline { border: 1.5px solid rgba(255,255,255,0.35); color: #fff; font-size: 0.9rem; letter-spacing: 1px; padding: 0.85rem 2rem; border-radius: 5px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; text-transform: uppercase; }
   .btn-outline:hover { border-color: var(--or); color: var(--or); transform: translateY(-2px); }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: bounce 2s infinite;
-  }
+  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; }
   .hero-scroll svg { stroke: rgba(255,255,255,0.4); }
 
   /* ── STATS BAND ── */
-  .stats-band {
-    background: var(--or);
-    padding: 1.2rem 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-  }
+  .stats-band { background: var(--or); padding: 1.2rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+  .stat-item { text-align: center; }
+  .stat-item strong { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--bleu); line-height: 1; }
+  .stat-item span { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(10,35,66,0.75); font-weight: 600; }
 
-  .stat-item {
-    text-align: center;
-  }
-
-  .stat-item strong {
-    display: block;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--bleu);
-    line-height: 1;
-  }
-
-  .stat-item span {
-    font-size: 0.72rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(10,35,66,0.75);
-    font-weight: 600;
-  }
-
-  /* ── SECTIONS COMMUNES ── */
+  /* ── SECTIONS ── */
   section { padding: 5rem 2rem; }
-
-  .section-label {
-    font-size: 0.72rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--or);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    color: var(--bleu);
-    line-height: 1.15;
-    margin-bottom: 1rem;
-  }
-
-  .section-title em {
-    color: var(--or);
-    font-style: italic;
-  }
-
-  .section-lead {
-    color: #555;
-    font-size: 1rem;
-    line-height: 1.75;
-    max-width: 580px;
-  }
-
+  .section-label { font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 0.5rem; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--bleu); line-height: 1.15; margin-bottom: 1rem; }
+  .section-title em { color: var(--or); font-style: italic; }
   .container { max-width: 1200px; margin: 0 auto; }
-
-  /* ── ACTUALITÉS ── */
-  #actualites {
-    background: var(--blanc);
-  }
-
-  .actu-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-  }
-
-  .actu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .actu-card {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--gris);
-    box-shadow: 0 2px 18px rgba(0,0,0,0.05);
-    transition: transform 0.25s, box-shadow 0.25s;
-  }
-
-  .actu-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 40px rgba(10,35,66,0.12);
-  }
-
-  .actu-card-header {
-    background: var(--bleu);
-    padding: 1.5rem;
-    position: relative;
-  }
-
-  .actu-card-header::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 1.5rem;
-    width: 40px;
-    height: 3px;
-    background: var(--or);
-  }
-
-  .actu-tag {
-    display: inline-block;
-    background: rgba(201,168,76,0.2);
-    color: var(--or-light);
-    font-size: 0.68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    margin-bottom: 0.7rem;
-  }
-
-  .actu-card-header h3 {
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-
-  .actu-card-body {
-    padding: 1.5rem;
-  }
-
-  .actu-date {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #888;
-    font-size: 0.8rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .actu-card-body p {
-    color: #555;
-    font-size: 0.88rem;
-    line-height: 1.65;
-    margin-bottom: 1rem;
-  }
-
-  .actu-link {
-    color: var(--bleu);
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: color 0.2s;
-  }
-  .actu-link:hover { color: var(--or); }
-  .actu-link svg { transition: transform 0.2s; }
-  .actu-link:hover svg { transform: translateX(4px); }
-
-  /* Carte "urgent" */
-  .actu-card.featured .actu-card-header {
-    background: linear-gradient(135deg, #b7172e, #8b0000);
-  }
+  .divider { width: 50px; height: 3px; background: var(--or); margin: 1rem 0 1.5rem; }
 
   /* ── NAVIGATION RAPIDE ── */
-  #nav-rapide {
-    background: var(--bleu);
-    padding: 4rem 2rem;
-  }
-
-  .nav-rapide-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 2.5rem;
-  }
-
-  .nr-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 1.5rem 1.2rem;
-    text-decoration: none;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s;
-  }
-
-  .nr-card:hover {
-    background: rgba(201,168,76,0.1);
-    border-color: var(--or);
-    transform: translateY(-2px);
-  }
-
-  .nr-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(201,168,76,0.15);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
+  #nav-rapide { background: var(--bleu); padding: 4rem 2rem; }
+  .nav-rapide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  .nr-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1.5rem 1.2rem; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 1rem; transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .nr-card:hover { background: rgba(201,168,76,0.1); border-color: var(--or); transform: translateY(-2px); }
+  .nr-icon { width: 40px; height: 40px; background: rgba(201,168,76,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .nr-icon svg { stroke: var(--or); }
-
-  .nr-card h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.1rem;
-  }
-
-  .nr-card small {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.5);
-  }
-
-  /* ── CALENDRIER ── */
-  #calendrier {
-    background: var(--gris);
-  }
-
-  .cal-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-    margin-top: 2.5rem;
-  }
-
-  @media (max-width: 768px) {
-    .cal-layout { grid-template-columns: 1fr; }
-  }
-
-  .cal-download {
-    background: #fff;
-    border-radius: 10px;
-    padding: 2rem;
-    border: 1px solid var(--gris);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-  }
-
-  .cal-download h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
-    color: var(--bleu);
-    margin-bottom: 1rem;
-  }
-
-  .cal-download p {
-    font-size: 0.88rem;
-    color: #666;
-    line-height: 1.65;
-    margin-bottom: 1.5rem;
-  }
-
-  .dl-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    background: var(--bleu);
-    color: #fff;
-    padding: 0.8rem 1.5rem;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: background 0.2s;
-    margin-bottom: 0.7rem;
-    margin-right: 0.5rem;
-  }
-  .dl-btn:hover { background: var(--bleu-mid); }
-  .dl-btn.gold { background: var(--or); color: var(--bleu); }
-  .dl-btn.gold:hover { background: var(--or-light); }
-
-  .championnats-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .champ-item {
-    background: #fff;
-    border-radius: 8px;
-    padding: 1rem 1.2rem;
-    border-left: 4px solid var(--or);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    color: var(--texte);
-    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .champ-item:hover {
-    transform: translateX(4px);
-    box-shadow: 0 4px 20px rgba(10,35,66,0.1);
-  }
-
-  .champ-item span {
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  .champ-item small {
-    color: #888;
-    font-size: 0.78rem;
-  }
-
-  .champ-arrow { color: var(--or); }
+  .nr-card h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.1rem; }
+  .nr-card small { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
 
   /* ── CONTACT ── */
-  #contact {
-    background: var(--blanc);
-  }
-
-  .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    margin-top: 2.5rem;
-    align-items: start;
-  }
-
-  @media (max-width: 768px) {
-    .contact-layout { grid-template-columns: 1fr; }
-  }
-
-  .contact-info { }
-
-  .contact-info p {
-    color: #555;
-    line-height: 1.75;
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-  }
-
-  .contact-detail {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .contact-detail-icon {
-    width: 38px;
-    height: 38px;
-    background: var(--bleu);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
+  #contact { background: var(--blanc); }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; align-items: start; }
+  .contact-detail { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.2rem; }
+  .contact-detail-icon { width: 38px; height: 38px; background: var(--bleu); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
   .contact-detail-icon svg { stroke: var(--or); }
-
-  .contact-detail-text strong {
-    display: block;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--bleu);
-    margin-bottom: 0.2rem;
-    font-weight: 600;
-  }
-
-  .contact-detail-text a,
-  .contact-detail-text span {
-    font-size: 0.9rem;
-    color: #555;
-    text-decoration: none;
-  }
-
+  .contact-detail-text strong { display: block; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; color: var(--bleu); margin-bottom: 0.2rem; font-weight: 600; }
+  .contact-detail-text a, .contact-detail-text span { font-size: 0.9rem; color: #555; text-decoration: none; }
   .contact-detail-text a:hover { color: var(--or); }
-
-  .contact-form {
-    background: var(--bleu);
-    border-radius: 12px;
-    padding: 2.5rem;
-  }
-
-  .contact-form h3 {
-    font-family: 'DM Serif Display', serif;
-    color: #fff;
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .form-group {
-    margin-bottom: 1.2rem;
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 0.78rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 6px;
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    padding: 0.7rem 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .form-group input:focus,
-  .form-group textarea:focus { border-color: var(--or); }
-  .form-group input::placeholder,
-  .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .contact-form { background: var(--bleu); border-radius: 12px; padding: 2.5rem; }
+  .contact-form h3 { font-family: 'DM Serif Display', serif; color: #fff; font-size: 1.4rem; margin-bottom: 1.5rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { display: block; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.4rem; font-weight: 500; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 0.7rem 1rem; outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--or); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
   .form-group textarea { resize: vertical; min-height: 110px; }
-
-  .form-submit {
-    width: 100%;
-    background: var(--or);
-    color: var(--bleu);
-    border: none;
-    border-radius: 6px;
-    padding: 0.85rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-  }
+  .form-submit { width: 100%; background: var(--or); color: var(--bleu); border: none; border-radius: 6px; padding: 0.85rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.2s; }
   .form-submit:hover { background: var(--or-light); transform: translateY(-2px); }
 
   /* ── FOOTER ── */
-  footer {
-    background: #070f1e;
-    border-top: 2px solid var(--or);
-    color: rgba(255,255,255,0.6);
-    padding: 3rem 2rem 1.5rem;
-  }
-
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 2.5rem;
-  }
-
-  @media (max-width: 768px) {
-    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
-  }
-
-  .footer-brand img {
-    height: 56px;
-    margin-bottom: 1rem;
-    filter: brightness(0.9);
-  }
-
-  .footer-brand p {
-    font-size: 0.85rem;
-    line-height: 1.7;
-    max-width: 280px;
-  }
-
-  footer h5 {
-    color: var(--or);
-    font-size: 0.72rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-
-  .footer-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .footer-links a {
-    color: rgba(255,255,255,0.55);
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s;
-  }
-
+  footer { background: #070f1e; border-top: 2px solid var(--or); color: rgba(255,255,255,0.6); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+  .footer-brand img { height: 56px; margin-bottom: 1rem; filter: brightness(0.9); }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+  footer h5 { color: var(--or); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; font-weight: 600; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
   .footer-links a:hover { color: var(--or); }
-
-  .footer-bottom {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.78rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 0.5rem; }
   .footer-bottom a { color: var(--or); text-decoration: none; }
 
   /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(8px); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* ── MOBILE ── */
   @media (max-width: 900px) {
     .nav-links { display: none; }
     .nav-links.open {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 68px;
-      left: 0; right: 0;
-      background: var(--bleu);
-      padding: 1.5rem;
-      gap: 0.2rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 2px solid var(--or);
+      display: flex; flex-direction: column; position: fixed;
+      top: 68px; left: 0; right: 0; background: var(--bleu);
+      padding: 1.5rem; gap: 0.2rem;
+      border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid var(--or);
     }
-    .nav-links.open a { padding: 0.7rem 0.5rem; }
+    .nav-links.open li a { padding: 0.7rem 0.5rem; }
     .hamburger { display: flex; }
     .dropdown { position: static; border: none; background: rgba(255,255,255,0.04); margin-top: 0.2rem; border-radius: 4px; }
     .nav-links li:hover .dropdown { display: none; }
     .nav-links li.open-sub .dropdown { display: block; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-layout { grid-template-columns: 1fr; }
   }
-
   @media (max-width: 600px) {
     .stats-band { gap: 1.5rem; }
     .nav-rapide-grid { grid-template-columns: 1fr 1fr; }
   }
-
-  /* Divider */
-  .divider {
-    width: 50px;
-    height: 3px;
-    background: var(--or);
-    margin: 1rem 0 1.5rem;
-  }
-
-  /* Alert banner */
-  .alert-banner {
-    background: var(--rouge);
-    color: #fff;
-    text-align: center;
-    padding: 0.6rem 1.5rem;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-  }
-
-  .alert-banner a { color: #ffdddd; text-decoration: underline; }
-  <style>
-#cal-app { font-family: 'DM Sans', sans-serif; }
-.cal-toolbar {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
-}
-.cal-nav { display: flex; align-items: center; gap: .8rem; }
-.cal-nav button {
-  background: var(--bleu); color: var(--or); border: none;
-  width: 36px; height: 36px; border-radius: 6px;
-  font-size: 1.1rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .2s;
-}
-.cal-nav button:hover { background: var(--bleu-mid); }
-.cal-month-label {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
-  color: var(--bleu); letter-spacing: 2px; min-width: 210px; text-align: center;
-}
-.cal-filters { display: flex; gap: .45rem; flex-wrap: wrap; }
-.cal-filter-btn {
-  border: 1.5px solid var(--gris); background: #fff; color: #555;
-  font-size: .73rem; font-weight: 600; letter-spacing: .3px;
-  padding: .32rem .85rem; border-radius: 20px; cursor: pointer;
-  transition: all .2s; font-family: 'DM Sans', sans-serif;
-}
-.cal-filter-btn.active, .cal-filter-btn:hover {
-  background: var(--bleu); color: var(--or); border-color: var(--bleu);
-}
-.cal-grid {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
-}
-.cal-day-header {
-  text-align: center; font-size: .68rem; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--or); background: var(--bleu);
-  padding: .5rem 0; border-radius: 4px 4px 0 0;
-}
-.cal-cell {
-  min-height: 78px; background: #fff;
-  border: 1px solid var(--gris); border-radius: 5px;
-  padding: 5px; position: relative; transition: box-shadow .2s;
-  overflow: hidden;
-}
-.cal-cell.other-month { background: #f5f4f0; opacity: .45; }
-.cal-cell.today { border-color: var(--or); border-width: 2px; }
-.cal-cell.has-events { cursor: pointer; }
-.cal-cell.has-events:hover { box-shadow: 0 4px 16px rgba(10,35,66,.13); }
-.cal-cell-num {
-  font-size: .75rem; font-weight: 700; color: #aaa; margin-bottom: 3px;
-  display: inline-block;
-}
-.cal-cell.today .cal-cell-num {
-  background: var(--or); color: var(--bleu);
-  width: 20px; height: 20px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .7rem;
-}
-.cal-event-dot {
-  font-size: .6rem; line-height: 1.3; padding: 1px 4px;
-  border-radius: 3px; margin-bottom: 2px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  font-weight: 600; display: block;
-}
-.cat-champ   { background: #e8f0fe; color: #1a3a8a; }
-.cat-concours{ background: #e8f9ee; color: #1a6a35; }
-.cat-gp      { background: #fff8e0; color: #7a5500; }
-.cat-cdc     { background: #ffe0f0; color: #8a0050; }
-.cat-jeunes  { background: #e0f8ff; color: #005a8a; }
-.cat-veterans{ background: #f0ede8; color: #5a3a1a; }
-.cat-regional{ background: #f3e8ff; color: #5a1a8a; }
-.cal-more {
-  font-size: .6rem; color: var(--or); font-weight: 700;
-  background: rgba(201,168,76,.12); border-radius: 3px;
-  padding: 1px 4px; display: block; text-align: center; margin-top: 1px;
-}
-.cal-modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.52); z-index: 500;
-  align-items: center; justify-content: center;
-}
-.cal-modal-overlay.open { display: flex; }
-.cal-modal {
-  background: #fff; border-radius: 12px; padding: 2rem;
-  max-width: 500px; width: 92%; box-shadow: 0 20px 60px rgba(0,0,0,.3);
-  position: relative; max-height: 82vh; overflow-y: auto;
-}
-.cal-modal-close {
-  position: absolute; top: 1rem; right: 1rem;
-  background: none; border: none; font-size: 1.3rem;
-  cursor: pointer; color: #aaa;
-}
-.cal-modal-close:hover { color: var(--bleu); }
-.cal-modal h3 {
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem;
-  color: var(--bleu); letter-spacing: 1px; margin-bottom: 1.2rem;
-}
-.cal-modal-event {
-  border-left: 4px solid var(--or); padding: .8rem 1rem;
-  margin-bottom: .8rem; background: var(--blanc); border-radius: 0 6px 6px 0;
-}
-.cal-modal-event-title { font-weight: 600; color: var(--bleu); font-size: .92rem; margin-bottom: .3rem; }
-.cal-modal-event-meta { font-size: .78rem; color: #777; display: flex; flex-wrap: wrap; gap: .4rem; margin-top:.4rem }
-.cal-modal-event-meta span { background: var(--gris); padding: 2px 7px; border-radius: 10px; }
-@media (max-width: 600px) {
-  .cal-cell { min-height: 50px; padding: 3px; }
-  .cal-event-dot { display: none; }
-  .cal-cell.has-events::after {
-    content: '●'; color: var(--or); font-size: .55rem;
-    position: absolute; bottom: 3px; right: 3px;
-  }
-  .cal-month-label { font-size: 1.1rem; min-width: 150px; }
-}
-</style>
- 
 </style>
 </head>
 <body>
 
 <!-- ── NAVBAR ── -->
 <nav id="navbar">
-  <a class="nav-brand" href="#">
+  <a class="nav-brand" href="index.html">
     <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
     <div class="nav-brand-text">
       <span>Comité de la Somme</span>
@@ -1029,10 +196,9 @@
     </div>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#hero">Accueil</a></li>
-    <li><a href="#actualites">Actualités</a></li>
+    <li><a href="index.html">Accueil</a></li>
     <li>
-      <a href="#nav-rapide">Compétitions ▾</a>
+      <a href="#" onclick="return false;">Compétitions ▾</a>
       <div class="dropdown">
         <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a>
         <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank">Championnat des clubs</a>
@@ -1041,13 +207,11 @@
         <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a>
       </div>
     </li>
-     <a href="#clubs-section" class="nr-card reveal"><div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><h4>Les Clubs</h4><small>Liste et informations</small></div></a>
-
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html">Calendrier</a></li>
     <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
-    <li><a href="#contact">Contacts</a></li>
-    <li>
-      <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="nav-cta">📅 Calendrier 2026</a>
-    </li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="calendrier.html" class="nav-cta">📅 Calendrier 2026</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1065,7 +229,8 @@
     <p class="hero-sub">FFPJP &nbsp;·&nbsp; Fédération Française de Pétanque et Jeu Provençal</p>
     <p class="hero-desc">Toutes les informations, résultats et calendriers sur la pétanque dans le département de la Somme. Site régulièrement mis à jour.</p>
     <div class="hero-btns">
-      <a href="#actualites" class="btn-primary">Voir les actualités</a>
+      <a href="#nav-rapide" class="btn-primary">Accès rapide</a>
+      <a href="calendrier.html" class="btn-outline">📅 Calendrier 2026</a>
     </div>
   </div>
   <div class="hero-scroll">
@@ -1075,89 +240,12 @@
 
 <!-- ── STATS ── -->
 <div class="stats-band">
-  <div class="stat-item">
-    <strong>33</strong>
-    <span>Clubs</span>
-  </div>
-  <div class="stat-item">
-    <strong>2026</strong>
-    <span>Saison en cours</span>
-  </div>
-  <div class="stat-item">
-    <strong>FFPJP</strong>
-    <span>Fédération</span>
-  </div>
-  <div class="stat-item">
-    <strong>Amiens</strong>
-    <span>Siège du comité</span>
-  </div>
+  <div class="stat-item"><strong>33</strong><span>Clubs</span></div>
+  <div class="stat-item"><strong>2026</strong><span>Saison en cours</span></div>
+  <div class="stat-item"><strong>FFPJP</strong><span>Fédération</span></div>
+  <div class="stat-item"><strong>Amiens</strong><span>Siège du comité</span></div>
 </div>
 
-
-<!-- ── CALENDRIER INTERACTIF ── -->
-<section id="actualites">
-  <div class="container">
-    <div class="actu-header reveal">
-      <div>
-        <p class="section-label">Saison 2026</p>
-        <h2 class="section-title">Calendrier <em>officiel</em></h2>
-        <div class="divider"></div>
-        <p class="section-lead">Toutes les compétitions officielles de la Somme. Cliquez sur un jour surligné pour voir le détail.</p>
-      </div>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
-    </div>
- 
-    <!-- Filtres -->
-    <div class="cal-filters reveal" style="margin-bottom:1.2rem">
-      <button class="cal-filter-btn active" data-filter="all">Tout</button>
-      <button class="cal-filter-btn" data-filter="champ">🏆 Championnats</button>
-      <button class="cal-filter-btn" data-filter="concours">🎯 Concours officiels</button>
-      <button class="cal-filter-btn" data-filter="gp">⭐ Grands Prix</button>
-      <button class="cal-filter-btn" data-filter="cdc">🏅 Champ. Clubs</button>
-      <button class="cal-filter-btn" data-filter="jeunes">👦 Jeunes</button>
-      <button class="cal-filter-btn" data-filter="veterans">🎖️ Vétérans</button>
-      <button class="cal-filter-btn" data-filter="regional">🗺️ Régional/France</button>
-    </div>
- 
-    <!-- Navigation mois -->
-    <div class="cal-toolbar reveal">
-      <div class="cal-nav">
-        <button id="cal-prev">&#8592;</button>
-        <div class="cal-month-label" id="cal-month-label"></div>
-        <button id="cal-next">&#8594;</button>
-      </div>
-      <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
-        <select id="cal-year-jump" style="border:1.5px solid var(--gris);border-radius:6px;padding:.35rem .7rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--bleu);cursor:pointer">
-          <option value="2026">2026</option>
-        </select>
-      </div>
-    </div>
- 
-    <!-- Grille calendrier -->
-    <div class="cal-grid reveal" id="cal-grid"></div>
- 
-    <!-- Légende -->
-    <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem" class="reveal">
-      <span class="cal-event-dot cat-champ" style="font-size:.72rem;padding:3px 8px">🏆 Championnats</span>
-      <span class="cal-event-dot cat-concours" style="font-size:.72rem;padding:3px 8px">🎯 Concours</span>
-      <span class="cal-event-dot cat-gp" style="font-size:.72rem;padding:3px 8px">⭐ Grand Prix</span>
-      <span class="cal-event-dot cat-cdc" style="font-size:.72rem;padding:3px 8px">🏅 Champ. Clubs</span>
-      <span class="cal-event-dot cat-jeunes" style="font-size:.72rem;padding:3px 8px">👦 Jeunes</span>
-      <span class="cal-event-dot cat-veterans" style="font-size:.72rem;padding:3px 8px">🎖️ Vétérans</span>
-      <span class="cal-event-dot cat-regional" style="font-size:.72rem;padding:3px 8px">🗺️ Régional/France</span>
-    </div>
-  </div>
-</section>
- 
-<!-- ── MODALE ── -->
-<div class="cal-modal-overlay" id="cal-modal-overlay">
-  <div class="cal-modal">
-    <button class="cal-modal-close" id="cal-modal-close">✕</button>
-    <h3 id="cal-modal-date"></h3>
-    <div id="cal-modal-content"></div>
-  </div>
-</div>
- 
 <!-- ── NAVIGATION RAPIDE ── -->
 <section id="nav-rapide">
   <div class="container">
@@ -1169,576 +257,55 @@
     <div class="nav-rapide-grid">
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/tirage/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div>
-          <h4>Le Comité</h4>
-          <small>Organisation & bureau</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div><h4>Le Comité</h4><small>Organisation & bureau</small></div>
       </a>
 
-      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/a/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <div>
-          <h4>Les Clubs</h4>
-          <small>Liste et informations</small>
-        </div>
+      <a href="clubs.html" class="nr-card reveal">
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div><h4>Les Clubs</h4><small>Liste et informations</small></div>
+      </a>
+
+      <a href="calendrier.html" class="nr-card reveal">
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div><h4>Calendrier 2026</h4><small>Toutes les compétitions</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-        </div>
-        <div>
-          <h4>Champ. des Clubs</h4>
-          <small>2024 · 2025 · 2026</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
+        <div><h4>Champ. des Clubs</h4><small>2024 · 2025 · 2026</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
-        <div>
-          <h4>Classements</h4>
-          <small>Joueurs & clubs</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div><h4>Classements</h4><small>Joueurs & clubs</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        </div>
-        <div>
-          <h4>Résultats</h4>
-          <small>Dernières compétitions</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div><h4>Résultats</h4><small>Dernières compétitions</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-        </div>
-        <div>
-          <h4>Tirages</h4>
-          <small>Règlements & tirages</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div><h4>Tirages</h4><small>Règlements & tirages</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/b/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        </div>
-        <div>
-          <h4>Documentations</h4>
-          <small>Règlements & guides</small>
-        </div>
-      </a>
-
-      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div>
-          <h4>Nouveautés</h4>
-          <small>Dernières infos</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div><h4>Documentations</h4><small>Règlements & guides</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="12" y2="11"/></svg>
-        </div>
-        <div>
-          <h4>Annuaire</h4>
-          <small>Contacts & clubs</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="12" y2="11"/></svg></div>
+        <div><h4>Annuaire</h4><small>Contacts & clubs</small></div>
       </a>
 
       <a href="https://comite-de-la-somme-3.e-monsite.com/pages/archives/" target="_blank" class="nr-card reveal">
-        <div class="nr-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-        </div>
-        <div>
-          <h4>Archives</h4>
-          <small>Historique des saisons</small>
-        </div>
+        <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg></div>
+        <div><h4>Archives</h4><small>Historique des saisons</small></div>
       </a>
 
-    </div>
-  </div>
-</section>
-<!-- SECTION CLUBS -->
-<section id="clubs-section">
-  <div class="container">
-    <div class="reveal">
-      <p class="section-label">Département 80</p>
-      <h2 class="section-title">Les <em>Clubs</em> de la Somme</h2>
-      <div class="divider"></div>
-      <p style="color:#555;font-size:0.95rem;max-width:600px;margin-bottom:1.5rem">33 clubs affiliés répartis en trois secteurs géographiques. Retrouvez les coordonnées et informations de chaque club.</p>
-    </div>
-
-    <div class="clubs-search-bar reveal">
-      <span class="clubs-search-icon">🔍</span>
-      <input type="text" id="clubs-search" placeholder="Rechercher un club, une ville, un président…" oninput="filterClubs()">
-    </div>
-
-    <div class="secteur-tabs reveal">
-      <button class="secteur-tab active" data-secteur="all" onclick="filterSecteur(this,'all')">Tous les clubs (33)</button>
-      <button class="secteur-tab" data-secteur="centre" onclick="filterSecteur(this,'centre')">🏙️ Secteur Centre (16)</button>
-      <button class="secteur-tab" data-secteur="maritime" onclick="filterSecteur(this,'maritime')">⚓ Secteur Maritime (11)</button>
-      <button class="secteur-tab" data-secteur="santerre" onclick="filterSecteur(this,'santerre')">🌾 Secteur Santerre (6)</button>
-    </div>
-
-    <p class="clubs-count" id="clubs-count">33 clubs affichés</p>
-
-    <!-- SECTEUR CENTRE -->
-    <div class="secteur-block" id="bloc-centre">
-      <div class="secteur-title">🏙️ Secteur Centre</div>
-      <div class="clubs-grid">
-
-        <div class="club-card" data-secteur="centre" data-search="0009 amiens asptt asptt amiens dany tonneau">
-          <div class="club-card-header"><span class="club-num">0009</span><div><h3>AMIENS<span class="club-nom-assoc">ASPTT Amiens</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Dany TONNEAU</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>11/833 Rue Philippe de Commynes, 80000 Amiens</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 81 24 53 28</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">dany-tonneau@wanadoo.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>400 rue Colbert</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0022 bourdon la petanque bourdonnaise ophélie nathene flixecourt">
-          <div class="club-card-header"><span class="club-num">0022</span><div><h3>BOURDON<span class="club-nom-assoc">La Pétanque Bourdonnaise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Ophélie NATHENE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>15 Rue Victor Hugo, 80420 Flixecourt</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 24 49 54 42</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanquebourdonnaise@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue du Marais</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0031 boves petanque boves emmanuel langlois">
-          <div class="club-card-header"><span class="club-num">0031</span><div><h3>BOVES<span class="club-nom-assoc">Pétanque Boves</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Emmanuel LANGLOIS</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>4 Impasse des 4 Vents, 80440 Boves</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 24 43 12 84</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">emmanuellanglois80@icloud.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue du Stade</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0014 cagny cagny petanque jean-bernard pohier amiens">
-          <div class="club-card-header"><span class="club-num">0014</span><div><h3>CAGNY<span class="club-nom-assoc">Cagny Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jean-Bernard POHIER</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>13 Rue Vion, 80090 Amiens</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 37 48 12 88</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">jeanbernard.pohier80@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Chemin de l'Épinette</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0003 camon camon petanque mickaël malherbe bernaville">
-          <div class="club-card-header"><span class="club-num">0003</span><div><h3>CAMON<span class="club-nom-assoc">Camon Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Mickaël MALHERBE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>18 Rue René Delcourt, 80370 Bernaville</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 66 74 14 59</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">club.camon.petanque@laposte.net</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>À Bourdon</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0006 corbie corbie petanque maryse mallet rosières en santerre">
-          <div class="club-card-header"><span class="club-num">0006</span><div><h3>CORBIE<span class="club-nom-assoc">Corbie Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Maryse MALLET</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>3 Passage de l'Ancienne Cité, 80170 Rosières-en-Santerre</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 84 48 60 84</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">founou80@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Place de la République (sous le porche)</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0016 dreuil dreuil sport petanque jean-marie legenne amiens">
-          <div class="club-card-header"><span class="club-num">0016</span><div><h3>DREUIL<span class="club-nom-assoc">Dreuil Sport Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jean-Marie LEGENNE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>9 Rue de Lorraine, 80000 Amiens</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 52 01 47 23</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">dreuilsportpetanque@yahoo.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Route d'Argœuves</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0032 fienvillers doullens club de petanque fienvillers doullens jonathan de horta">
-          <div class="club-card-header"><span class="club-num">0032</span><div><h3>FIENVILLERS-DOULLENS<span class="club-nom-assoc">Club de Pétanque Fienvillers Doullens</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jonathan DE HORTA</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>36 Rue de Candas, 80750 Fienvillers</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 27 24 48 79</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">cpfienvilloise@outlook.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>1 Rue de Bernaville, Fienvillers / Stade de rugby Doullens</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0017 flixecourt petanque flixecourtoise philippe daussy vauchelles les domart">
-          <div class="club-card-header"><span class="club-num">0017</span><div><h3>FLIXECOURT<span class="club-nom-assoc">Pétanque Flixecourtoise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Philippe DAUSSY</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>1 Rue de Brucamps, 80620 Vauchelles-lès-Domart</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 70 47 24 68</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bibidaussy@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Complexe sportif Rue Philippe Ermenault</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0010 longueau etoile sportive cheminots longueau philippe chambelland">
-          <div class="club-card-header"><span class="club-num">0010</span><div><h3>LONGUEAU<span class="club-nom-assoc">Étoile Sportive des Cheminots de Longueau</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Philippe CHAMBELLAND</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>6 Rue Laurent Catelas, 80330 Longueau</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 28 17 15 74</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">longueau.petanque@laposte.net</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade Émile Noël</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0037 pernois pernois petanque ludovic grare halloy les pernois">
-          <div class="club-card-header"><span class="club-num">0037</span><div><h3>PERNOIS<span class="club-nom-assoc">Pernois Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Ludovic GRARE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>3 Bis Rue Gaillarde, 80670 Halloy-lès-Pernois</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 03 47 13 64</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">pernoispetanque@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Ruelle du Marais</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0018 poix poix sport petanque cendrine jouniaux">
-          <div class="club-card-header"><span class="club-num">0018</span><div><h3>POIX<span class="club-nom-assoc">Poix Sport Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Cendrine JOUNIAUX</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>13 Rue du Docteur Barbier, 80290 Poix</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>03 22 90 15 90 / 06 18 36 80 53</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">dometmarie.mathieu@orange.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade municipal</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0054 saint ouen la petanque saint ouennaise nicolas leroy">
-          <div class="club-card-header"><span class="club-num">0054</span><div><h3>SAINT-OUEN<span class="club-nom-assoc">La Pétanque Saint Ouennaise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Nicolas LEROY</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>59 Rue Pasteur, 80610 Saint-Ouen</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 78 08 42 03</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">saint-ouen.petanque@outlook.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Place Léon Bacquet</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="centre" data-search="0036 villers bretonneux la petanque bretonvilloise alexandre chirache">
-          <div class="club-card-header"><span class="club-num">0036</span><div><h3>VILLERS-BRETONNEUX<span class="club-nom-assoc">La Pétanque Bretonvilloise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Alexandre CHIRACHE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>38 Route d'Amiens, 80800 Villers-Bretonneux</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 45 32 43 73</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">lapetanquebretonvilloise@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue de la République</div></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- SECTEUR MARITIME -->
-    <div class="secteur-block" id="bloc-maritime">
-      <div class="secteur-title">⚓ Secteur Maritime</div>
-      <div class="clubs-grid">
-
-        <div class="club-card" data-secteur="maritime" data-search="0056 abbeville petanque abbevilloise johnny pade">
-          <div class="club-card-header"><span class="club-num">0056</span><div><h3>ABBEVILLE<span class="club-nom-assoc">Pétanque Abbevilloise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Johnny PADE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>21 Rue des Acacias, 80100 Abbeville</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 35 35 18 43</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">padejohnny@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Espace Saint Gilles, Rue de la Caserne</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0011 ault petanque aultoise tony bellart friville escarbotin">
-          <div class="club-card-header"><span class="club-num">0011</span><div><h3>AULT<span class="club-nom-assoc">Pétanque Aultoise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Tony BELLART</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>14 Rue Camille Saint-Saëns, 80130 Friville-Escarbotin</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 60 54 86 40</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bellart.tony@orange.fr</span></div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0008 bethencourt sur mer union bouliste bethencourtoise pascal durot tully">
-          <div class="club-card-header"><span class="club-num">0008</span><div><h3>BÉTHENCOURT-SUR-MER<span class="club-nom-assoc">Union Bouliste Bethencourtoise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Pascal DUROT</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>32 Rue Jean Catelas, 80130 Tully</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 50 40 40 38</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">pdurot@orange.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Route de Gamaches</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0051 bouvaincourt sur bresle petanque club bouvaincourt marc hedouin oust marest">
-          <div class="club-card-header"><span class="club-num">0051</span><div><h3>BOUVAINCOURT-SUR-BRESLE<span class="club-nom-assoc">Pétanque Club Bouvaincourt s/Bresle</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Marc HEDOUIN</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>23 Lot les Cytises, 80460 Oust-Marest</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 08 43 52 40</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">mmf.hedouin@orange.fr</span></div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0034 chepy union bouliste chepoise déborah portebois">
-          <div class="club-card-header"><span class="club-num">0034</span><div><h3>CHÉPY<span class="club-nom-assoc">Union Bouliste Chépoise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Déborah PORTEBOIS</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>37 Allée des Jonquilles, 80210 Chépy</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 71 56 33 01</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">union-bouliste-chepoise@outlook.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Place d'Émonville</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0039 dargnies association boulistes dargniesiens loïc paradis">
-          <div class="club-card-header"><span class="club-num">0039</span><div><h3>DARGNIES<span class="club-nom-assoc">Association des Boulistes Dargniesiens</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Loïc PARADIS</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>4 Rue Jean Jaurès, 80570 Dargnies</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 37 18 61 97</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanque.dargniesienne@laposte.net</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue Pierre de Coubertin</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0021 feuquieres union bouliste feuquieroise kévin evenou yzengremer">
-          <div class="club-card-header"><span class="club-num">0021</span><div><h3>FEUQUIÈRES<span class="club-nom-assoc">Union Bouliste Feuquièroise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Kévin EVENOU</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>30 Rue de la République, 80520 Yzengremer</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 43 31 57 43</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">polipro@yahoo.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Impasse Jules Verne</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0025 fressenneville fressenneville petanque club aurélien jacques">
-          <div class="club-card-header"><span class="club-num">0025</span><div><h3>FRESSENNEVILLE<span class="club-nom-assoc">Fressenneville Pétanque Club</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Aurélien JACQUES</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>46 bis Rue Robert et Geneviève Gabart, 80390 Fressenneville</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 27 95 07 86</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanque80@live.fr</span></div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0004 friville les amis de la petanque friville bertrand chivot feuquieres">
-          <div class="club-card-header"><span class="club-num">0004</span><div><h3>FRIVILLE<span class="club-nom-assoc">Les Amis de la Pétanque Friville</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Bertrand CHIVOT</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>17 Rue Pasteur, 80210 Feuquières</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 11 51 38 14</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bertrandchivot@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue du 11 Novembre</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0005 gamaches as petanque gamachoise frédéric duchesne bazinval">
-          <div class="club-card-header"><span class="club-num">0005</span><div><h3>GAMACHES<span class="club-nom-assoc">AS Pétanque Gamachoise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Frédéric DUCHESNE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>30 Rue du Saulx, 76340 Bazinval</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 13 46 65 81</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">frederic_duchesne@orange.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Près du stade municipal</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0020 longpre les corps saints petanque club longpre jérôme bellancourt">
-          <div class="club-card-header"><span class="club-num">0020</span><div><h3>LONGPRÉ-LES-CORPS-SAINTS<span class="club-nom-assoc">Pétanque Club Longpré</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jérôme BELLANCOURT</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>17 Rue de la République, 80510 Longpré-les-Corps-Saints</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 17 18 25 61</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">ghislaine.bellancourt@orange.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade municipal</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0007 mers les bains boule club mers les bains nathalie delaporte">
-          <div class="club-card-header"><span class="club-num">0007</span><div><h3>MERS-LES-BAINS<span class="club-nom-assoc">Boule Club Mers-les-Bains</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Nathalie DELAPORTE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>4/4 Rue Sadi Carnot, 80350 Mers-les-Bains</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 34 22 58 73</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">nathaliesoret80@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade Monte Fiore</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="maritime" data-search="0057 oisemont oisemont amicale bouliste canton yannick portebois chepy">
-          <div class="club-card-header"><span class="club-num">0057</span><div><h3>OISEMONT<span class="club-nom-assoc">Oisemont Amicale Bouliste du Canton</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Yannick PORTEBOIS</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>155 Allée des Lilas, 80210 Chépy</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 70 47 21 99</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">abc.oisemont@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Ancienne école, Rue des Lattes</div></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- SECTEUR SANTERRE -->
-    <div class="secteur-block" id="bloc-santerre">
-      <div class="secteur-title">🌾 Secteur Santerre</div>
-      <div class="clubs-grid">
-
-        <div class="club-card" data-secteur="santerre" data-search="0026 albert albert petanque bertrand douay">
-          <div class="club-card-header"><span class="club-num">0026</span><div><h3>ALBERT<span class="club-nom-assoc">Albert Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Bertrand DOUAY</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>26 Rue de Doullens, 80300 Albert</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>03 22 74 09 49 / 06 59 20 80 13</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bertrand.douay80@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Esplanade de la Solidaire, Place de Gaulle</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="santerre" data-search="0029 ham petanque hamoise maxime parlakyildiz eppeville">
-          <div class="club-card-header"><span class="club-num">0029</span><div><h3>HAM<span class="club-nom-assoc">Pétanque Hamoise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Maxime PARLAKYILDIZ</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>19 Avenue Pierre et Marie Curie, 80400 Eppeville</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 44 94 85 75</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">max.besim@yahoo.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade municipal</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="santerre" data-search="0012 montdidier association sportive petanque montdidier cyril vasseur maignelay montigny">
-          <div class="club-card-header"><span class="club-num">0012</span><div><h3>MONTDIDIER<span class="club-nom-assoc">AS Pétanque Montdidier</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Cyril VASSEUR</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>102 Rue de la Madeleine, 60420 Maignelay-Montigny</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 60 89 09 31</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">vasseurcyril12@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>École du Prieuré, Rue du Collège</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="santerre" data-search="0027 nesle la petanque nesloise kevin mennequin">
-          <div class="club-card-header"><span class="club-num">0027</span><div><h3>NESLE<span class="club-nom-assoc">La Pétanque Nesloise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Kevin MENNEQUIN</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>12 Rue Cantereine, 80190 Nesle</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 27 75 41 13</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">kevin.mennequin@hotmail.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Route de Ham</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="santerre" data-search="0033 peronne la boule peronnaise philippe devoye">
-          <div class="club-card-header"><span class="club-num">0033</span><div><h3>PÉRONNE<span class="club-nom-assoc">La Boule Péronnaise</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Philippe DEVOYE</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>47 Avenue de la République, 80200 Péronne</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanqueclubperonne@gmail.com</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Boulevard du Fort Caraby</div></div>
-          </div>
-        </div>
-
-        <div class="club-card" data-secteur="santerre" data-search="0035 roye roye petanque joaquim machado">
-          <div class="club-card-header"><span class="club-num">0035</span><div><h3>ROYE<span class="club-nom-assoc">Roye Pétanque</span></h3></div></div>
-          <div class="club-card-body">
-            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Joaquim MACHADO</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>35 Rue Roger Salengro, 80700 Roye</div></div>
-            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 10 63 80 48</div></div>
-            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">joaquim.machado80@orange.fr</span></div></div>
-            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue Jacques Doyen (proche piscine)</div></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ── CALENDRIER ── -->
-<section id="calendrier">
-  <div class="container">
-    <div class="reveal">
-      <p class="section-label">Saison 2026</p>
-      <h2 class="section-title">Calendrier & <em>Championnats</em></h2>
-      <div class="divider"></div>
-    </div>
-    <div class="cal-layout">
-      <div class="reveal">
-        <div class="cal-download">
-          <h3>📅 Calendriers officiels 2026</h3>
-          <p>Téléchargez les versions officielles du calendrier de la Somme pour la saison 2026. Les mises à jour sont publiées régulièrement sur ce site.</p>
-          <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="dl-btn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Version 2 (PDF)
-          </a>
-          <a href="https://comite-de-la-somme-3.e-monsite.com/agenda/calendrier-somme-2026-3-eme-version.html" target="_blank" class="dl-btn gold">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Version 3 — Nouveau
-          </a>
-          <p style="font-size:0.78rem;color:#999;margin-top:1rem;margin-bottom:0">Les calendriers sont susceptibles d'être modifiés en cours de saison. Vérifiez régulièrement les mises à jour.</p>
-        </div>
-      </div>
-
-      <div class="reveal">
-        <p class="section-label" style="margin-bottom:1rem">Championnats des clubs</p>
-        <div class="championnats-list">
-          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2023" target="_blank" class="champ-item">
-            <div>
-              <span>Championnat des Clubs 2026</span><br>
-              <small>Saison en cours</small>
-            </div>
-            <span class="champ-arrow">→</span>
-          </a>
-          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2025" target="_blank" class="champ-item">
-            <div>
-              <span>Championnat des Clubs 2025</span><br>
-              <small>Archives saison 2025</small>
-            </div>
-            <span class="champ-arrow">→</span>
-          </a>
-          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2024" target="_blank" class="champ-item">
-            <div>
-              <span>Championnat des Clubs 2024</span><br>
-              <small>Archives saison 2024</small>
-            </div>
-            <span class="champ-arrow">→</span>
-          </a>
-          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank" class="champ-item">
-            <div>
-              <span>Tous les championnats</span><br>
-              <small>Individuels, doublettes, triplettes…</small>
-            </div>
-            <span class="champ-arrow">→</span>
-          </a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1753,77 +320,34 @@
     </div>
     <div class="contact-layout">
       <div class="reveal">
-        <p class="section-lead" style="margin-bottom:2rem">
-          N'hésitez pas à nous contacter pour toute question, remarque ou suggestion concernant le comité ou ce site.
-        </p>
-
+        <p style="color:#555;line-height:1.75;margin-bottom:1.5rem;font-size:0.95rem">N'hésitez pas à nous contacter pour toute question, remarque ou suggestion concernant le comité ou ce site.</p>
         <div class="contact-detail">
-          <div class="contact-detail-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="contact-detail-text">
-            <strong>Adresse</strong>
-            <span>Comité de la Somme — Maison des Sports Bâtiment B<br>2, rue Lescouvé — 80000 Amiens</span>
-          </div>
+          <div class="contact-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="contact-detail-text"><strong>Adresse</strong><span>Comité de la Somme — Maison des Sports Bâtiment B<br>2, rue Lescouvé — 80000 Amiens</span></div>
         </div>
-
         <div class="contact-detail">
-          <div class="contact-detail-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </div>
-          <div class="contact-detail-text">
-            <strong>Téléphone</strong>
-            <a href="tel:0630009369">06 30 00 93 69</a>
-          </div>
+          <div class="contact-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="contact-detail-text"><strong>Téléphone</strong><a href="tel:0630009369">06 30 00 93 69</a></div>
         </div>
-
         <div class="contact-detail">
-          <div class="contact-detail-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div class="contact-detail-text">
-            <strong>Email — Informations</strong>
-            <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a>
-          </div>
+          <div class="contact-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="contact-detail-text"><strong>Email — Informations</strong><a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></div>
         </div>
-
         <div class="contact-detail">
-          <div class="contact-detail-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div class="contact-detail-text">
-            <strong>Email — Webmaster</strong>
-            <a href="mailto:didierpichenot@orange.fr">didierpichenot@orange.fr</a>
-          </div>
+          <div class="contact-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="contact-detail-text"><strong>Email — Webmaster</strong><a href="mailto:didierpichenot@orange.fr">didierpichenot@orange.fr</a></div>
         </div>
       </div>
-
       <div class="reveal">
         <div class="contact-form">
           <h3>Nous écrire</h3>
-          <div class="form-group">
-            <label>Votre nom</label>
-            <input type="text" placeholder="Dupont Jean">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="email@exemple.fr">
-          </div>
+          <div class="form-group"><label>Votre nom</label><input type="text" placeholder="Dupont Jean"></div>
+          <div class="form-group"><label>Email</label><input type="email" placeholder="email@exemple.fr"></div>
           <div class="form-group">
             <label>Sujet</label>
-            <select>
-              <option value="">Choisir un sujet…</option>
-              <option>Informations générales</option>
-              <option>Résultats / Calendrier</option>
-              <option>Affiliation club</option>
-              <option>Problème technique</option>
-              <option>Autre</option>
-            </select>
+            <select><option value="">Choisir un sujet…</option><option>Informations générales</option><option>Résultats / Calendrier</option><option>Affiliation club</option><option>Problème technique</option><option>Autre</option></select>
           </div>
-          <div class="form-group">
-            <label>Message</label>
-            <textarea placeholder="Votre message…"></textarea>
-          </div>
+          <div class="form-group"><label>Message</label><textarea placeholder="Votre message…"></textarea></div>
           <button class="form-submit" onclick="alert('Pour envoyer un message, contactez directement : CD80@petanque.fr')">Envoyer le message</button>
         </div>
       </div>
@@ -1842,22 +366,21 @@
       <h5>Rubriques</h5>
       <ul class="footer-links">
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/tirage/" target="_blank">Le Comité</a></li>
-        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/a/" target="_blank">Les Clubs</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank">Résultats</a></li>
-        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a></li>
       </ul>
     </div>
     <div>
       <h5>Liens utiles</h5>
       <ul class="footer-links">
-        <li><a href="https://comite-de-la-somme-3.e-monsite.com/agenda/" target="_blank">Actualités</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/b/" target="_blank">Documentations</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/" target="_blank">Nouveautés</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/archives/" target="_blank">Archives</a></li>
-        <li><a href="https://comite-de-la-somme-3.e-monsite.com/contact/" target="_blank">Contact</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -1868,476 +391,22 @@
 </footer>
 
 <script>
-  // Hamburger
   const ham = document.getElementById('hamburger');
   const links = document.getElementById('navLinks');
   ham.addEventListener('click', () => links.classList.toggle('open'));
 
-  // Reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        obs.unobserve(e.target);
-      }
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
     });
   }, { threshold: 0.1 });
   reveals.forEach(r => obs.observe(r));
 
-  // Navbar shadow on scroll
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
-    nav.style.boxShadow = window.scrollY > 30
-      ? '0 4px 30px rgba(0,0,0,0.4)'
-      : 'none';
+    nav.style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
   });
-</script>
-  <script>
-(function(){
- 
-/* ═══════════════════════════════════════════════════════
-   DONNÉES RÉELLES — Calendrier Comité de la Somme 2026
-   ═══════════════════════════════════════════════════════ */
-const EVENTS = [
-  /* ── JANVIER ── */
-  {date:'2026-01-06',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-01-13',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-01-17',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Triplette',obs:'Limité à 32 éq.'},
-  {date:'2026-01-20',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-01-27',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-01-31',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
- 
-  /* ── FÉVRIER ── */
-  {date:'2026-02-03',titre:'ASPTT Amiens — Finale Qualificatifs 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette'},
-  {date:'2026-02-07',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité à 48 éq.'},
-  {date:'2026-02-10',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-02-14',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Triplette Mixte'},
-  {date:'2026-02-14',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Triplette'},
-  {date:'2026-02-15',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
-  {date:'2026-02-15',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-02-17',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
-  {date:'2026-02-19',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-02-21',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-02-21',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Doublette'},
-  {date:'2026-02-21',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Triplette',obs:'Limité à 32 éq.'},
-  {date:'2026-02-22',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette Mixte',obs:'Limité à 48 éq.'},
-  {date:'2026-02-26',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-02-28',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
-  {date:'2026-02-28',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Triplette Mixte'},
- 
-  /* ── MARS ── */
-  {date:'2026-03-01',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette Féminin'},
-  {date:'2026-03-01',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-03-03',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-05',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-03-07',titre:'Concours Gamaches',type:'concours',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-07',titre:'Concours ASPTT Amiens — Challenge André Dournel',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette Mixte'},
-  {date:'2026-03-07',titre:'Coupe de France Jeu Provençal (2 tours)',type:'regional',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:''},
-  {date:'2026-03-08',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette Mixte'},
-  {date:'2026-03-08',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette Mixte',obs:'Limité à 48 éq.'},
-  {date:'2026-03-08',titre:'Coupe de France Jeu Provençal (suite)',type:'regional',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:''},
-  {date:'2026-03-10',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-12',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-03-13',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-14',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-14',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'9h00',formation:'Doublette'},
-  {date:'2026-03-14',titre:'Coupe de France (2 tours) + Coupe de la Somme',type:'regional',lieu:'Oisemont',heure:'9h30',formation:''},
-  {date:'2026-03-15',titre:'Coupe de France + Coupe Somme (suite)',type:'regional',lieu:'Oisemont',heure:'9h30',formation:''},
-  {date:'2026-03-15',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-03-17',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-19',titre:'Feuquières/Friville — Finale Qualificatifs 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'24 éq.'},
-  {date:'2026-03-20',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-21',titre:'CHPT DÉPRT — Triplette Promotion',type:'champ',lieu:'Flixecourt',heure:'10h00',formation:'Triplette Promotion',obs:'Inscriptions avant le 12/3'},
-  {date:'2026-03-22',titre:'CHPT DÉPRT — Triplette Promotion (suite)',type:'champ',lieu:'Flixecourt',heure:'9h00',formation:'Triplette Promotion'},
-  {date:'2026-03-24',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-26',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-03-27',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-03-28',titre:'CHPT DÉPRT — Tête-à-Tête Senior Masc. + Doub. Senior Fém.',type:'champ',lieu:'Flixecourt',heure:'10h00',formation:'TT / Doublette',obs:'Inscriptions avant le 19/3'},
-  {date:'2026-03-29',titre:'CHPT DÉPRT — TT Senior Masc., Doub. Fém. + TT Jeunes',type:'champ',lieu:'Flixecourt',heure:'9h00',formation:'TT / Doublette / Jeunes'},
-  {date:'2026-03-31',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
- 
-  /* ── AVRIL ── */
-  {date:'2026-04-02',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-04-03',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-04',titre:'Concours Friville',type:'concours',lieu:'Friville',heure:'14h00',formation:'Triplette Mixte'},
-  {date:'2026-04-04',titre:'CHPT DÉPRT — Triplette Jeu Provençal',type:'champ',lieu:'Albert',heure:'8h00',formation:'Triplette JP',obs:'Inscriptions avant le 26/3'},
-  {date:'2026-04-05',titre:'Concours Gamaches',type:'concours',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-05',titre:'CHPT DÉPRT — Triplette Jeu Provençal (suite)',type:'champ',lieu:'Albert',heure:'9h00',formation:'Triplette JP'},
-  {date:'2026-04-06',titre:'Concours Fressenneville',type:'concours',lieu:'Fressenneville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-06',titre:'CHPT DÉPRT — Triplette Jeu Provençal (reprise)',type:'champ',lieu:'Albert',heure:'9h00',formation:'Triplette JP'},
-  {date:'2026-04-07',titre:'Poix — Vétérans',type:'veterans',lieu:'Poix',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-09',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
-  {date:'2026-04-10',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-11',titre:'CHPT DÉPRT — Triplette Senior Masc. et Fém.',type:'champ',lieu:'Feuquières',heure:'10h00',formation:'Triplette Senior',obs:'Inscriptions avant le 2/4'},
-  {date:'2026-04-12',titre:'CHPT DÉPRT — Triplette Senior M+F, Triplette Jeunes + Tir Précision Junior',type:'champ',lieu:'Feuquières',heure:'9h00',formation:'Triplette / Jeunes'},
-  {date:'2026-04-14',titre:'Béthencourt — Vétérans',type:'veterans',lieu:'Béthencourt-sur-Mer',heure:'14h00',formation:'Triplette'},
-  {date:'2026-04-14',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-16',titre:'Gamaches — Vétérans',type:'veterans',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-17',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-18',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Triplette'},
-  {date:'2026-04-18',titre:'CHPT DÉPRT — Doublette Mixte + Stage jeunes',type:'champ',lieu:'Fienvillers-Doullens (Doullens)',heure:'10h00',formation:'Doublette Mixte',obs:'Inscriptions avant le 9/4'},
-  {date:'2026-04-19',titre:'CHPT DÉPRT — Doublette Mixte (suite)',type:'champ',lieu:'Fienvillers-Doullens',heure:'9h00',formation:'Doublette Mixte'},
-  {date:'2026-04-22',titre:'CHPT DÉPRT — Triplette Vétéran (60 ans)',type:'champ',lieu:'ASPTT Amiens',heure:'10h00',formation:'Triplette Vétéran',obs:'Inscriptions avant le 9/4'},
-  {date:'2026-04-22',titre:'CHPT DÉPRT — Triplette Vétéran (suite)',type:'champ',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette Vétéran'},
-  {date:'2026-04-24',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-25',titre:'CHPT DÉPRT — Doublette Senior Masc. + TT Senior Fém.',type:'champ',lieu:'Feuquières',heure:'10h00',formation:'Doublette / TT',obs:'Inscriptions avant le 16/4'},
-  {date:'2026-04-26',titre:'CHPT DÉPRT — Doublette Senior M., TT Senior F. + Doublette Jeunes',type:'champ',lieu:'Feuquières',heure:'9h00',formation:'Doublette / TT / Jeunes'},
-  {date:'2026-04-28',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-04-30',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
- 
-  /* ── MAI ── */
-  {date:'2026-05-01',titre:'Concours Chépy',type:'concours',lieu:'Chépy',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-02',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-02',titre:'CHPT DÉPRT — Triplette Mixte',type:'champ',lieu:'Gamaches',heure:'10h00',formation:'Triplette Mixte',obs:'Inscriptions avant le 23/4'},
-  {date:'2026-05-03',titre:'CHPT DÉPRT — Triplette Mixte (suite)',type:'champ',lieu:'Gamaches',heure:'9h00',formation:'Triplette Mixte'},
-  {date:'2026-05-05',titre:'Trophée Tête-à-Tête Vétéran (60 ans)',type:'veterans',lieu:'Feuquières',heure:'9h00',formation:'Tête-à-Tête',obs:'Sur place'},
-  {date:'2026-05-07',titre:'Feuquières — Finale Qualificatifs Vétérans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'24 éq.'},
-  {date:'2026-05-08',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-08',titre:'CHPT DÉPRT — Doublette Jeu Provençal',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'8h00',formation:'Doublette JP',obs:'Inscriptions avant le 31/4'},
-  {date:'2026-05-09',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-09',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Doublette Mixte'},
-  {date:'2026-05-09',titre:'CHPT DÉPRT — Doublette Jeu Provençal (suite)',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:'Doublette JP'},
-  {date:'2026-05-10',titre:'CHPT DÉPRT — Doublette Jeu Provençal (reprise)',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:'Doublette JP'},
-  {date:'2026-05-12',titre:'Friville — Vétérans',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-12',titre:'Poix — Vétérans',type:'veterans',lieu:'Poix',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-14',titre:'9ème Grand Prix de la Ville d\'Oisemont — Triplettes',type:'gp',lieu:'Oisemont',heure:'10h00',formation:'Triplette',obs:'18€/éq. Limité à 80 trip. Sur courrier avant le 8/5'},
-  {date:'2026-05-14',titre:'CHPT RÉGIONAL Hauts-de-France — Triplette M+F',type:'regional',lieu:'Burbure (62)',heure:'9h00',formation:'Triplette'},
-  {date:'2026-05-14',titre:'CHPT RÉGIONAL HdF — Triplette Jeunes + Tir Précision J',type:'regional',lieu:'St Just-en-Chaussée (60)',heure:'9h30',formation:'Triplette Jeunes'},
-  {date:'2026-05-15',titre:'Oisemont — Doublette Mixte',type:'concours',lieu:'Oisemont',heure:'14h00',formation:'Doublette Mixte'},
-  {date:'2026-05-15',titre:'CHPT RÉGIONAL HdF — Triplette Vétéran',type:'regional',lieu:'St Just-en-Chaussée (60)',heure:'9h00',formation:'Triplette Vétéran'},
-  {date:'2026-05-15',titre:'Grand Prix de Bourdon 60 ans — Triplette',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette Vétéran',obs:'15€/éq. + 500€. Sur courrier'},
-  {date:'2026-05-16',titre:'6ème Grand Prix de Bourdon — Triplette',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette',obs:'12€/éq. + 500€. Sur courrier'},
-  {date:'2026-05-16',titre:'CHPT RÉGIONAL HdF — Doublette Mixte',type:'regional',lieu:'Pernois (80)',heure:'9h00',formation:'Doublette Mixte'},
-  {date:'2026-05-17',titre:'3ème Grand Prix de Bourdon — Triplette Mixte',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette Mixte',obs:'12€/éq. + 500€. Sur courrier'},
-  {date:'2026-05-17',titre:'CHPT RÉGIONAL HdF — Triplette Mixte',type:'regional',lieu:'Pernois (80)',heure:'9h00',formation:'Triplette Mixte'},
-  {date:'2026-05-19',titre:'Trophée Doublette Vétéran (60 ans)',type:'veterans',lieu:'Boves',heure:'9h00',formation:'Doublette',obs:'Sur place'},
-  {date:'2026-05-22',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-23',titre:'Grand Prix de Péronne — Doublette',type:'gp',lieu:'Péronne (Parc des Expositions)',heure:'9h00',formation:'Doublette',obs:'Mises + 500€. Par poules.'},
-  {date:'2026-05-23',titre:'CHPT RÉGIONAL HdF — Triplette Promotion',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Triplette Promotion'},
-  {date:'2026-05-24',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-24',titre:'CHPT RÉGIONAL HdF — Doublette Masc. + TT Fém.',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Doublette / TT'},
-  {date:'2026-05-25',titre:'Oisemont — Souvenir M. Gibergues',type:'concours',lieu:'Oisemont',heure:'10h00',formation:'Doublette'},
-  {date:'2026-05-25',titre:'CHPT RÉGIONAL HdF — TT Masc.',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Tête-à-Tête'},
-  {date:'2026-05-26',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-27',titre:'Longpré — Vétérans',type:'veterans',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-29',titre:'Friville — Vétérans Finale Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-29',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'19h00',formation:'Doublette',obs:'Semi-nocturne'},
-  {date:'2026-05-30',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-30',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-05-30',titre:'CHPT RÉGIONAL HdF — Trip. Jeu Provençal',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Triplette JP'},
-  {date:'2026-05-31',titre:'CHPT RÉGIONAL HdF — Trip. Jeu Provençal (suite)',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Triplette JP'},
- 
-  /* ── JUIN ── */
-  {date:'2026-06-02',titre:'Trophée Triplette Mixte Vétéran (60 ans)',type:'veterans',lieu:'Béthencourt-sur-Mer',heure:'9h00',formation:'Triplette Mixte',obs:'Sur place'},
-  {date:'2026-06-03',titre:'Friville — Vétérans',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-06',titre:'Grand Prix d\'Abbeville — Triplette',type:'gp',lieu:'Abbeville',heure:'14h00',formation:'Triplette',obs:'15€/éq. Limité 72 éq. Sur courrier'},
-  {date:'2026-06-07',titre:'CHPT RÉGIONAL HdF — Doublette JP',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Doublette JP'},
-  {date:'2026-06-08',titre:'CHPT RÉGIONAL HdF — Doublette JP (suite)',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Doublette JP'},
-  {date:'2026-06-09',titre:'Poix — Vétérans',type:'veterans',lieu:'Poix',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-11',titre:'Gamaches — Vétérans',type:'veterans',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-13',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-13',titre:'Concours Péronne',type:'concours',lieu:'Péronne',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-16',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-18',titre:'Roye — Vétérans',type:'veterans',lieu:'Roye',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-19',titre:'Concours Friville',type:'concours',lieu:'Friville',heure:'19h00',formation:'Triplette',obs:'Semi-nocturne'},
-  {date:'2026-06-19',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Triplette'},
-  {date:'2026-06-20',titre:'CHPT DE FRANCE — Triplette Masc. et Fém.',type:'regional',lieu:'Sin-le-Noble (59)',heure:'',formation:'Triplette'},
-  {date:'2026-06-20',titre:'Concours Bouvaincourt',type:'concours',lieu:'Bouvaincourt',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-20',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'9h00',formation:'Triplette'},
-  {date:'2026-06-20',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-21',titre:'CHPT DE FRANCE — Triplette Masc. et Fém. (suite)',type:'regional',lieu:'Sin-le-Noble (59)',heure:'',formation:'Triplette'},
-  {date:'2026-06-21',titre:'Concours Béthencourt',type:'concours',lieu:'Béthencourt',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-23',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-24',titre:'Longpré — Vétérans',type:'veterans',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-26',titre:'Mers-les-Bains — Vétérans',type:'veterans',lieu:'Mers-les-Bains',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-26',titre:'Pernois — Vétérans Challenge',type:'veterans',lieu:'Pernois',heure:'9h00',formation:'Triplette'},
-  {date:'2026-06-27',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-27',titre:'Concours Pernois Challenge',type:'concours',lieu:'Pernois',heure:'9h00',formation:'Triplette'},
-  {date:'2026-06-27',titre:'CHPT DE FRANCE — Doublette Mixte',type:'regional',lieu:'Ajaccio (2A)',heure:'',formation:'Doublette Mixte'},
-  {date:'2026-06-28',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Triplette Mixte'},
-  {date:'2026-06-28',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
-  {date:'2026-06-28',titre:'CHPT DE FRANCE — Doublette Mixte (suite)',type:'regional',lieu:'Ajaccio (2A)',heure:'',formation:'Doublette Mixte'},
-  {date:'2026-06-30',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
- 
-  /* ── JUILLET ── */
-  {date:'2026-07-03',titre:'CHPT DE FRANCE — Triplette Jeu Provençal',type:'regional',lieu:'Blaye-les-Mines (81)',heure:'',formation:'Triplette JP'},
-  {date:'2026-07-04',titre:'Concours Mers-les-Bains Challenge',type:'concours',lieu:'Mers-les-Bains',heure:'9h00',formation:'Triplette',obs:'Propagande'},
-  {date:'2026-07-04',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'19h00',formation:'Doublette',obs:'Semi-nocturne'},
-  {date:'2026-07-04',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-07-05',titre:'Concours Oisemont',type:'concours',lieu:'Oisemont',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-07-05',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Triplette',obs:'Propagande 4 parties'},
-  {date:'2026-07-07',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
-  {date:'2026-07-11',titre:'Grand Prix de Bouvaincourt — Triplette',type:'gp',lieu:'Bouvaincourt',heure:'9h30',formation:'Triplette',obs:'Mises + 500€. Limité 64 éq. Sur courrier'},
-  {date:'2026-07-11',titre:'CHPT DE FRANCE — Triplette Jeunes',type:'regional',lieu:'Blaye-les-Mines (81)',heure:'',formation:'Triplette Jeunes'},
-  {date:'2026-07-12',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-07-12',titre:'Concours Fienvillers-Doullens',type:'concours',lieu:'Doullens',heure:'14h00',formation:'Triplette'},
-  {date:'2026-07-14',titre:'Grand Prix de Gamaches — Triplette',type:'gp',lieu:'Gamaches',heure:'9h00',formation:'Triplette',obs:'15€/éq. + 500€. Limité 80 trip. Sur courrier avant le 30/6'},
-  {date:'2026-07-18',titre:'CHPT DÉPRT — Clubs Jeu Provençal (J1)',type:'cdc',lieu:'Nesle et …',heure:'',formation:'Jeu Provençal'},
-  {date:'2026-07-18',titre:'CHPT DE FRANCE — Triplette Mixte',type:'regional',lieu:'Nice (06)',heure:'',formation:'Triplette Mixte'},
-  {date:'2026-07-19',titre:'CHPT DÉPRT — Clubs Jeu Provençal (suite)',type:'cdc',lieu:'Nesle et …',heure:'',formation:'Jeu Provençal'},
-  {date:'2026-07-21',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-07-25',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-07-25',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-07-25',titre:'CHPT DE FRANCE — TT Masc. + Doublette Fém.',type:'regional',lieu:'Bergerac (24)',heure:'',formation:'TT / Doublette'},
-  {date:'2026-07-26',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
-  {date:'2026-07-26',titre:'CHPT DE FRANCE — TT Masc. + Doublette Fém. (suite)',type:'regional',lieu:'Bergerac (24)',heure:'',formation:'TT / Doublette'},
- 
-  /* ── AOÛT ── */
-  {date:'2026-08-01',titre:'Concours Chépy',type:'concours',lieu:'Chépy',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-01',titre:'Concours Pernois',type:'concours',lieu:'Pernois',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
-  {date:'2026-08-02',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Triplette',obs:'Propagande'},
-  {date:'2026-08-02',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-04',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-08-08',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-08',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
-  {date:'2026-08-09',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-15',titre:'Concours Bouvaincourt',type:'concours',lieu:'Bouvaincourt',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-19',titre:'CHPT DE FRANCE — Triplette Vétéran',type:'regional',lieu:'Saint-Yriex (16)',heure:'',formation:'Triplette Vétéran'},
-  {date:'2026-08-22',titre:'Concours Oisemont',type:'concours',lieu:'Oisemont',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-22',titre:'Concours Pernois',type:'concours',lieu:'Pernois',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
-  {date:'2026-08-22',titre:'Concours Péronne',type:'concours',lieu:'Péronne',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-22',titre:'CHPT DE FRANCE — Triplette Promotion',type:'regional',lieu:'Saint-Yriex (16)',heure:'',formation:'Triplette Promotion'},
-  {date:'2026-08-23',titre:'Concours Béthencourt',type:'concours',lieu:'Béthencourt',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-23',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
-  {date:'2026-08-23',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-25',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-08-29',titre:'Concours Mers-les-Bains',type:'concours',lieu:'Mers-les-Bains',heure:'14h00',formation:'Triplette Mixte',obs:'Propagande'},
-  {date:'2026-08-29',titre:'Concours Dreuil',type:'concours',lieu:'Dreuil',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
-  {date:'2026-08-29',titre:'CHPT DE FRANCE — Doublette Masc. + TT Fém.',type:'regional',lieu:'Saint-Florentin (89)',heure:'',formation:'Doublette / TT'},
-  {date:'2026-08-30',titre:'Concours Bouvaincourt',type:'concours',lieu:'Bouvaincourt',heure:'14h00',formation:'Doublette',obs:'Propagande'},
-  {date:'2026-08-30',titre:'CHPT DE FRANCE — Doublette Masc. + TT Fém. (suite)',type:'regional',lieu:'Saint-Florentin (89)',heure:'',formation:'Doublette / TT'},
- 
-  /* ── SEPTEMBRE ── */
-  {date:'2026-09-01',titre:'CDC Vétéran — 1ère Journée',type:'veterans',lieu:'Nesle et Béthencourt',heure:'',formation:'CDC Vétéran'},
-  {date:'2026-09-05',titre:'CHPT DÉPRT — Clubs (Poix et Bouvaincourt)',type:'cdc',lieu:'Poix / Bouvaincourt',heure:'',formation:'Championnat des Clubs'},
-  {date:'2026-09-05',titre:'NATIONAL JEUNES — Triplette (1er jour)',type:'jeunes',lieu:'Montdidier',heure:'',formation:'Triplette J C M'},
-  {date:'2026-09-06',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Doublette'},
-  {date:'2026-09-06',titre:'CHPT DÉPRT — Clubs Jeu Provençal',type:'cdc',lieu:'À déterminer',heure:'',formation:'Jeu Provençal'},
-  {date:'2026-09-06',titre:'NATIONAL JEUNES — Triplette (2ème jour)',type:'jeunes',lieu:'Montdidier',heure:'',formation:'Triplette J C M'},
-  {date:'2026-09-06',titre:'Détection départementale Jeunes',type:'jeunes',lieu:'À déterminer',heure:'',formation:'J C M'},
-  {date:'2026-09-08',titre:'CDC Vétéran — 2ème Journée',type:'veterans',lieu:'Roye et Friville',heure:'',formation:'CDC Vétéran'},
-  {date:'2026-09-12',titre:'14ème Grand Prix de Friville — Triplette',type:'gp',lieu:'Friville',heure:'9h15',formation:'Triplette',obs:'12€/éq. + 500€. Sur courrier. Concours B à 15h00'},
-  {date:'2026-09-13',titre:'Concours Fienvillers-Doullens',type:'concours',lieu:'Doullens',heure:'9h00',formation:'Doublette'},
-  {date:'2026-09-15',titre:'CDC Vétéran — 3ème Journée',type:'veterans',lieu:'ASPTT et Friville',heure:'',formation:'CDC Vétéran'},
-  {date:'2026-09-19',titre:'Grand Prix de la Ville d\'Albert — Doublette',type:'gp',lieu:'Albert (Esplanade du Solidaire)',heure:'14h00',formation:'Doublette',obs:'10€/éq. + 500€. Inscriptions sur place jusqu\'à 13h45'},
-  {date:'2026-09-20',titre:'CHPT DÉPRT — Clubs Jeu Provençal',type:'cdc',lieu:'Nesle',heure:'',formation:'Jeu Provençal'},
-  {date:'2026-09-22',titre:'Finale CDC Vétéran',type:'veterans',lieu:'Béthencourt',heure:'',formation:'CDC Vétéran'},
-  {date:'2026-09-25',titre:'Grand Prix ASPTT Amiens 60 ans — Doublette',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Doublette 60 ans',obs:'10€/éq. + 1000€. Limité 128 éq. Inscriptions en ligne'},
-  {date:'2026-09-26',titre:'Grand Prix Régional d\'Amiens — Triplette Mixte',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Triplette Mixte',obs:'15€/éq. + 2000€. Limité 128 éq. Inscriptions en ligne'},
-  {date:'2026-09-27',titre:'Grand Prix de l\'ASPTT Amiens — Doublette',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Doublette',obs:'10€/éq. + 1000€. Limité 128 éq. Inscriptions en ligne'},
-  {date:'2026-09-04',titre:'Mers-les-Bains — Vétérans',type:'veterans',lieu:'Mers-les-Bains',heure:'14h00',formation:'Doublette'},
-  {date:'2026-09-10',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
-  {date:'2026-09-16',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité 48 éq.'},
-  {date:'2026-09-17',titre:'Gamaches — Vétérans',type:'veterans',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
-  {date:'2026-09-23',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
-  {date:'2026-09-24',titre:'Ault — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Ault',heure:'14h00',formation:'Doublette'},
-  {date:'2026-09-04',titre:'CHPT DE FRANCE — Doublette JP',type:'regional',lieu:'Briançon (05)',heure:'',formation:'Doublette JP'},
- 
-  /* ── OCTOBRE ── */
-  {date:'2026-10-03',titre:'CHPT DÉPRT — Clubs Open et Féminin (J1)',type:'cdc',lieu:'Feuquières et Dreuil',heure:'',formation:'Open / Féminin'},
-  {date:'2026-10-06',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
-  {date:'2026-10-10',titre:'Concours Abbeville (Qualificatif)',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Qualificatif'},
-  {date:'2026-10-13',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-10-17',titre:'CHPT DÉPRT — Clubs Open et Féminin (J2)',type:'cdc',lieu:'ASPTT et Ault/Béthencourt',heure:'',formation:'Open / Féminin'},
-  {date:'2026-10-20',titre:'ASPTT Amiens — Vétérans Triplette Mixte',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette Mixte'},
-  {date:'2026-10-24',titre:'Concours Abbeville (Qualificatif)',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Qualificatif'},
-  {date:'2026-10-25',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-10-25',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-10-31',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette Mixte'},
- 
-  /* ── NOVEMBRE ── */
-  {date:'2026-11-01',titre:'Concours Friville',type:'concours',lieu:'Friville',heure:'14h00',formation:'Triplette'},
-  {date:'2026-11-03',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
-  {date:'2026-11-07',titre:'FINALES CHPT DÉPRT — Clubs Open et Féminin',type:'cdc',lieu:'Abbeville',heure:'',formation:'Open / Féminin'},
-  {date:'2026-11-10',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-11-11',titre:'Concours Gamaches',type:'concours',lieu:'Gamaches',heure:'14h00',formation:'Triplette'},
-  {date:'2026-11-14',titre:'Concours Abbeville (Qualificatif)',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Qualificatif'},
-  {date:'2026-11-14',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-11-15',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-11-21',titre:'ASSEMBLÉE DU COMITÉ',type:'champ',lieu:'Amiens',heure:'10h00',formation:'',obs:'Assemblée générale annuelle'},
-  {date:'2026-11-22',titre:'Concours Abbeville — Finale des Qualificatifs',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Finale'},
-  {date:'2026-11-24',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
-  {date:'2026-11-28',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-11-29',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
- 
-  /* ── DÉCEMBRE ── */
-  {date:'2026-12-03',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
-  {date:'2026-12-04',titre:'Ault — Vétérans Finale Qualificatif (Mêlée)',type:'veterans',lieu:'Ault',heure:'14h00',formation:'Doublette',obs:'Finale'},
-  {date:'2026-12-05',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
-  {date:'2026-12-05',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-12-06',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-12-08',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
-  {date:'2026-12-10',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité 48 éq.'},
-  {date:'2026-12-12',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
-  {date:'2026-12-13',titre:'Concours Feuquières — FINALE',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Finale. 24 éq.'},
-  {date:'2026-12-15',titre:'ASPTT Amiens — Vétérans Triplette Mixte',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette Mixte'},
-  {date:'2026-12-17',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
-  {date:'2026-12-19',titre:'ASPTT Amiens — Finale des Qualificatifs',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Finale'},
-];
- 
-const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin',
-              'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const JOURS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-const TYPE_CLASS = {champ:'cat-champ',concours:'cat-concours',gp:'cat-gp',
-                    cdc:'cat-cdc',jeunes:'cat-jeunes',veterans:'cat-veterans',regional:'cat-regional'};
-const TYPE_LABEL = {champ:'🏆 Championnat',concours:'🎯 Concours',gp:'⭐ Grand Prix',
-                    cdc:'🏅 Champ. Clubs',jeunes:'👦 Jeunes',veterans:'🎖️ Vétérans',regional:'🗺️ Régional/France'};
- 
-let year=2026, month=4, activeFilter='all';
-const today = new Date();
- 
-function eventsFor(dateStr){
-  return EVENTS.filter(e=>e.date===dateStr &&
-    (activeFilter==='all'||e.type===activeFilter));
-}
- 
-function renderCalendar(){
-  const label = document.getElementById('cal-month-label');
-  label.textContent = MOIS[month]+' '+year;
- 
-  const grid = document.getElementById('cal-grid');
-  grid.innerHTML = '';
- 
-  JOURS.forEach(j=>{
-    const h=document.createElement('div');
-    h.className='cal-day-header'; h.textContent=j; grid.appendChild(h);
-  });
- 
-  const first = new Date(year,month,1);
-  let dow = first.getDay(); // 0=dim
-  dow = dow===0?6:dow-1;   // lundi=0
- 
-  const daysInMonth = new Date(year,month+1,0).getDate();
-  const prevDays    = new Date(year,month,0).getDate();
- 
-  for(let i=0;i<dow;i++){
-    const c=document.createElement('div');
-    c.className='cal-cell other-month';
-    c.innerHTML=`<span class="cal-cell-num">${prevDays-dow+1+i}</span>`;
-    grid.appendChild(c);
-  }
- 
-  for(let d=1;d<=daysInMonth;d++){
-    const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const evs=eventsFor(ds);
-    const isToday=(today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d);
-    const c=document.createElement('div');
-    c.className='cal-cell'+(isToday?' today':'')+(evs.length?' has-events':'');
-    let html=`<span class="cal-cell-num">${d}</span>`;
-    const show=evs.slice(0,2);
-    show.forEach(e=>{
-      html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">${e.titre}</span>`;
-    });
-    if(evs.length>2) html+=`<span class="cal-more">+${evs.length-2} autres</span>`;
-    c.innerHTML=html;
-    if(evs.length) c.addEventListener('click',()=>openModal(ds,evs));
-    grid.appendChild(c);
-  }
- 
-  const total=dow+daysInMonth;
-  const trailing=total%7===0?0:7-(total%7);
-  for(let i=1;i<=trailing;i++){
-    const c=document.createElement('div');
-    c.className='cal-cell other-month';
-    c.innerHTML=`<span class="cal-cell-num">${i}</span>`;
-    grid.appendChild(c);
-  }
-}
- 
-function openModal(ds,evs){
-  const [y,m,d]=ds.split('-');
-  const dateLabel = parseInt(d)+' '+MOIS[parseInt(m)-1]+' '+y;
-  document.getElementById('cal-modal-date').textContent=dateLabel;
-  const cont=document.getElementById('cal-modal-content');
-  cont.innerHTML=evs.map(e=>`
-    <div class="cal-modal-event">
-      <div class="cal-modal-event-title">${e.titre}</div>
-      <div class="cal-modal-event-meta">
-        ${e.lieu?`<span>📍 ${e.lieu}</span>`:''}
-        ${e.heure?`<span>⏰ ${e.heure}</span>`:''}
-        ${e.formation?`<span>👥 ${e.formation}</span>`:''}
-        <span class="${TYPE_CLASS[e.type]||'cat-concours'}" style="padding:2px 7px;border-radius:10px">${TYPE_LABEL[e.type]||e.type}</span>
-        ${e.obs?`<span style="font-style:italic">ℹ️ ${e.obs}</span>`:''}
-      </div>
-    </div>`).join('');
-  document.getElementById('cal-modal-overlay').classList.add('open');
-}
- 
-document.getElementById('cal-prev').addEventListener('click',()=>{
-  month--; if(month<0){month=11;year--;} renderCalendar();
-});
-document.getElementById('cal-next').addEventListener('click',()=>{
-  month++; if(month>11){month=0;year++;} renderCalendar();
-});
-document.getElementById('cal-modal-close').addEventListener('click',()=>{
-  document.getElementById('cal-modal-overlay').classList.remove('open');
-});
-document.getElementById('cal-modal-overlay').addEventListener('click',function(e){
-  if(e.target===this) this.classList.remove('open');
-});
- 
-document.querySelectorAll('.cal-filter-btn').forEach(btn=>{
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.cal-filter-btn').forEach(b=>b.classList.remove('active'));
-    this.classList.add('active');
-    activeFilter=this.dataset.filter;
-    renderCalendar();
-  });
-});
- 
-renderCalendar();
-})();
-    <script>
-const ham = document.getElementById('hamburger');
-const links = document.getElementById('navLinks');
-ham.addEventListener('click', () => links.classList.toggle('open'));
-
-const reveals = document.querySelectorAll('.reveal');
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
-  });
-}, { threshold: 0.05 });
-reveals.forEach(r => obs.observe(r));
-
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  nav.style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
-});
-
-let activeSecteur = 'all';
-
-function filterSecteur(btn, secteur) {
-  activeSecteur = secteur;
-  document.querySelectorAll('.secteur-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  filterClubs();
-}
-
-function filterClubs() {
-  const q = document.getElementById('clubs-search').value.toLowerCase().trim();
-  let visible = 0;
-  document.querySelectorAll('.club-card').forEach(card => {
-    const s = card.getAttribute('data-secteur');
-    const search = card.getAttribute('data-search') || '';
-    const secteurOk = activeSecteur === 'all' || s === activeSecteur;
-    const searchOk = !q || search.includes(q);
-    const show = secteurOk && searchOk;
-    card.style.display = show ? '' : 'none';
-    if (show) visible++;
-  });
-  document.getElementById('clubs-count').textContent = visible + ' club' + (visible > 1 ? 's' : '') + ' affiché' + (visible > 1 ? 's' : '');
-
-  ['centre','maritime','santerre'].forEach(sec => {
-    const bloc = document.getElementById('bloc-' + sec);
-    if (!bloc) return;
-    const hasVisible = [...bloc.querySelectorAll('.club-card')].some(c => c.style.display !== 'none');
-    bloc.style.display = hasVisible ? '' : 'none';
-  });
-}
-</script>
-
 </script>
 </body>
 </html>
