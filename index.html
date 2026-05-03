@@ -899,6 +899,122 @@
   }
 
   .alert-banner a { color: #ffdddd; text-decoration: underline; }
+  <style>
+#cal-app { font-family: 'DM Sans', sans-serif; }
+.cal-toolbar {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
+}
+.cal-nav { display: flex; align-items: center; gap: .8rem; }
+.cal-nav button {
+  background: var(--bleu); color: var(--or); border: none;
+  width: 36px; height: 36px; border-radius: 6px;
+  font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.cal-nav button:hover { background: var(--bleu-mid); }
+.cal-month-label {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
+  color: var(--bleu); letter-spacing: 2px; min-width: 210px; text-align: center;
+}
+.cal-filters { display: flex; gap: .45rem; flex-wrap: wrap; }
+.cal-filter-btn {
+  border: 1.5px solid var(--gris); background: #fff; color: #555;
+  font-size: .73rem; font-weight: 600; letter-spacing: .3px;
+  padding: .32rem .85rem; border-radius: 20px; cursor: pointer;
+  transition: all .2s; font-family: 'DM Sans', sans-serif;
+}
+.cal-filter-btn.active, .cal-filter-btn:hover {
+  background: var(--bleu); color: var(--or); border-color: var(--bleu);
+}
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
+}
+.cal-day-header {
+  text-align: center; font-size: .68rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--or); background: var(--bleu);
+  padding: .5rem 0; border-radius: 4px 4px 0 0;
+}
+.cal-cell {
+  min-height: 78px; background: #fff;
+  border: 1px solid var(--gris); border-radius: 5px;
+  padding: 5px; position: relative; transition: box-shadow .2s;
+  overflow: hidden;
+}
+.cal-cell.other-month { background: #f5f4f0; opacity: .45; }
+.cal-cell.today { border-color: var(--or); border-width: 2px; }
+.cal-cell.has-events { cursor: pointer; }
+.cal-cell.has-events:hover { box-shadow: 0 4px 16px rgba(10,35,66,.13); }
+.cal-cell-num {
+  font-size: .75rem; font-weight: 700; color: #aaa; margin-bottom: 3px;
+  display: inline-block;
+}
+.cal-cell.today .cal-cell-num {
+  background: var(--or); color: var(--bleu);
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .7rem;
+}
+.cal-event-dot {
+  font-size: .6rem; line-height: 1.3; padding: 1px 4px;
+  border-radius: 3px; margin-bottom: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-weight: 600; display: block;
+}
+.cat-champ   { background: #e8f0fe; color: #1a3a8a; }
+.cat-concours{ background: #e8f9ee; color: #1a6a35; }
+.cat-gp      { background: #fff8e0; color: #7a5500; }
+.cat-cdc     { background: #ffe0f0; color: #8a0050; }
+.cat-jeunes  { background: #e0f8ff; color: #005a8a; }
+.cat-veterans{ background: #f0ede8; color: #5a3a1a; }
+.cat-regional{ background: #f3e8ff; color: #5a1a8a; }
+.cal-more {
+  font-size: .6rem; color: var(--or); font-weight: 700;
+  background: rgba(201,168,76,.12); border-radius: 3px;
+  padding: 1px 4px; display: block; text-align: center; margin-top: 1px;
+}
+.cal-modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.52); z-index: 500;
+  align-items: center; justify-content: center;
+}
+.cal-modal-overlay.open { display: flex; }
+.cal-modal {
+  background: #fff; border-radius: 12px; padding: 2rem;
+  max-width: 500px; width: 92%; box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  position: relative; max-height: 82vh; overflow-y: auto;
+}
+.cal-modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none; font-size: 1.3rem;
+  cursor: pointer; color: #aaa;
+}
+.cal-modal-close:hover { color: var(--bleu); }
+.cal-modal h3 {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem;
+  color: var(--bleu); letter-spacing: 1px; margin-bottom: 1.2rem;
+}
+.cal-modal-event {
+  border-left: 4px solid var(--or); padding: .8rem 1rem;
+  margin-bottom: .8rem; background: var(--blanc); border-radius: 0 6px 6px 0;
+}
+.cal-modal-event-title { font-weight: 600; color: var(--bleu); font-size: .92rem; margin-bottom: .3rem; }
+.cal-modal-event-meta { font-size: .78rem; color: #777; display: flex; flex-wrap: wrap; gap: .4rem; margin-top:.4rem }
+.cal-modal-event-meta span { background: var(--gris); padding: 2px 7px; border-radius: 10px; }
+@media (max-width: 600px) {
+  .cal-cell { min-height: 50px; padding: 3px; }
+  .cal-event-dot { display: none; }
+  .cal-cell.has-events::after {
+    content: '●'; color: var(--or); font-size: .55rem;
+    position: absolute; bottom: 3px; right: 3px;
+  }
+  .cal-month-label { font-size: 1.1rem; min-width: 150px; }
+}
+</style>
+ 
 </style>
 </head>
 <body>
@@ -984,25 +1100,74 @@
   </div>
 </div>
 
-<!-- ── ACTUALITÉS ── -->
-<div class="actu-card featured reveal">
-  <div class="actu-card-header">
-    <span class="actu-tag">🆕 Nouveau</span>
-    <h3>Calendrier Somme 2026 – 3ème version</h3>
-  </div>
-  <div class="actu-card-body">
-    <div class="actu-date">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      À partir du 03/05/2026
+
+<!-- ── CALENDRIER INTERACTIF ── -->
+<section id="actualites">
+  <div class="container">
+    <div class="actu-header reveal">
+      <div>
+        <p class="section-label">Saison 2026</p>
+        <h2 class="section-title">Calendrier <em>officiel</em></h2>
+        <div class="divider"></div>
+        <p class="section-lead">Toutes les compétitions officielles de la Somme. Cliquez sur un jour surligné pour voir le détail.</p>
+      </div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <span style="font-size:.78rem;color:#888">Voir aussi :</span>
+        <a href="#calendrier" class="btn-primary" style="font-size:.78rem;padding:.5rem 1rem">Championnats ↓</a>
+      </div>
     </div>
-    <p>La 3ème version du calendrier officiel de la saison 2026 est disponible. Consultez les dates de toutes les compétitions départementales.</p>
-    <a href="calendrier-somme-2026-3eme-version.pdf" class="actu-link">
-      Télécharger le PDF
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+ 
+    <!-- Filtres -->
+    <div class="cal-filters reveal" style="margin-bottom:1.2rem">
+      <button class="cal-filter-btn active" data-filter="all">Tout</button>
+      <button class="cal-filter-btn" data-filter="champ">🏆 Championnats</button>
+      <button class="cal-filter-btn" data-filter="concours">🎯 Concours officiels</button>
+      <button class="cal-filter-btn" data-filter="gp">⭐ Grands Prix</button>
+      <button class="cal-filter-btn" data-filter="cdc">🏅 Champ. Clubs</button>
+      <button class="cal-filter-btn" data-filter="jeunes">👦 Jeunes</button>
+      <button class="cal-filter-btn" data-filter="veterans">🎖️ Vétérans</button>
+      <button class="cal-filter-btn" data-filter="regional">🗺️ Régional/France</button>
+    </div>
+ 
+    <!-- Navigation mois -->
+    <div class="cal-toolbar reveal">
+      <div class="cal-nav">
+        <button id="cal-prev">&#8592;</button>
+        <div class="cal-month-label" id="cal-month-label"></div>
+        <button id="cal-next">&#8594;</button>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+        <select id="cal-year-jump" style="border:1.5px solid var(--gris);border-radius:6px;padding:.35rem .7rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--bleu);cursor:pointer">
+          <option value="2026">2026</option>
+        </select>
+      </div>
+    </div>
+ 
+    <!-- Grille calendrier -->
+    <div class="cal-grid reveal" id="cal-grid"></div>
+ 
+    <!-- Légende -->
+    <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem" class="reveal">
+      <span class="cal-event-dot cat-champ" style="font-size:.72rem;padding:3px 8px">🏆 Championnat</span>
+      <span class="cal-event-dot cat-concours" style="font-size:.72rem;padding:3px 8px">🎯 Concours</span>
+      <span class="cal-event-dot cat-gp" style="font-size:.72rem;padding:3px 8px">⭐ Grand Prix</span>
+      <span class="cal-event-dot cat-cdc" style="font-size:.72rem;padding:3px 8px">🏅 Champ. Clubs</span>
+      <span class="cal-event-dot cat-jeunes" style="font-size:.72rem;padding:3px 8px">👦 Jeunes</span>
+      <span class="cal-event-dot cat-veterans" style="font-size:.72rem;padding:3px 8px">🎖️ Vétérans</span>
+      <span class="cal-event-dot cat-regional" style="font-size:.72rem;padding:3px 8px">🗺️ Régional/France</span>
+    </div>
+  </div>
+</section>
+ 
+<!-- ── MODALE ── -->
+<div class="cal-modal-overlay" id="cal-modal-overlay">
+  <div class="cal-modal">
+    <button class="cal-modal-close" id="cal-modal-close">✕</button>
+    <h3 id="cal-modal-date"></h3>
+    <div id="cal-modal-content"></div>
   </div>
 </div>
-
+ 
 <!-- ── NAVIGATION RAPIDE ── -->
 <section id="nav-rapide">
   <div class="container">
@@ -1338,6 +1503,402 @@
       ? '0 4px 30px rgba(0,0,0,0.4)'
       : 'none';
   });
+</script>
+  <script>
+(function(){
+ 
+/* ═══════════════════════════════════════════════════════
+   DONNÉES RÉELLES — Calendrier Comité de la Somme 2026
+   ═══════════════════════════════════════════════════════ */
+const EVENTS = [
+  /* ── JANVIER ── */
+  {date:'2026-01-06',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-01-13',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-01-17',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Triplette',obs:'Limité à 32 éq.'},
+  {date:'2026-01-20',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-01-27',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-01-31',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
+ 
+  /* ── FÉVRIER ── */
+  {date:'2026-02-03',titre:'ASPTT Amiens — Finale Qualificatifs 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette'},
+  {date:'2026-02-07',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité à 48 éq.'},
+  {date:'2026-02-10',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-02-14',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Triplette Mixte'},
+  {date:'2026-02-14',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Triplette'},
+  {date:'2026-02-15',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
+  {date:'2026-02-15',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-02-17',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
+  {date:'2026-02-19',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-02-21',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-02-21',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Doublette'},
+  {date:'2026-02-21',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Triplette',obs:'Limité à 32 éq.'},
+  {date:'2026-02-22',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette Mixte',obs:'Limité à 48 éq.'},
+  {date:'2026-02-26',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-02-28',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
+  {date:'2026-02-28',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Triplette Mixte'},
+ 
+  /* ── MARS ── */
+  {date:'2026-03-01',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette Féminin'},
+  {date:'2026-03-01',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-03-03',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-05',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-03-07',titre:'Concours Gamaches',type:'concours',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-07',titre:'Concours ASPTT Amiens — Challenge André Dournel',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette Mixte'},
+  {date:'2026-03-07',titre:'Coupe de France Jeu Provençal (2 tours)',type:'regional',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:''},
+  {date:'2026-03-08',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette Mixte'},
+  {date:'2026-03-08',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette Mixte',obs:'Limité à 48 éq.'},
+  {date:'2026-03-08',titre:'Coupe de France Jeu Provençal (suite)',type:'regional',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:''},
+  {date:'2026-03-10',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-12',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-03-13',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-14',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-14',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'9h00',formation:'Doublette'},
+  {date:'2026-03-14',titre:'Coupe de France (2 tours) + Coupe de la Somme',type:'regional',lieu:'Oisemont',heure:'9h30',formation:''},
+  {date:'2026-03-15',titre:'Coupe de France + Coupe Somme (suite)',type:'regional',lieu:'Oisemont',heure:'9h30',formation:''},
+  {date:'2026-03-15',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-03-17',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-19',titre:'Feuquières/Friville — Finale Qualificatifs 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'24 éq.'},
+  {date:'2026-03-20',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-21',titre:'CHPT DÉPRT — Triplette Promotion',type:'champ',lieu:'Flixecourt',heure:'10h00',formation:'Triplette Promotion',obs:'Inscriptions avant le 12/3'},
+  {date:'2026-03-22',titre:'CHPT DÉPRT — Triplette Promotion (suite)',type:'champ',lieu:'Flixecourt',heure:'9h00',formation:'Triplette Promotion'},
+  {date:'2026-03-24',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-26',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-03-27',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-03-28',titre:'CHPT DÉPRT — Tête-à-Tête Senior Masc. + Doub. Senior Fém.',type:'champ',lieu:'Flixecourt',heure:'10h00',formation:'TT / Doublette',obs:'Inscriptions avant le 19/3'},
+  {date:'2026-03-29',titre:'CHPT DÉPRT — TT Senior Masc., Doub. Fém. + TT Jeunes',type:'champ',lieu:'Flixecourt',heure:'9h00',formation:'TT / Doublette / Jeunes'},
+  {date:'2026-03-31',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
+ 
+  /* ── AVRIL ── */
+  {date:'2026-04-02',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-04-03',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-04',titre:'Concours Friville',type:'concours',lieu:'Friville',heure:'14h00',formation:'Triplette Mixte'},
+  {date:'2026-04-04',titre:'CHPT DÉPRT — Triplette Jeu Provençal',type:'champ',lieu:'Albert',heure:'8h00',formation:'Triplette JP',obs:'Inscriptions avant le 26/3'},
+  {date:'2026-04-05',titre:'Concours Gamaches',type:'concours',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-05',titre:'CHPT DÉPRT — Triplette Jeu Provençal (suite)',type:'champ',lieu:'Albert',heure:'9h00',formation:'Triplette JP'},
+  {date:'2026-04-06',titre:'Concours Fressenneville',type:'concours',lieu:'Fressenneville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-06',titre:'CHPT DÉPRT — Triplette Jeu Provençal (reprise)',type:'champ',lieu:'Albert',heure:'9h00',formation:'Triplette JP'},
+  {date:'2026-04-07',titre:'Poix — Vétérans',type:'veterans',lieu:'Poix',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-09',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+  {date:'2026-04-10',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-11',titre:'CHPT DÉPRT — Triplette Senior Masc. et Fém.',type:'champ',lieu:'Feuquières',heure:'10h00',formation:'Triplette Senior',obs:'Inscriptions avant le 2/4'},
+  {date:'2026-04-12',titre:'CHPT DÉPRT — Triplette Senior M+F, Triplette Jeunes + Tir Précision Junior',type:'champ',lieu:'Feuquières',heure:'9h00',formation:'Triplette / Jeunes'},
+  {date:'2026-04-14',titre:'Béthencourt — Vétérans',type:'veterans',lieu:'Béthencourt-sur-Mer',heure:'14h00',formation:'Triplette'},
+  {date:'2026-04-14',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-16',titre:'Gamaches — Vétérans',type:'veterans',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-17',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-18',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Triplette'},
+  {date:'2026-04-18',titre:'CHPT DÉPRT — Doublette Mixte + Stage jeunes',type:'champ',lieu:'Fienvillers-Doullens (Doullens)',heure:'10h00',formation:'Doublette Mixte',obs:'Inscriptions avant le 9/4'},
+  {date:'2026-04-19',titre:'CHPT DÉPRT — Doublette Mixte (suite)',type:'champ',lieu:'Fienvillers-Doullens',heure:'9h00',formation:'Doublette Mixte'},
+  {date:'2026-04-22',titre:'CHPT DÉPRT — Triplette Vétéran (60 ans)',type:'champ',lieu:'ASPTT Amiens',heure:'10h00',formation:'Triplette Vétéran',obs:'Inscriptions avant le 9/4'},
+  {date:'2026-04-22',titre:'CHPT DÉPRT — Triplette Vétéran (suite)',type:'champ',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette Vétéran'},
+  {date:'2026-04-24',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-25',titre:'CHPT DÉPRT — Doublette Senior Masc. + TT Senior Fém.',type:'champ',lieu:'Feuquières',heure:'10h00',formation:'Doublette / TT',obs:'Inscriptions avant le 16/4'},
+  {date:'2026-04-26',titre:'CHPT DÉPRT — Doublette Senior M., TT Senior F. + Doublette Jeunes',type:'champ',lieu:'Feuquières',heure:'9h00',formation:'Doublette / TT / Jeunes'},
+  {date:'2026-04-28',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-04-30',titre:'Feuquières — Vétérans Qualificatif',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+ 
+  /* ── MAI ── */
+  {date:'2026-05-01',titre:'Concours Chépy',type:'concours',lieu:'Chépy',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-02',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-02',titre:'CHPT DÉPRT — Triplette Mixte',type:'champ',lieu:'Gamaches',heure:'10h00',formation:'Triplette Mixte',obs:'Inscriptions avant le 23/4'},
+  {date:'2026-05-03',titre:'CHPT DÉPRT — Triplette Mixte (suite)',type:'champ',lieu:'Gamaches',heure:'9h00',formation:'Triplette Mixte'},
+  {date:'2026-05-05',titre:'Trophée Tête-à-Tête Vétéran (60 ans)',type:'veterans',lieu:'Feuquières',heure:'9h00',formation:'Tête-à-Tête',obs:'Sur place'},
+  {date:'2026-05-07',titre:'Feuquières — Finale Qualificatifs Vétérans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'24 éq.'},
+  {date:'2026-05-08',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-08',titre:'CHPT DÉPRT — Doublette Jeu Provençal',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'8h00',formation:'Doublette JP',obs:'Inscriptions avant le 31/4'},
+  {date:'2026-05-09',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-09',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Doublette Mixte'},
+  {date:'2026-05-09',titre:'CHPT DÉPRT — Doublette Jeu Provençal (suite)',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:'Doublette JP'},
+  {date:'2026-05-10',titre:'CHPT DÉPRT — Doublette Jeu Provençal (reprise)',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:'Doublette JP'},
+  {date:'2026-05-12',titre:'Friville — Vétérans',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-12',titre:'Poix — Vétérans',type:'veterans',lieu:'Poix',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-14',titre:'9ème Grand Prix de la Ville d\'Oisemont — Triplettes',type:'gp',lieu:'Oisemont',heure:'10h00',formation:'Triplette',obs:'18€/éq. Limité à 80 trip. Sur courrier avant le 8/5'},
+  {date:'2026-05-14',titre:'CHPT RÉGIONAL Hauts-de-France — Triplette M+F',type:'regional',lieu:'Burbure (62)',heure:'9h00',formation:'Triplette'},
+  {date:'2026-05-14',titre:'CHPT RÉGIONAL HdF — Triplette Jeunes + Tir Précision J',type:'regional',lieu:'St Just-en-Chaussée (60)',heure:'9h30',formation:'Triplette Jeunes'},
+  {date:'2026-05-15',titre:'Oisemont — Doublette Mixte',type:'concours',lieu:'Oisemont',heure:'14h00',formation:'Doublette Mixte'},
+  {date:'2026-05-15',titre:'CHPT RÉGIONAL HdF — Triplette Vétéran',type:'regional',lieu:'St Just-en-Chaussée (60)',heure:'9h00',formation:'Triplette Vétéran'},
+  {date:'2026-05-15',titre:'Grand Prix de Bourdon 60 ans — Triplette',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette Vétéran',obs:'15€/éq. + 500€. Sur courrier'},
+  {date:'2026-05-16',titre:'6ème Grand Prix de Bourdon — Triplette',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette',obs:'12€/éq. + 500€. Sur courrier'},
+  {date:'2026-05-16',titre:'CHPT RÉGIONAL HdF — Doublette Mixte',type:'regional',lieu:'Pernois (80)',heure:'9h00',formation:'Doublette Mixte'},
+  {date:'2026-05-17',titre:'3ème Grand Prix de Bourdon — Triplette Mixte',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette Mixte',obs:'12€/éq. + 500€. Sur courrier'},
+  {date:'2026-05-17',titre:'CHPT RÉGIONAL HdF — Triplette Mixte',type:'regional',lieu:'Pernois (80)',heure:'9h00',formation:'Triplette Mixte'},
+  {date:'2026-05-19',titre:'Trophée Doublette Vétéran (60 ans)',type:'veterans',lieu:'Boves',heure:'9h00',formation:'Doublette',obs:'Sur place'},
+  {date:'2026-05-22',titre:'Friville — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-23',titre:'Grand Prix de Péronne — Doublette',type:'gp',lieu:'Péronne (Parc des Expositions)',heure:'9h00',formation:'Doublette',obs:'Mises + 500€. Par poules.'},
+  {date:'2026-05-23',titre:'CHPT RÉGIONAL HdF — Triplette Promotion',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Triplette Promotion'},
+  {date:'2026-05-24',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-24',titre:'CHPT RÉGIONAL HdF — Doublette Masc. + TT Fém.',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Doublette / TT'},
+  {date:'2026-05-25',titre:'Oisemont — Souvenir M. Gibergues',type:'concours',lieu:'Oisemont',heure:'10h00',formation:'Doublette'},
+  {date:'2026-05-25',titre:'CHPT RÉGIONAL HdF — TT Masc.',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Tête-à-Tête'},
+  {date:'2026-05-26',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-27',titre:'Longpré — Vétérans',type:'veterans',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-29',titre:'Friville — Vétérans Finale Qualificatif (Mêlée)',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-29',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'19h00',formation:'Doublette',obs:'Semi-nocturne'},
+  {date:'2026-05-30',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-30',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-05-30',titre:'CHPT RÉGIONAL HdF — Trip. Jeu Provençal',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Triplette JP'},
+  {date:'2026-05-31',titre:'CHPT RÉGIONAL HdF — Trip. Jeu Provençal (suite)',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Triplette JP'},
+ 
+  /* ── JUIN ── */
+  {date:'2026-06-02',titre:'Trophée Triplette Mixte Vétéran (60 ans)',type:'veterans',lieu:'Béthencourt-sur-Mer',heure:'9h00',formation:'Triplette Mixte',obs:'Sur place'},
+  {date:'2026-06-03',titre:'Friville — Vétérans',type:'veterans',lieu:'Friville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-06',titre:'Grand Prix d\'Abbeville — Triplette',type:'gp',lieu:'Abbeville',heure:'14h00',formation:'Triplette',obs:'15€/éq. Limité 72 éq. Sur courrier'},
+  {date:'2026-06-07',titre:'CHPT RÉGIONAL HdF — Doublette JP',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Doublette JP'},
+  {date:'2026-06-08',titre:'CHPT RÉGIONAL HdF — Doublette JP (suite)',type:'regional',lieu:'Gauchy (02)',heure:'9h00',formation:'Doublette JP'},
+  {date:'2026-06-09',titre:'Poix — Vétérans',type:'veterans',lieu:'Poix',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-11',titre:'Gamaches — Vétérans',type:'veterans',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-13',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-13',titre:'Concours Péronne',type:'concours',lieu:'Péronne',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-16',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-18',titre:'Roye — Vétérans',type:'veterans',lieu:'Roye',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-19',titre:'Concours Friville',type:'concours',lieu:'Friville',heure:'19h00',formation:'Triplette',obs:'Semi-nocturne'},
+  {date:'2026-06-19',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Triplette'},
+  {date:'2026-06-20',titre:'CHPT DE FRANCE — Triplette Masc. et Fém.',type:'regional',lieu:'Sin-le-Noble (59)',heure:'',formation:'Triplette'},
+  {date:'2026-06-20',titre:'Concours Bouvaincourt',type:'concours',lieu:'Bouvaincourt',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-20',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'9h00',formation:'Triplette'},
+  {date:'2026-06-20',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-21',titre:'CHPT DE FRANCE — Triplette Masc. et Fém. (suite)',type:'regional',lieu:'Sin-le-Noble (59)',heure:'',formation:'Triplette'},
+  {date:'2026-06-21',titre:'Concours Béthencourt',type:'concours',lieu:'Béthencourt',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-23',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-24',titre:'Longpré — Vétérans',type:'veterans',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-26',titre:'Mers-les-Bains — Vétérans',type:'veterans',lieu:'Mers-les-Bains',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-26',titre:'Pernois — Vétérans Challenge',type:'veterans',lieu:'Pernois',heure:'9h00',formation:'Triplette'},
+  {date:'2026-06-27',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-27',titre:'Concours Pernois Challenge',type:'concours',lieu:'Pernois',heure:'9h00',formation:'Triplette'},
+  {date:'2026-06-27',titre:'CHPT DE FRANCE — Doublette Mixte',type:'regional',lieu:'Ajaccio (2A)',heure:'',formation:'Doublette Mixte'},
+  {date:'2026-06-28',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Triplette Mixte'},
+  {date:'2026-06-28',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
+  {date:'2026-06-28',titre:'CHPT DE FRANCE — Doublette Mixte (suite)',type:'regional',lieu:'Ajaccio (2A)',heure:'',formation:'Doublette Mixte'},
+  {date:'2026-06-30',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+ 
+  /* ── JUILLET ── */
+  {date:'2026-07-03',titre:'CHPT DE FRANCE — Triplette Jeu Provençal',type:'regional',lieu:'Blaye-les-Mines (81)',heure:'',formation:'Triplette JP'},
+  {date:'2026-07-04',titre:'Concours Mers-les-Bains Challenge',type:'concours',lieu:'Mers-les-Bains',heure:'9h00',formation:'Triplette',obs:'Propagande'},
+  {date:'2026-07-04',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'19h00',formation:'Doublette',obs:'Semi-nocturne'},
+  {date:'2026-07-04',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-07-05',titre:'Concours Oisemont',type:'concours',lieu:'Oisemont',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-07-05',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Triplette',obs:'Propagande 4 parties'},
+  {date:'2026-07-07',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
+  {date:'2026-07-11',titre:'Grand Prix de Bouvaincourt — Triplette',type:'gp',lieu:'Bouvaincourt',heure:'9h30',formation:'Triplette',obs:'Mises + 500€. Limité 64 éq. Sur courrier'},
+  {date:'2026-07-11',titre:'CHPT DE FRANCE — Triplette Jeunes',type:'regional',lieu:'Blaye-les-Mines (81)',heure:'',formation:'Triplette Jeunes'},
+  {date:'2026-07-12',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-07-12',titre:'Concours Fienvillers-Doullens',type:'concours',lieu:'Doullens',heure:'14h00',formation:'Triplette'},
+  {date:'2026-07-14',titre:'Grand Prix de Gamaches — Triplette',type:'gp',lieu:'Gamaches',heure:'9h00',formation:'Triplette',obs:'15€/éq. + 500€. Limité 80 trip. Sur courrier avant le 30/6'},
+  {date:'2026-07-18',titre:'CHPT DÉPRT — Clubs Jeu Provençal (J1)',type:'cdc',lieu:'Nesle et …',heure:'',formation:'Jeu Provençal'},
+  {date:'2026-07-18',titre:'CHPT DE FRANCE — Triplette Mixte',type:'regional',lieu:'Nice (06)',heure:'',formation:'Triplette Mixte'},
+  {date:'2026-07-19',titre:'CHPT DÉPRT — Clubs Jeu Provençal (suite)',type:'cdc',lieu:'Nesle et …',heure:'',formation:'Jeu Provençal'},
+  {date:'2026-07-21',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-07-25',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-07-25',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-07-25',titre:'CHPT DE FRANCE — TT Masc. + Doublette Fém.',type:'regional',lieu:'Bergerac (24)',heure:'',formation:'TT / Doublette'},
+  {date:'2026-07-26',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
+  {date:'2026-07-26',titre:'CHPT DE FRANCE — TT Masc. + Doublette Fém. (suite)',type:'regional',lieu:'Bergerac (24)',heure:'',formation:'TT / Doublette'},
+ 
+  /* ── AOÛT ── */
+  {date:'2026-08-01',titre:'Concours Chépy',type:'concours',lieu:'Chépy',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-01',titre:'Concours Pernois',type:'concours',lieu:'Pernois',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
+  {date:'2026-08-02',titre:'Concours Ault',type:'concours',lieu:'Ault',heure:'14h00',formation:'Triplette',obs:'Propagande'},
+  {date:'2026-08-02',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-04',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-08-08',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-08',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
+  {date:'2026-08-09',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-15',titre:'Concours Bouvaincourt',type:'concours',lieu:'Bouvaincourt',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-19',titre:'CHPT DE FRANCE — Triplette Vétéran',type:'regional',lieu:'Saint-Yriex (16)',heure:'',formation:'Triplette Vétéran'},
+  {date:'2026-08-22',titre:'Concours Oisemont',type:'concours',lieu:'Oisemont',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-22',titre:'Concours Pernois',type:'concours',lieu:'Pernois',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
+  {date:'2026-08-22',titre:'Concours Péronne',type:'concours',lieu:'Péronne',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-22',titre:'CHPT DE FRANCE — Triplette Promotion',type:'regional',lieu:'Saint-Yriex (16)',heure:'',formation:'Triplette Promotion'},
+  {date:'2026-08-23',titre:'Concours Béthencourt',type:'concours',lieu:'Béthencourt',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-23',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
+  {date:'2026-08-23',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-25',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-08-29',titre:'Concours Mers-les-Bains',type:'concours',lieu:'Mers-les-Bains',heure:'14h00',formation:'Triplette Mixte',obs:'Propagande'},
+  {date:'2026-08-29',titre:'Concours Dreuil',type:'concours',lieu:'Dreuil',heure:'14h00',formation:'Doublette',obs:'Propagande 4 parties'},
+  {date:'2026-08-29',titre:'CHPT DE FRANCE — Doublette Masc. + TT Fém.',type:'regional',lieu:'Saint-Florentin (89)',heure:'',formation:'Doublette / TT'},
+  {date:'2026-08-30',titre:'Concours Bouvaincourt',type:'concours',lieu:'Bouvaincourt',heure:'14h00',formation:'Doublette',obs:'Propagande'},
+  {date:'2026-08-30',titre:'CHPT DE FRANCE — Doublette Masc. + TT Fém. (suite)',type:'regional',lieu:'Saint-Florentin (89)',heure:'',formation:'Doublette / TT'},
+ 
+  /* ── SEPTEMBRE ── */
+  {date:'2026-09-01',titre:'CDC Vétéran — 1ère Journée',type:'veterans',lieu:'Nesle et Béthencourt',heure:'',formation:'CDC Vétéran'},
+  {date:'2026-09-05',titre:'CHPT DÉPRT — Clubs (Poix et Bouvaincourt)',type:'cdc',lieu:'Poix / Bouvaincourt',heure:'',formation:'Championnat des Clubs'},
+  {date:'2026-09-05',titre:'NATIONAL JEUNES — Triplette (1er jour)',type:'jeunes',lieu:'Montdidier',heure:'',formation:'Triplette J C M'},
+  {date:'2026-09-06',titre:'Concours Boves',type:'concours',lieu:'Boves',heure:'14h00',formation:'Doublette'},
+  {date:'2026-09-06',titre:'CHPT DÉPRT — Clubs Jeu Provençal',type:'cdc',lieu:'À déterminer',heure:'',formation:'Jeu Provençal'},
+  {date:'2026-09-06',titre:'NATIONAL JEUNES — Triplette (2ème jour)',type:'jeunes',lieu:'Montdidier',heure:'',formation:'Triplette J C M'},
+  {date:'2026-09-06',titre:'Détection départementale Jeunes',type:'jeunes',lieu:'À déterminer',heure:'',formation:'J C M'},
+  {date:'2026-09-08',titre:'CDC Vétéran — 2ème Journée',type:'veterans',lieu:'Roye et Friville',heure:'',formation:'CDC Vétéran'},
+  {date:'2026-09-12',titre:'14ème Grand Prix de Friville — Triplette',type:'gp',lieu:'Friville',heure:'9h15',formation:'Triplette',obs:'12€/éq. + 500€. Sur courrier. Concours B à 15h00'},
+  {date:'2026-09-13',titre:'Concours Fienvillers-Doullens',type:'concours',lieu:'Doullens',heure:'9h00',formation:'Doublette'},
+  {date:'2026-09-15',titre:'CDC Vétéran — 3ème Journée',type:'veterans',lieu:'ASPTT et Friville',heure:'',formation:'CDC Vétéran'},
+  {date:'2026-09-19',titre:'Grand Prix de la Ville d\'Albert — Doublette',type:'gp',lieu:'Albert (Esplanade du Solidaire)',heure:'14h00',formation:'Doublette',obs:'10€/éq. + 500€. Inscriptions sur place jusqu\'à 13h45'},
+  {date:'2026-09-20',titre:'CHPT DÉPRT — Clubs Jeu Provençal',type:'cdc',lieu:'Nesle',heure:'',formation:'Jeu Provençal'},
+  {date:'2026-09-22',titre:'Finale CDC Vétéran',type:'veterans',lieu:'Béthencourt',heure:'',formation:'CDC Vétéran'},
+  {date:'2026-09-25',titre:'Grand Prix ASPTT Amiens 60 ans — Doublette',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Doublette 60 ans',obs:'10€/éq. + 1000€. Limité 128 éq. Inscriptions en ligne'},
+  {date:'2026-09-26',titre:'Grand Prix Régional d\'Amiens — Triplette Mixte',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Triplette Mixte',obs:'15€/éq. + 2000€. Limité 128 éq. Inscriptions en ligne'},
+  {date:'2026-09-27',titre:'Grand Prix de l\'ASPTT Amiens — Doublette',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Doublette',obs:'10€/éq. + 1000€. Limité 128 éq. Inscriptions en ligne'},
+  {date:'2026-09-04',titre:'Mers-les-Bains — Vétérans',type:'veterans',lieu:'Mers-les-Bains',heure:'14h00',formation:'Doublette'},
+  {date:'2026-09-10',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
+  {date:'2026-09-16',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité 48 éq.'},
+  {date:'2026-09-17',titre:'Gamaches — Vétérans',type:'veterans',lieu:'Gamaches',heure:'14h00',formation:'Doublette'},
+  {date:'2026-09-23',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
+  {date:'2026-09-24',titre:'Ault — Vétérans Qualificatif (Mêlée)',type:'veterans',lieu:'Ault',heure:'14h00',formation:'Doublette'},
+  {date:'2026-09-04',titre:'CHPT DE FRANCE — Doublette JP',type:'regional',lieu:'Briançon (05)',heure:'',formation:'Doublette JP'},
+ 
+  /* ── OCTOBRE ── */
+  {date:'2026-10-03',titre:'CHPT DÉPRT — Clubs Open et Féminin (J1)',type:'cdc',lieu:'Feuquières et Dreuil',heure:'',formation:'Open / Féminin'},
+  {date:'2026-10-06',titre:'Boves — Vétérans',type:'veterans',lieu:'Boves',heure:'14h00',formation:'Doublette'},
+  {date:'2026-10-10',titre:'Concours Abbeville (Qualificatif)',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Qualificatif'},
+  {date:'2026-10-13',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-10-17',titre:'CHPT DÉPRT — Clubs Open et Féminin (J2)',type:'cdc',lieu:'ASPTT et Ault/Béthencourt',heure:'',formation:'Open / Féminin'},
+  {date:'2026-10-20',titre:'ASPTT Amiens — Vétérans Triplette Mixte',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette Mixte'},
+  {date:'2026-10-24',titre:'Concours Abbeville (Qualificatif)',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Qualificatif'},
+  {date:'2026-10-25',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-10-25',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-10-31',titre:'Concours Dargnies',type:'concours',lieu:'Dargnies',heure:'14h00',formation:'Doublette Mixte'},
+ 
+  /* ── NOVEMBRE ── */
+  {date:'2026-11-01',titre:'Concours Friville',type:'concours',lieu:'Friville',heure:'14h00',formation:'Triplette'},
+  {date:'2026-11-03',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette'},
+  {date:'2026-11-07',titre:'FINALES CHPT DÉPRT — Clubs Open et Féminin',type:'cdc',lieu:'Abbeville',heure:'',formation:'Open / Féminin'},
+  {date:'2026-11-10',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-11-11',titre:'Concours Gamaches',type:'concours',lieu:'Gamaches',heure:'14h00',formation:'Triplette'},
+  {date:'2026-11-14',titre:'Concours Abbeville (Qualificatif)',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Qualificatif'},
+  {date:'2026-11-14',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-11-15',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-11-21',titre:'ASSEMBLÉE DU COMITÉ',type:'champ',lieu:'Amiens',heure:'10h00',formation:'',obs:'Assemblée générale annuelle'},
+  {date:'2026-11-22',titre:'Concours Abbeville — Finale des Qualificatifs',type:'concours',lieu:'Abbeville',heure:'9h00',formation:'Triplette',obs:'Finale'},
+  {date:'2026-11-24',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
+  {date:'2026-11-28',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-11-29',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+ 
+  /* ── DÉCEMBRE ── */
+  {date:'2026-12-03',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
+  {date:'2026-12-04',titre:'Ault — Vétérans Finale Qualificatif (Mêlée)',type:'veterans',lieu:'Ault',heure:'14h00',formation:'Doublette',obs:'Finale'},
+  {date:'2026-12-05',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
+  {date:'2026-12-05',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-12-06',titre:'Concours Feuquières (Qualificatif)',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-12-08',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+  {date:'2026-12-10',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité 48 éq.'},
+  {date:'2026-12-12',titre:'Concours ASPTT Amiens (Qualificatif)',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Qualificatif. 48 éq.'},
+  {date:'2026-12-13',titre:'Concours Feuquières — FINALE',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'9h00',formation:'Triplette',obs:'Finale. 24 éq.'},
+  {date:'2026-12-15',titre:'ASPTT Amiens — Vétérans Triplette Mixte',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette Mixte'},
+  {date:'2026-12-17',titre:'Feuquières — Vétérans',type:'veterans',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité 48 éq.'},
+  {date:'2026-12-19',titre:'ASPTT Amiens — Finale des Qualificatifs',type:'concours',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Finale'},
+];
+ 
+const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin',
+              'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const JOURS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const TYPE_CLASS = {champ:'cat-champ',concours:'cat-concours',gp:'cat-gp',
+                    cdc:'cat-cdc',jeunes:'cat-jeunes',veterans:'cat-veterans',regional:'cat-regional'};
+const TYPE_LABEL = {champ:'🏆 Championnat',concours:'🎯 Concours',gp:'⭐ Grand Prix',
+                    cdc:'🏅 Champ. Clubs',jeunes:'👦 Jeunes',veterans:'🎖️ Vétérans',regional:'🗺️ Régional/France'};
+ 
+let year=2026, month=4, activeFilter='all';
+const today = new Date();
+ 
+function eventsFor(dateStr){
+  return EVENTS.filter(e=>e.date===dateStr &&
+    (activeFilter==='all'||e.type===activeFilter));
+}
+ 
+function renderCalendar(){
+  const label = document.getElementById('cal-month-label');
+  label.textContent = MOIS[month]+' '+year;
+ 
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+ 
+  JOURS.forEach(j=>{
+    const h=document.createElement('div');
+    h.className='cal-day-header'; h.textContent=j; grid.appendChild(h);
+  });
+ 
+  const first = new Date(year,month,1);
+  let dow = first.getDay(); // 0=dim
+  dow = dow===0?6:dow-1;   // lundi=0
+ 
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  const prevDays    = new Date(year,month,0).getDate();
+ 
+  for(let i=0;i<dow;i++){
+    const c=document.createElement('div');
+    c.className='cal-cell other-month';
+    c.innerHTML=`<span class="cal-cell-num">${prevDays-dow+1+i}</span>`;
+    grid.appendChild(c);
+  }
+ 
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evs=eventsFor(ds);
+    const isToday=(today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d);
+    const c=document.createElement('div');
+    c.className='cal-cell'+(isToday?' today':'')+(evs.length?' has-events':'');
+    let html=`<span class="cal-cell-num">${d}</span>`;
+    const show=evs.slice(0,2);
+    show.forEach(e=>{
+      html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">${e.titre}</span>`;
+    });
+    if(evs.length>2) html+=`<span class="cal-more">+${evs.length-2} autres</span>`;
+    c.innerHTML=html;
+    if(evs.length) c.addEventListener('click',()=>openModal(ds,evs));
+    grid.appendChild(c);
+  }
+ 
+  const total=dow+daysInMonth;
+  const trailing=total%7===0?0:7-(total%7);
+  for(let i=1;i<=trailing;i++){
+    const c=document.createElement('div');
+    c.className='cal-cell other-month';
+    c.innerHTML=`<span class="cal-cell-num">${i}</span>`;
+    grid.appendChild(c);
+  }
+}
+ 
+function openModal(ds,evs){
+  const [y,m,d]=ds.split('-');
+  const dateLabel = parseInt(d)+' '+MOIS[parseInt(m)-1]+' '+y;
+  document.getElementById('cal-modal-date').textContent=dateLabel;
+  const cont=document.getElementById('cal-modal-content');
+  cont.innerHTML=evs.map(e=>`
+    <div class="cal-modal-event">
+      <div class="cal-modal-event-title">${e.titre}</div>
+      <div class="cal-modal-event-meta">
+        ${e.lieu?`<span>📍 ${e.lieu}</span>`:''}
+        ${e.heure?`<span>⏰ ${e.heure}</span>`:''}
+        ${e.formation?`<span>👥 ${e.formation}</span>`:''}
+        <span class="${TYPE_CLASS[e.type]||'cat-concours'}" style="padding:2px 7px;border-radius:10px">${TYPE_LABEL[e.type]||e.type}</span>
+        ${e.obs?`<span style="font-style:italic">ℹ️ ${e.obs}</span>`:''}
+      </div>
+    </div>`).join('');
+  document.getElementById('cal-modal-overlay').classList.add('open');
+}
+ 
+document.getElementById('cal-prev').addEventListener('click',()=>{
+  month--; if(month<0){month=11;year--;} renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click',()=>{
+  month++; if(month>11){month=0;year++;} renderCalendar();
+});
+document.getElementById('cal-modal-close').addEventListener('click',()=>{
+  document.getElementById('cal-modal-overlay').classList.remove('open');
+});
+document.getElementById('cal-modal-overlay').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+ 
+document.querySelectorAll('.cal-filter-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.cal-filter-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    activeFilter=this.dataset.filter;
+    renderCalendar();
+  });
+});
+ 
+renderCalendar();
+})();
 </script>
 </body>
 </html>
