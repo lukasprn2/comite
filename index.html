@@ -1041,9 +1041,10 @@
         <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a>
       </div>
     </li>
-    <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/a/" target="_blank">Clubs</a></li>
+     <a href="#clubs-section" class="nr-card reveal"><div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div><h4>Les Clubs</h4><small>Liste et informations</small></div></a>
+
     <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact">Contacts</a></li>
     <li>
       <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="nav-cta">📅 Calendrier 2026</a>
     </li>
@@ -1268,6 +1269,415 @@
       </a>
 
     </div>
+  </div>
+</section>
+<!-- SECTION CLUBS -->
+<section id="clubs-section">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Département 80</p>
+      <h2 class="section-title">Les <em>Clubs</em> de la Somme</h2>
+      <div class="divider"></div>
+      <p style="color:#555;font-size:0.95rem;max-width:600px;margin-bottom:1.5rem">33 clubs affiliés répartis en trois secteurs géographiques. Retrouvez les coordonnées et informations de chaque club.</p>
+    </div>
+
+    <div class="clubs-search-bar reveal">
+      <span class="clubs-search-icon">🔍</span>
+      <input type="text" id="clubs-search" placeholder="Rechercher un club, une ville, un président…" oninput="filterClubs()">
+    </div>
+
+    <div class="secteur-tabs reveal">
+      <button class="secteur-tab active" data-secteur="all" onclick="filterSecteur(this,'all')">Tous les clubs (33)</button>
+      <button class="secteur-tab" data-secteur="centre" onclick="filterSecteur(this,'centre')">🏙️ Secteur Centre (16)</button>
+      <button class="secteur-tab" data-secteur="maritime" onclick="filterSecteur(this,'maritime')">⚓ Secteur Maritime (11)</button>
+      <button class="secteur-tab" data-secteur="santerre" onclick="filterSecteur(this,'santerre')">🌾 Secteur Santerre (6)</button>
+    </div>
+
+    <p class="clubs-count" id="clubs-count">33 clubs affichés</p>
+
+    <!-- SECTEUR CENTRE -->
+    <div class="secteur-block" id="bloc-centre">
+      <div class="secteur-title">🏙️ Secteur Centre</div>
+      <div class="clubs-grid">
+
+        <div class="club-card" data-secteur="centre" data-search="0009 amiens asptt asptt amiens dany tonneau">
+          <div class="club-card-header"><span class="club-num">0009</span><div><h3>AMIENS<span class="club-nom-assoc">ASPTT Amiens</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Dany TONNEAU</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>11/833 Rue Philippe de Commynes, 80000 Amiens</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 81 24 53 28</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">dany-tonneau@wanadoo.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>400 rue Colbert</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0022 bourdon la petanque bourdonnaise ophélie nathene flixecourt">
+          <div class="club-card-header"><span class="club-num">0022</span><div><h3>BOURDON<span class="club-nom-assoc">La Pétanque Bourdonnaise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Ophélie NATHENE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>15 Rue Victor Hugo, 80420 Flixecourt</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 24 49 54 42</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanquebourdonnaise@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue du Marais</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0031 boves petanque boves emmanuel langlois">
+          <div class="club-card-header"><span class="club-num">0031</span><div><h3>BOVES<span class="club-nom-assoc">Pétanque Boves</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Emmanuel LANGLOIS</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>4 Impasse des 4 Vents, 80440 Boves</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 24 43 12 84</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">emmanuellanglois80@icloud.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue du Stade</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0014 cagny cagny petanque jean-bernard pohier amiens">
+          <div class="club-card-header"><span class="club-num">0014</span><div><h3>CAGNY<span class="club-nom-assoc">Cagny Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jean-Bernard POHIER</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>13 Rue Vion, 80090 Amiens</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 37 48 12 88</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">jeanbernard.pohier80@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Chemin de l'Épinette</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0003 camon camon petanque mickaël malherbe bernaville">
+          <div class="club-card-header"><span class="club-num">0003</span><div><h3>CAMON<span class="club-nom-assoc">Camon Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Mickaël MALHERBE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>18 Rue René Delcourt, 80370 Bernaville</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 66 74 14 59</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">club.camon.petanque@laposte.net</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>À Bourdon</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0006 corbie corbie petanque maryse mallet rosières en santerre">
+          <div class="club-card-header"><span class="club-num">0006</span><div><h3>CORBIE<span class="club-nom-assoc">Corbie Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Maryse MALLET</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>3 Passage de l'Ancienne Cité, 80170 Rosières-en-Santerre</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 84 48 60 84</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">founou80@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Place de la République (sous le porche)</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0016 dreuil dreuil sport petanque jean-marie legenne amiens">
+          <div class="club-card-header"><span class="club-num">0016</span><div><h3>DREUIL<span class="club-nom-assoc">Dreuil Sport Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jean-Marie LEGENNE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>9 Rue de Lorraine, 80000 Amiens</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 52 01 47 23</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">dreuilsportpetanque@yahoo.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Route d'Argœuves</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0032 fienvillers doullens club de petanque fienvillers doullens jonathan de horta">
+          <div class="club-card-header"><span class="club-num">0032</span><div><h3>FIENVILLERS-DOULLENS<span class="club-nom-assoc">Club de Pétanque Fienvillers Doullens</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jonathan DE HORTA</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>36 Rue de Candas, 80750 Fienvillers</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 27 24 48 79</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">cpfienvilloise@outlook.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>1 Rue de Bernaville, Fienvillers / Stade de rugby Doullens</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0017 flixecourt petanque flixecourtoise philippe daussy vauchelles les domart">
+          <div class="club-card-header"><span class="club-num">0017</span><div><h3>FLIXECOURT<span class="club-nom-assoc">Pétanque Flixecourtoise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Philippe DAUSSY</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>1 Rue de Brucamps, 80620 Vauchelles-lès-Domart</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 70 47 24 68</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bibidaussy@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Complexe sportif Rue Philippe Ermenault</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0010 longueau etoile sportive cheminots longueau philippe chambelland">
+          <div class="club-card-header"><span class="club-num">0010</span><div><h3>LONGUEAU<span class="club-nom-assoc">Étoile Sportive des Cheminots de Longueau</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Philippe CHAMBELLAND</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>6 Rue Laurent Catelas, 80330 Longueau</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 28 17 15 74</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">longueau.petanque@laposte.net</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade Émile Noël</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0037 pernois pernois petanque ludovic grare halloy les pernois">
+          <div class="club-card-header"><span class="club-num">0037</span><div><h3>PERNOIS<span class="club-nom-assoc">Pernois Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Ludovic GRARE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>3 Bis Rue Gaillarde, 80670 Halloy-lès-Pernois</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 03 47 13 64</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">pernoispetanque@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Ruelle du Marais</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0018 poix poix sport petanque cendrine jouniaux">
+          <div class="club-card-header"><span class="club-num">0018</span><div><h3>POIX<span class="club-nom-assoc">Poix Sport Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Cendrine JOUNIAUX</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>13 Rue du Docteur Barbier, 80290 Poix</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>03 22 90 15 90 / 06 18 36 80 53</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">dometmarie.mathieu@orange.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade municipal</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0054 saint ouen la petanque saint ouennaise nicolas leroy">
+          <div class="club-card-header"><span class="club-num">0054</span><div><h3>SAINT-OUEN<span class="club-nom-assoc">La Pétanque Saint Ouennaise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Nicolas LEROY</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>59 Rue Pasteur, 80610 Saint-Ouen</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 78 08 42 03</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">saint-ouen.petanque@outlook.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Place Léon Bacquet</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="centre" data-search="0036 villers bretonneux la petanque bretonvilloise alexandre chirache">
+          <div class="club-card-header"><span class="club-num">0036</span><div><h3>VILLERS-BRETONNEUX<span class="club-nom-assoc">La Pétanque Bretonvilloise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Alexandre CHIRACHE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>38 Route d'Amiens, 80800 Villers-Bretonneux</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 45 32 43 73</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">lapetanquebretonvilloise@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue de la République</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTEUR MARITIME -->
+    <div class="secteur-block" id="bloc-maritime">
+      <div class="secteur-title">⚓ Secteur Maritime</div>
+      <div class="clubs-grid">
+
+        <div class="club-card" data-secteur="maritime" data-search="0056 abbeville petanque abbevilloise johnny pade">
+          <div class="club-card-header"><span class="club-num">0056</span><div><h3>ABBEVILLE<span class="club-nom-assoc">Pétanque Abbevilloise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Johnny PADE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>21 Rue des Acacias, 80100 Abbeville</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 35 35 18 43</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">padejohnny@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Espace Saint Gilles, Rue de la Caserne</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0011 ault petanque aultoise tony bellart friville escarbotin">
+          <div class="club-card-header"><span class="club-num">0011</span><div><h3>AULT<span class="club-nom-assoc">Pétanque Aultoise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Tony BELLART</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>14 Rue Camille Saint-Saëns, 80130 Friville-Escarbotin</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 60 54 86 40</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bellart.tony@orange.fr</span></div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0008 bethencourt sur mer union bouliste bethencourtoise pascal durot tully">
+          <div class="club-card-header"><span class="club-num">0008</span><div><h3>BÉTHENCOURT-SUR-MER<span class="club-nom-assoc">Union Bouliste Bethencourtoise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Pascal DUROT</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>32 Rue Jean Catelas, 80130 Tully</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 50 40 40 38</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">pdurot@orange.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Route de Gamaches</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0051 bouvaincourt sur bresle petanque club bouvaincourt marc hedouin oust marest">
+          <div class="club-card-header"><span class="club-num">0051</span><div><h3>BOUVAINCOURT-SUR-BRESLE<span class="club-nom-assoc">Pétanque Club Bouvaincourt s/Bresle</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Marc HEDOUIN</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>23 Lot les Cytises, 80460 Oust-Marest</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 08 43 52 40</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">mmf.hedouin@orange.fr</span></div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0034 chepy union bouliste chepoise déborah portebois">
+          <div class="club-card-header"><span class="club-num">0034</span><div><h3>CHÉPY<span class="club-nom-assoc">Union Bouliste Chépoise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Déborah PORTEBOIS</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>37 Allée des Jonquilles, 80210 Chépy</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 71 56 33 01</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">union-bouliste-chepoise@outlook.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Place d'Émonville</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0039 dargnies association boulistes dargniesiens loïc paradis">
+          <div class="club-card-header"><span class="club-num">0039</span><div><h3>DARGNIES<span class="club-nom-assoc">Association des Boulistes Dargniesiens</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Loïc PARADIS</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>4 Rue Jean Jaurès, 80570 Dargnies</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 37 18 61 97</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanque.dargniesienne@laposte.net</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue Pierre de Coubertin</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0021 feuquieres union bouliste feuquieroise kévin evenou yzengremer">
+          <div class="club-card-header"><span class="club-num">0021</span><div><h3>FEUQUIÈRES<span class="club-nom-assoc">Union Bouliste Feuquièroise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Kévin EVENOU</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>30 Rue de la République, 80520 Yzengremer</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 43 31 57 43</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">polipro@yahoo.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Impasse Jules Verne</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0025 fressenneville fressenneville petanque club aurélien jacques">
+          <div class="club-card-header"><span class="club-num">0025</span><div><h3>FRESSENNEVILLE<span class="club-nom-assoc">Fressenneville Pétanque Club</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Aurélien JACQUES</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>46 bis Rue Robert et Geneviève Gabart, 80390 Fressenneville</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 27 95 07 86</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanque80@live.fr</span></div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0004 friville les amis de la petanque friville bertrand chivot feuquieres">
+          <div class="club-card-header"><span class="club-num">0004</span><div><h3>FRIVILLE<span class="club-nom-assoc">Les Amis de la Pétanque Friville</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Bertrand CHIVOT</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>17 Rue Pasteur, 80210 Feuquières</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 11 51 38 14</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bertrandchivot@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue du 11 Novembre</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0005 gamaches as petanque gamachoise frédéric duchesne bazinval">
+          <div class="club-card-header"><span class="club-num">0005</span><div><h3>GAMACHES<span class="club-nom-assoc">AS Pétanque Gamachoise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Frédéric DUCHESNE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>30 Rue du Saulx, 76340 Bazinval</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 13 46 65 81</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">frederic_duchesne@orange.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Près du stade municipal</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0020 longpre les corps saints petanque club longpre jérôme bellancourt">
+          <div class="club-card-header"><span class="club-num">0020</span><div><h3>LONGPRÉ-LES-CORPS-SAINTS<span class="club-nom-assoc">Pétanque Club Longpré</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Jérôme BELLANCOURT</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>17 Rue de la République, 80510 Longpré-les-Corps-Saints</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 17 18 25 61</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">ghislaine.bellancourt@orange.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade municipal</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0007 mers les bains boule club mers les bains nathalie delaporte">
+          <div class="club-card-header"><span class="club-num">0007</span><div><h3>MERS-LES-BAINS<span class="club-nom-assoc">Boule Club Mers-les-Bains</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Présidente</span>Nathalie DELAPORTE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>4/4 Rue Sadi Carnot, 80350 Mers-les-Bains</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 34 22 58 73</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">nathaliesoret80@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade Monte Fiore</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="maritime" data-search="0057 oisemont oisemont amicale bouliste canton yannick portebois chepy">
+          <div class="club-card-header"><span class="club-num">0057</span><div><h3>OISEMONT<span class="club-nom-assoc">Oisemont Amicale Bouliste du Canton</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Yannick PORTEBOIS</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>155 Allée des Lilas, 80210 Chépy</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>07 70 47 21 99</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">abc.oisemont@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Ancienne école, Rue des Lattes</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTEUR SANTERRE -->
+    <div class="secteur-block" id="bloc-santerre">
+      <div class="secteur-title">🌾 Secteur Santerre</div>
+      <div class="clubs-grid">
+
+        <div class="club-card" data-secteur="santerre" data-search="0026 albert albert petanque bertrand douay">
+          <div class="club-card-header"><span class="club-num">0026</span><div><h3>ALBERT<span class="club-nom-assoc">Albert Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Bertrand DOUAY</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>26 Rue de Doullens, 80300 Albert</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>03 22 74 09 49 / 06 59 20 80 13</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">bertrand.douay80@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Esplanade de la Solidaire, Place de Gaulle</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="santerre" data-search="0029 ham petanque hamoise maxime parlakyildiz eppeville">
+          <div class="club-card-header"><span class="club-num">0029</span><div><h3>HAM<span class="club-nom-assoc">Pétanque Hamoise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Maxime PARLAKYILDIZ</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>19 Avenue Pierre et Marie Curie, 80400 Eppeville</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 44 94 85 75</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">max.besim@yahoo.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Stade municipal</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="santerre" data-search="0012 montdidier association sportive petanque montdidier cyril vasseur maignelay montigny">
+          <div class="club-card-header"><span class="club-num">0012</span><div><h3>MONTDIDIER<span class="club-nom-assoc">AS Pétanque Montdidier</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Cyril VASSEUR</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>102 Rue de la Madeleine, 60420 Maignelay-Montigny</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 60 89 09 31</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">vasseurcyril12@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>École du Prieuré, Rue du Collège</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="santerre" data-search="0027 nesle la petanque nesloise kevin mennequin">
+          <div class="club-card-header"><span class="club-num">0027</span><div><h3>NESLE<span class="club-nom-assoc">La Pétanque Nesloise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Kevin MENNEQUIN</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>12 Rue Cantereine, 80190 Nesle</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 27 75 41 13</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">kevin.mennequin@hotmail.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Route de Ham</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="santerre" data-search="0033 peronne la boule peronnaise philippe devoye">
+          <div class="club-card-header"><span class="club-num">0033</span><div><h3>PÉRONNE<span class="club-nom-assoc">La Boule Péronnaise</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Philippe DEVOYE</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>47 Avenue de la République, 80200 Péronne</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">petanqueclubperonne@gmail.com</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Boulevard du Fort Caraby</div></div>
+          </div>
+        </div>
+
+        <div class="club-card" data-secteur="santerre" data-search="0035 roye roye petanque joaquim machado">
+          <div class="club-card-header"><span class="club-num">0035</span><div><h3>ROYE<span class="club-nom-assoc">Roye Pétanque</span></h3></div></div>
+          <div class="club-card-body">
+            <div class="club-info-row"><span class="club-info-icon">👤</span><div><span class="club-info-label">Président</span>Joaquim MACHADO</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📍</span><div><span class="club-info-label">Adresse</span>35 Rue Roger Salengro, 80700 Roye</div></div>
+            <div class="club-info-row"><span class="club-info-icon">📞</span><div><span class="club-info-label">Téléphone</span>06 10 63 80 48</div></div>
+            <div class="club-info-row"><span class="club-info-icon">✉️</span><div><span class="club-info-label">Email</span><span class="club-email">joaquim.machado80@orange.fr</span></div></div>
+            <div class="club-info-row"><span class="club-info-icon">🎯</span><div><span class="club-info-label">Terrain</span>Rue Jacques Doyen (proche piscine)</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1878,6 +2288,56 @@ document.querySelectorAll('.cal-filter-btn').forEach(btn=>{
  
 renderCalendar();
 })();
+    <script>
+const ham = document.getElementById('hamburger');
+const links = document.getElementById('navLinks');
+ham.addEventListener('click', () => links.classList.toggle('open'));
+
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+reveals.forEach(r => obs.observe(r));
+
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+});
+
+let activeSecteur = 'all';
+
+function filterSecteur(btn, secteur) {
+  activeSecteur = secteur;
+  document.querySelectorAll('.secteur-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterClubs();
+}
+
+function filterClubs() {
+  const q = document.getElementById('clubs-search').value.toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll('.club-card').forEach(card => {
+    const s = card.getAttribute('data-secteur');
+    const search = card.getAttribute('data-search') || '';
+    const secteurOk = activeSecteur === 'all' || s === activeSecteur;
+    const searchOk = !q || search.includes(q);
+    const show = secteurOk && searchOk;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('clubs-count').textContent = visible + ' club' + (visible > 1 ? 's' : '') + ' affiché' + (visible > 1 ? 's' : '');
+
+  ['centre','maritime','santerre'].forEach(sec => {
+    const bloc = document.getElementById('bloc-' + sec);
+    if (!bloc) return;
+    const hasVisible = [...bloc.querySelectorAll('.club-card')].some(c => c.style.display !== 'none');
+    bloc.style.display = hasVisible ? '' : 'none';
+  });
+}
+</script>
+
 </script>
 </body>
 </html>
