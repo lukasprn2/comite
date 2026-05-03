@@ -4,156 +4,179 @@
 <meta charset="UTF-8">
 <title>Classements 2026</title>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f6f9;
-}
+body { font-family: Arial; margin:0; background:#f4f6f9; }
 
 header {
-    background: linear-gradient(90deg, #0d47a1, #1976d2);
-    color: white;
-    padding: 20px;
-    text-align: center;
+    background: linear-gradient(90deg,#0d47a1,#1976d2);
+    color:white;
+    text-align:center;
+    padding:20px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
+.container { max-width:1200px; margin:auto; padding:20px; }
+
+.section { margin-bottom:50px; }
+
+h2 {
+    border-left:6px solid #1976d2;
+    padding-left:10px;
 }
 
-.section {
-    margin-bottom: 40px;
+input {
+    padding:10px;
+    width:100%;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
 }
 
-.section h2 {
-    border-left: 6px solid #1976d2;
-    padding-left: 10px;
-    color: #0d47a1;
+table {
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-.doc-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+th, td {
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
 }
 
-.doc-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
+th {
+    background:#1976d2;
+    color:white;
+    cursor:pointer;
 }
 
-.doc-card:hover {
-    transform: translateY(-5px);
-}
-
-.doc-card h3 {
-    margin-top: 0;
-    color: #1976d2;
-}
-
-.doc-card a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 12px;
-    background: #1976d2;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.doc-card a:hover {
-    background: #0d47a1;
-}
-
-footer {
-    text-align: center;
-    padding: 15px;
-    background: #0d47a1;
-    color: white;
-}
+tr:hover { background:#f1f1f1; }
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>Classements 2026</h1>
-    <p>Comité de la Somme</p>
+<h1>Classements 2026</h1>
 </header>
 
 <div class="container">
 
-    <!-- SENIORS -->
-    <div class="section">
-        <h2>Seniors</h2>
-        <div class="doc-list">
-            <div class="doc-card">
-                <h3>Classement Seniors</h3>
-                <p>Mis à jour le 21/04/2026</p>
-                <a href="point-senior-21042026.xlsx" target="_blank">Voir le document</a>
-            </div>
-        </div>
-    </div>
+<div class="section">
+<h2>Seniors</h2>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('seniorTable', this.value)">
+<table id="seniorTable"></table>
+</div>
 
-    <!-- CLUBS -->
-    <div class="section">
-        <h2>Clubs</h2>
-        <div class="doc-list">
-            <div class="doc-card">
-                <h3>Classement Clubs</h3>
-                <p>Mis à jour le 21/04/2026</p>
-                <a href="point-clubs-21042026.xlsx" target="_blank">Voir le document</a>
-            </div>
-        </div>
-    </div>
+<div class="section">
+<h2>Clubs</h2>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('clubTable', this.value)">
+<table id="clubTable"></table>
+</div>
 
-    <!-- VETERANS -->
-    <div class="section">
-        <h2>Vétérans</h2>
-        <div class="doc-list">
-            <div class="doc-card">
-                <h3>Classement Vétérans</h3>
-                <p>Mis à jour le 21/04/2026</p>
-                <a href="point-vet-21042026.xlsx" target="_blank">Voir le document</a>
-            </div>
-        </div>
-    </div>
+<div class="section">
+<h2>Vétérans</h2>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('vetTable', this.value)">
+<table id="vetTable"></table>
+</div>
 
-    <!-- FEMININES -->
-    <div class="section">
-        <h2>Féminines</h2>
-        <div class="doc-list">
-            <div class="doc-card">
-                <h3>Classement Féminines</h3>
-                <p>Mis à jour le 21/04/2026</p>
-                <a href="point-fem-21042026.xlsx" target="_blank">Voir le document</a>
-            </div>
-        </div>
-    </div>
+<div class="section">
+<h2>Féminines</h2>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('femTable', this.value)">
+<table id="femTable"></table>
+</div>
 
-    <!-- JEUNES -->
-    <div class="section">
-        <h2>Jeunes</h2>
-        <div class="doc-list">
-            <div class="doc-card">
-                <h3>Classement Jeunes</h3>
-                <p>Mis à jour le 19/03/2026</p>
-                <a href="point-jeunes-19032026.xlsx" target="_blank">Voir le document</a>
-            </div>
-        </div>
-    </div>
+<div class="section">
+<h2>Jeunes</h2>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('jeuneTable', this.value)">
+<table id="jeuneTable"></table>
+</div>
 
 </div>
 
-<footer>
-    © 2026 Comité de la Somme
-</footer>
+<script>
+// Charger Excel
+function loadExcel(file, tableId) {
+    fetch(file)
+    .then(res => res.arrayBuffer())
+    .then(data => {
+        let workbook = XLSX.read(data);
+        let sheet = workbook.Sheets[workbook.SheetNames[0]];
+        let json = XLSX.utils.sheet_to_json(sheet);
+
+        displayTable(json, tableId);
+    });
+}
+
+// Affichage tableau
+function displayTable(data, tableId) {
+    let table = document.getElementById(tableId);
+    table.innerHTML = "";
+
+    if (data.length === 0) return;
+
+    let headers = Object.keys(data[0]);
+
+    // Header
+    let thead = "<thead><tr>";
+    headers.forEach(h => {
+        thead += `<th onclick="sortTable('${tableId}','${h}')">${h}</th>`;
+    });
+    thead += "</tr></thead>";
+
+    // Body
+    let tbody = "<tbody>";
+    data.forEach(row => {
+        tbody += "<tr>";
+        headers.forEach(h => {
+            tbody += `<td>${row[h] || ""}</td>`;
+        });
+        tbody += "</tr>";
+    });
+    tbody += "</tbody>";
+
+    table.innerHTML = thead + tbody;
+}
+
+// Recherche
+function filterTable(tableId, value) {
+    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    value = value.toLowerCase();
+
+    rows.forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+    });
+}
+
+// Tri
+function sortTable(tableId, column) {
+    let table = document.getElementById(tableId);
+    let rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    let index = Array.from(table.querySelectorAll("th")).findIndex(th => th.innerText === column);
+
+    rows.sort((a, b) => {
+        let A = a.children[index].innerText;
+        let B = b.children[index].innerText;
+
+        return isNaN(A) ? A.localeCompare(B) : B - A;
+    });
+
+    let tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
+    rows.forEach(r => tbody.appendChild(r));
+}
+
+// Charger tes fichiers
+loadExcel("point-senior-21042026.xlsx", "seniorTable");
+loadExcel("point-clubs-21042026.xlsx", "clubTable");
+loadExcel("point-vet-21042026.xlsx", "vetTable");
+loadExcel("point-fem-21042026.xlsx", "femTable");
+loadExcel("point-jeunes-19032026.xlsx", "jeuneTable");
+
+</script>
 
 </body>
 </html>
