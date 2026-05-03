@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendrier 2026 — Comité de la Somme FFPJP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu: #0a2342; --bleu-mid: #163a6b; --or: #c9a84c; --or-light: #e8c97a;
+    --blanc: #f8f6f1; --gris: #e8e4dc; --texte: #1a1a2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--blanc); color: var(--texte); overflow-x: hidden; }
+
+  /* ── NAVBAR ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,35,66,0.97); backdrop-filter: blur(12px); border-bottom: 2px solid var(--or); display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem; height: 68px; }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-brand img { height: 46px; width: auto; filter: drop-shadow(0 2px 6px rgba(201,168,76,0.5)); }
+  .nav-brand-text { line-height: 1.1; }
+  .nav-brand-text span { display: block; font-family: 'Bebas Neue', sans-serif; color: var(--or); font-size: 1.25rem; letter-spacing: 1.5px; }
+  .nav-brand-text small { color: rgba(255,255,255,0.55); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; }
+  .nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; padding: 0.5rem 1rem; position: relative; transition: color 0.2s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%; height: 2px; background: var(--or); transition: left 0.25s, right 0.25s; }
+  .nav-links a:hover { color: var(--or-light); }
+  .nav-links a:hover::after { left: 0.5rem; right: 0.5rem; }
+  .nav-links a.active { color: var(--or); }
+  .nav-links a.active::after { left: 0.5rem; right: 0.5rem; }
+  .nav-links li { position: relative; }
+  .dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--bleu); border: 1px solid var(--or); border-radius: 6px; min-width: 200px; padding: 0.5rem 0; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .nav-links li:hover .dropdown { display: block; }
+  .dropdown a { display: block; padding: 0.5rem 1.2rem; font-size: 0.8rem; text-transform: none; letter-spacing: 0; }
+  .dropdown a::after { display: none; }
+  .nav-cta { background: var(--or); color: var(--bleu) !important; font-weight: 600 !important; padding: 0.45rem 1.2rem !important; border-radius: 4px; transition: background 0.2s !important; }
+  .nav-cta:hover { background: var(--or-light) !important; color: var(--bleu) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 26px; height: 2px; background: var(--or); border-radius: 2px; transition: 0.3s; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { background: linear-gradient(160deg, var(--bleu) 0%, #0d3060 60%, #163a6b 100%); padding: 120px 2rem 4rem; text-align: center; position: relative; overflow: hidden; }
+  .page-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% 120%, rgba(201,168,76,0.1) 0%, transparent 70%); }
+  .page-header-badge { display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--or-light); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; padding: 0.35rem 1.2rem; border-radius: 40px; margin-bottom: 1.2rem; animation: fadeUp 0.7s ease both; }
+  .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem,6vw,5rem); color: #fff; letter-spacing: 3px; animation: fadeUp 0.8s ease both 0.1s; }
+  .page-header h1 em { color: var(--or); font-style: normal; }
+  .page-header p { color: rgba(255,255,255,0.65); font-size: 1rem; margin-top: 0.8rem; animation: fadeUp 0.9s ease both 0.2s; }
+  .breadcrumb { position: absolute; top: 80px; left: 2.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+  .breadcrumb a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--or); }
+
+  /* ── CONTENU ── */
+  .page-content { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  /* ── DOWNLOAD BAR ── */
+  .dl-bar { background: var(--bleu); border-radius: 10px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+  .dl-bar p { color: rgba(255,255,255,0.75); font-size: 0.88rem; }
+  .dl-btns { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .dl-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: background 0.2s; }
+  .dl-btn-white { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+  .dl-btn-white:hover { background: rgba(255,255,255,0.2); }
+  .dl-btn-or { background: var(--or); color: var(--bleu); }
+  .dl-btn-or:hover { background: var(--or-light); }
+
+  /* ── CALENDRIER ── */
+  #cal-app { font-family: 'DM Sans', sans-serif; }
+  .cal-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem; }
+  .cal-nav { display: flex; align-items: center; gap: .8rem; }
+  .cal-nav button { background: var(--bleu); color: var(--or); border: none; width: 36px; height: 36px; border-radius: 6px; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  .cal-nav button:hover { background: var(--bleu-mid); }
+  .cal-month-label { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--bleu); letter-spacing: 2px; min-width: 210px; text-align: center; }
+  .cal-filters { display: flex; gap: .45rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .cal-filter-btn { border: 1.5px solid var(--gris); background: #fff; color: #555; font-size: .73rem; font-weight: 600; letter-spacing: .3px; padding: .32rem .85rem; border-radius: 20px; cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; }
+  .cal-filter-btn.active, .cal-filter-btn:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .cal-day-header { text-align: center; font-size: .68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--or); background: var(--bleu); padding: .5rem 0; border-radius: 4px 4px 0 0; }
+  .cal-cell { min-height: 78px; background: #fff; border: 1px solid var(--gris); border-radius: 5px; padding: 5px; position: relative; transition: box-shadow .2s; overflow: hidden; }
+  .cal-cell.other-month { background: #f5f4f0; opacity: .45; }
+  .cal-cell.today { border-color: var(--or); border-width: 2px; }
+  .cal-cell.has-events { cursor: pointer; }
+  .cal-cell.has-events:hover { box-shadow: 0 4px 16px rgba(10,35,66,.13); }
+  .cal-cell-num { font-size: .75rem; font-weight: 700; color: #aaa; margin-bottom: 3px; display: inline-block; }
+  .cal-cell.today .cal-cell-num { background: var(--or); color: var(--bleu); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .7rem; }
+  .cal-event-dot { font-size: .6rem; line-height: 1.3; padding: 1px 4px; border-radius: 3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; display: block; }
+  .cat-champ    { background: #e8f0fe; color: #1a3a8a; }
+  .cat-concours { background: #e8f9ee; color: #1a6a35; }
+  .cat-gp       { background: #fff8e0; color: #7a5500; }
+  .cat-cdc      { background: #ffe0f0; color: #8a0050; }
+  .cat-jeunes   { background: #e0f8ff; color: #005a8a; }
+  .cat-veterans { background: #f0ede8; color: #5a3a1a; }
+  .cat-regional { background: #f3e8ff; color: #5a1a8a; }
+  .cal-more { font-size: .6rem; color: var(--or); font-weight: 700; background: rgba(201,168,76,.12); border-radius: 3px; padding: 1px 4px; display: block; text-align: center; margin-top: 1px; }
+
+  /* Modale */
+  .cal-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.52); z-index: 500; align-items: center; justify-content: center; }
+  .cal-modal-overlay.open { display: flex; }
+  .cal-modal { background: #fff; border-radius: 12px; padding: 2rem; max-width: 500px; width: 92%; box-shadow: 0 20px 60px rgba(0,0,0,.3); position: relative; max-height: 82vh; overflow-y: auto; }
+  .cal-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: #aaa; }
+  .cal-modal-close:hover { color: var(--bleu); }
+  .cal-modal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; color: var(--bleu); letter-spacing: 1px; margin-bottom: 1.2rem; }
+  .cal-modal-event { border-left: 4px solid var(--or); padding: .8rem 1rem; margin-bottom: .8rem; background: var(--blanc); border-radius: 0 6px 6px 0; }
+  .cal-modal-event-title { font-weight: 600; color: var(--bleu); font-size: .92rem; margin-bottom: .3rem; }
+  .cal-modal-event-meta { font-size: .78rem; color: #777; display: flex; flex-wrap: wrap; gap: .4rem; margin-top:.4rem; }
+  .cal-modal-event-meta span { background: var(--gris); padding: 2px 7px; border-radius: 10px; }
+
+  /* Légende */
+  .cal-legende { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.2rem; }
+
+  /* Footer */
+  footer { background: #070f1e; border-top: 2px solid var(--or); color: rgba(255,255,255,0.6); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+  .footer-brand img { height: 56px; margin-bottom: 1rem; filter: brightness(0.9); }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+  footer h5 { color: var(--or); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; font-weight: 600; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--or); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-bottom a { color: var(--or); text-decoration: none; }
+
+  /* Animations */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 68px; left: 0; right: 0; background: var(--bleu); padding: 1.5rem; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid var(--or); }
+    .nav-links.open li a { padding: 0.7rem 0.5rem; }
+    .hamburger { display: flex; }
+    .dropdown { position: static; border: none; background: rgba(255,255,255,0.04); margin-top: 0.2rem; border-radius: 4px; }
+    .nav-links li:hover .dropdown { display: none; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .breadcrumb { display: none; }
+    .dl-bar { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .cal-cell { min-height: 50px; padding: 3px; }
+    .cal-event-dot { display: none; }
+    .cal-cell.has-events::after { content: '●'; color: var(--or); font-size: .55rem; position: absolute; bottom: 3px; right: 3px; }
+    .cal-month-label { font-size: 1.1rem; min-width: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav id="navbar">
+  <a class="nav-brand" href="index.html">
+    <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Accueil</a></li>
+    <li>
+      <a href="#" onclick="return false;">Compétitions ▾</a>
+      <div class="dropdown">
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank">Championnat des clubs</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank">Résultats</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a>
+      </div>
+    </li>
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html" class="active">Calendrier</a></li>
+    <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="calendrier.html" class="nav-cta">📅 Calendrier 2026</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html">Accueil</a>
+    <span>›</span>
+    <span style="color:rgba(255,255,255,0.7)">Calendrier 2026</span>
+  </div>
+  <div class="page-header-badge">Saison 2026</div>
+  <h1>Calendrier <em>Officiel</em></h1>
+  <p>Toutes les compétitions du Comité de la Somme — Cliquez sur un jour pour voir le détail</p>
+</div>
+
+<!-- ── CONTENU ── -->
+<div class="page-content">
+
+  <!-- Téléchargements -->
+  <div class="dl-bar reveal">
+    <p>📄 Téléchargez les calendriers officiels PDF. Les mises à jour sont publiées régulièrement.</p>
+    <div class="dl-btns">
+      <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="dl-btn dl-btn-white">
+        ⬇ Version 2 (PDF)
+      </a>
+      <a href="https://comite-de-la-somme-3.e-monsite.com/agenda/calendrier-somme-2026-3-eme-version.html" target="_blank" class="dl-btn dl-btn-or">
+        ⬇ Version 3 — Nouveau
+      </a>
+    </div>
+  </div>
+
+  <div id="cal-app">
+    <!-- Filtres -->
+    <div class="cal-filters reveal">
+      <button class="cal-filter-btn active" data-filter="all">Tout</button>
+      <button class="cal-filter-btn" data-filter="champ">🏆 Championnats</button>
+      <button class="cal-filter-btn" data-filter="concours">🎯 Concours officiels</button>
+      <button class="cal-filter-btn" data-filter="gp">⭐ Grands Prix</button>
+      <button class="cal-filter-btn" data-filter="cdc">🏅 Champ. Clubs</button>
+      <button class="cal-filter-btn" data-filter="jeunes">👦 Jeunes</button>
+      <button class="cal-filter-btn" data-filter="veterans">🎖️ Vétérans</button>
+      <button class="cal-filter-btn" data-filter="regional">🗺️ Régional/France</button>
+    </div>
+
+    <!-- Navigation mois -->
+    <div class="cal-toolbar reveal">
+      <div class="cal-nav">
+        <button id="cal-prev">&#8592;</button>
+        <div class="cal-month-label" id="cal-month-label"></div>
+        <button id="cal-next">&#8594;</button>
+      </div>
+      <select id="cal-year-jump" style="border:1.5px solid var(--gris);border-radius:6px;padding:.35rem .7rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--bleu);cursor:pointer">
+        <option value="2026">2026</option>
+      </select>
+    </div>
+
+    <!-- Grille -->
+    <div class="cal-grid reveal" id="cal-grid"></div>
+
+    <!-- Légende -->
+    <div class="cal-legende reveal">
+      <span class="cal-event-dot cat-champ" style="font-size:.72rem;padding:3px 8px">🏆 Championnats</span>
+      <span class="cal-event-dot cat-concours" style="font-size:.72rem;padding:3px 8px">🎯 Concours</span>
+      <span class="cal-event-dot cat-gp" style="font-size:.72rem;padding:3px 8px">⭐ Grand Prix</span>
+      <span class="cal-event-dot cat-cdc" style="font-size:.72rem;padding:3px 8px">🏅 Champ. Clubs</span>
+      <span class="cal-event-dot cat-jeunes" style="font-size:.72rem;padding:3px 8px">👦 Jeunes</span>
+      <span class="cal-event-dot cat-veterans" style="font-size:.72rem;padding:3px 8px">🎖️ Vétérans</span>
+      <span class="cal-event-dot cat-regional" style="font-size:.72rem;padding:3px 8px">🗺️ Régional/France</span>
+    </div>
+  </div>
+
+  <!-- Championnats des clubs -->
+  <div style="margin-top:3rem" class="reveal">
+    <h2 style="font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--bleu);margin-bottom:1.5rem">Championnats des <em style="color:var(--or);font-style:italic">clubs</em></h2>
+    <div style="display:flex;flex-direction:column;gap:0.8rem">
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2023" target="_blank" style="background:#fff;border-radius:8px;padding:1rem 1.2rem;border-left:4px solid var(--or);display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--texte);box-shadow:0 1px 8px rgba(0,0,0,0.04);transition:transform 0.2s,box-shadow 0.2s" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform=''">
+        <div><strong style="font-size:.9rem">Championnat des Clubs 2026</strong><br><small style="color:#888">Saison en cours</small></div>
+        <span style="color:var(--or)">→</span>
+      </a>
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2025" target="_blank" style="background:#fff;border-radius:8px;padding:1rem 1.2rem;border-left:4px solid var(--or);display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--texte);box-shadow:0 1px 8px rgba(0,0,0,0.04);transition:transform 0.2s" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform=''">
+        <div><strong style="font-size:.9rem">Championnat des Clubs 2025</strong><br><small style="color:#888">Archives saison 2025</small></div>
+        <span style="color:var(--or)">→</span>
+      </a>
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2024" target="_blank" style="background:#fff;border-radius:8px;padding:1rem 1.2rem;border-left:4px solid var(--or);display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--texte);box-shadow:0 1px 8px rgba(0,0,0,0.04);transition:transform 0.2s" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform=''">
+        <div><strong style="font-size:.9rem">Championnat des Clubs 2024</strong><br><small style="color:#888">Archives saison 2024</small></div>
+        <span style="color:var(--or)">→</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /page-content -->
+
+<!-- ── MODALE ── -->
+<div class="cal-modal-overlay" id="cal-modal-overlay">
+  <div class="cal-modal">
+    <button class="cal-modal-close" id="cal-modal-close">✕</button>
+    <h3 id="cal-modal-date"></h3>
+    <div id="cal-modal-content"></div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logocomite.png" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal.</p>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <ul class="footer-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
+
+<script>
+  // Navbar
+  const ham = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => obs.observe(r));
+
+  // ── CALENDRIER ──
+  (function(){
+    const EVENTS = [
+      {date:'2026-01-06',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-01-13',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-01-17',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Triplette',obs:'Limité à 32 éq.'},
+      {date:'2026-01-20',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-01-27',titre:'ASPTT Amiens — Triplette Qualificatif 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-01-31',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
+      {date:'2026-02-03',titre:'ASPTT Amiens — Finale Qualificatifs 60 ans',type:'veterans',lieu:'ASPTT Amiens',heure:'9h00',formation:'Triplette'},
+      {date:'2026-02-07',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Doublette',obs:'Limité à 48 éq.'},
+      {date:'2026-02-10',titre:'Corbie — Vétérans',type:'veterans',lieu:'Corbie',heure:'14h00',formation:'Doublette'},
+      {date:'2026-02-14',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Triplette Mixte'},
+      {date:'2026-02-14',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Triplette'},
+      {date:'2026-02-15',titre:'Concours Bourdon',type:'concours',lieu:'Bourdon',heure:'14h00',formation:'Doublette'},
+      {date:'2026-02-15',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-02-17',titre:'ASPTT Amiens — Vétérans',type:'veterans',lieu:'ASPTT Amiens',heure:'14h00',formation:'Triplette'},
+      {date:'2026-02-19',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-02-21',titre:'Concours Abbeville',type:'concours',lieu:'Abbeville',heure:'14h00',formation:'Doublette'},
+      {date:'2026-02-21',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Doublette'},
+      {date:'2026-02-21',titre:'Concours Roye',type:'concours',lieu:'Roye',heure:'14h00',formation:'Triplette',obs:'Limité à 32 éq.'},
+      {date:'2026-02-22',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette Mixte',obs:'Limité à 48 éq.'},
+      {date:'2026-02-26',titre:'Feuquières/Friville — Qualificatif 60 ans',type:'veterans',lieu:'Boulodrome Feuquières',heure:'9h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-02-28',titre:'Concours Longpré',type:'concours',lieu:'Longpré',heure:'14h00',formation:'Doublette'},
+      {date:'2026-02-28',titre:'Concours Saint-Ouen',type:'concours',lieu:'Saint-Ouen',heure:'14h00',formation:'Triplette Mixte'},
+      {date:'2026-03-01',titre:'Concours ASPTT Amiens',type:'concours',lieu:'ASPTT Amiens',heure:'14h00',formation:'Doublette Féminin'},
+      {date:'2026-03-01',titre:'Concours Feuquières',type:'concours',lieu:'Feuquières (Boulodrome)',heure:'14h00',formation:'Triplette',obs:'Limité à 48 éq.'},
+      {date:'2026-03-07',titre:'Coupe de France Jeu Provençal',type:'regional',lieu:'Fienvillers / St Léger-lès-Domart',heure:'9h00',formation:''},
+      {date:'2026-03-21',titre:'CHPT DÉPRT — Triplette Promotion',type:'champ',lieu:'Flixecourt',heure:'10h00',formation:'Triplette Promotion',obs:'Inscriptions avant le 12/3'},
+      {date:'2026-03-22',titre:'CHPT DÉPRT — Triplette Promotion (suite)',type:'champ',lieu:'Flixecourt',heure:'9h00',formation:'Triplette Promotion'},
+      {date:'2026-03-28',titre:'CHPT DÉPRT — Tête-à-Tête Senior Masc. + Doub. Senior Fém.',type:'champ',lieu:'Flixecourt',heure:'10h00',formation:'TT / Doublette',obs:'Inscriptions avant le 19/3'},
+      {date:'2026-03-29',titre:'CHPT DÉPRT — TT Senior Masc., Doub. Fém. + TT Jeunes',type:'champ',lieu:'Flixecourt',heure:'9h00',formation:'TT / Doublette / Jeunes'},
+      {date:'2026-04-04',titre:'CHPT DÉPRT — Triplette Jeu Provençal',type:'champ',lieu:'Albert',heure:'8h00',formation:'Triplette JP',obs:'Inscriptions avant le 26/3'},
+      {date:'2026-04-11',titre:'CHPT DÉPRT — Triplette Senior Masc. et Fém.',type:'champ',lieu:'Feuquières',heure:'10h00',formation:'Triplette Senior',obs:'Inscriptions avant le 2/4'},
+      {date:'2026-04-18',titre:'CHPT DÉPRT — Doublette Mixte + Stage jeunes',type:'champ',lieu:'Fienvillers-Doullens (Doullens)',heure:'10h00',formation:'Doublette Mixte',obs:'Inscriptions avant le 9/4'},
+      {date:'2026-04-22',titre:'CHPT DÉPRT — Triplette Vétéran (60 ans)',type:'champ',lieu:'ASPTT Amiens',heure:'10h00',formation:'Triplette Vétéran',obs:'Inscriptions avant le 9/4'},
+      {date:'2026-04-25',titre:'CHPT DÉPRT — Doublette Senior Masc. + TT Senior Fém.',type:'champ',lieu:'Feuquières',heure:'10h00',formation:'Doublette / TT',obs:'Inscriptions avant le 16/4'},
+      {date:'2026-05-01',titre:'Concours Chépy',type:'concours',lieu:'Chépy',heure:'14h00',formation:'Doublette'},
+      {date:'2026-05-02',titre:'CHPT DÉPRT — Triplette Mixte',type:'champ',lieu:'Gamaches',heure:'10h00',formation:'Triplette Mixte',obs:'Inscriptions avant le 23/4'},
+      {date:'2026-05-08',titre:'CHPT DÉPRT — Doublette Jeu Provençal',type:'champ',lieu:'Fienvillers / St Léger-lès-Domart',heure:'8h00',formation:'Doublette JP',obs:'Inscriptions avant le 31/4'},
+      {date:'2026-05-14',titre:'9ème Grand Prix de la Ville d\'Oisemont — Triplettes',type:'gp',lieu:'Oisemont',heure:'10h00',formation:'Triplette',obs:'18€/éq. Limité à 80 trip.'},
+      {date:'2026-05-14',titre:'CHPT RÉGIONAL Hauts-de-France — Triplette M+F',type:'regional',lieu:'Burbure (62)',heure:'9h00',formation:'Triplette'},
+      {date:'2026-05-15',titre:'Grand Prix de Bourdon 60 ans — Triplette',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette Vétéran',obs:'15€/éq. + 500€. Sur courrier'},
+      {date:'2026-05-16',titre:'6ème Grand Prix de Bourdon — Triplette',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette',obs:'12€/éq. + 500€. Sur courrier'},
+      {date:'2026-05-16',titre:'CHPT RÉGIONAL HdF — Doublette Mixte',type:'regional',lieu:'Pernois (80)',heure:'9h00',formation:'Doublette Mixte'},
+      {date:'2026-05-17',titre:'3ème Grand Prix de Bourdon — Triplette Mixte',type:'gp',lieu:'Bourdon',heure:'9h30',formation:'Triplette Mixte',obs:'12€/éq. + 500€. Sur courrier'},
+      {date:'2026-05-23',titre:'Grand Prix de Péronne — Doublette',type:'gp',lieu:'Péronne (Parc des Expositions)',heure:'9h00',formation:'Doublette',obs:'Mises + 500€. Par poules.'},
+      {date:'2026-05-23',titre:'CHPT RÉGIONAL HdF — Triplette Promotion',type:'regional',lieu:'Armentières (59)',heure:'9h00',formation:'Triplette Promotion'},
+      {date:'2026-06-06',titre:'Grand Prix d\'Abbeville — Triplette',type:'gp',lieu:'Abbeville',heure:'14h00',formation:'Triplette',obs:'15€/éq. Limité 72 éq. Sur courrier'},
+      {date:'2026-06-20',titre:'CHPT DE FRANCE — Triplette Masc. et Fém.',type:'regional',lieu:'Sin-le-Noble (59)',heure:'',formation:'Triplette'},
+      {date:'2026-06-27',titre:'CHPT DE FRANCE — Doublette Mixte',type:'regional',lieu:'Ajaccio (2A)',heure:'',formation:'Doublette Mixte'},
+      {date:'2026-07-03',titre:'CHPT DE FRANCE — Triplette Jeu Provençal',type:'regional',lieu:'Blaye-les-Mines (81)',heure:'',formation:'Triplette JP'},
+      {date:'2026-07-11',titre:'Grand Prix de Bouvaincourt — Triplette',type:'gp',lieu:'Bouvaincourt',heure:'9h30',formation:'Triplette',obs:'Mises + 500€. Limité 64 éq.'},
+      {date:'2026-07-14',titre:'Grand Prix de Gamaches — Triplette',type:'gp',lieu:'Gamaches',heure:'9h00',formation:'Triplette',obs:'15€/éq. + 500€. Limité 80 trip.'},
+      {date:'2026-07-18',titre:'CHPT DÉPRT — Clubs Jeu Provençal (J1)',type:'cdc',lieu:'Nesle et …',heure:'',formation:'Jeu Provençal'},
+      {date:'2026-07-25',titre:'CHPT DE FRANCE — TT Masc. + Doublette Fém.',type:'regional',lieu:'Bergerac (24)',heure:'',formation:'TT / Doublette'},
+      {date:'2026-08-19',titre:'CHPT DE FRANCE — Triplette Vétéran',type:'regional',lieu:'Saint-Yriex (16)',heure:'',formation:'Triplette Vétéran'},
+      {date:'2026-08-22',titre:'CHPT DE FRANCE — Triplette Promotion',type:'regional',lieu:'Saint-Yriex (16)',heure:'',formation:'Triplette Promotion'},
+      {date:'2026-08-29',titre:'CHPT DE FRANCE — Doublette Masc. + TT Fém.',type:'regional',lieu:'Saint-Florentin (89)',heure:'',formation:'Doublette / TT'},
+      {date:'2026-09-05',titre:'NATIONAL JEUNES — Triplette',type:'jeunes',lieu:'Montdidier',heure:'',formation:'Triplette J C M'},
+      {date:'2026-09-05',titre:'CHPT DÉPRT — Clubs (J1)',type:'cdc',lieu:'Poix / Bouvaincourt',heure:'',formation:'Championnat des Clubs'},
+      {date:'2026-09-12',titre:'14ème Grand Prix de Friville — Triplette',type:'gp',lieu:'Friville',heure:'9h15',formation:'Triplette',obs:'12€/éq. + 500€. Sur courrier.'},
+      {date:'2026-09-19',titre:'Grand Prix de la Ville d\'Albert — Doublette',type:'gp',lieu:'Albert (Esplanade du Solidaire)',heure:'14h00',formation:'Doublette',obs:'10€/éq. + 500€.'},
+      {date:'2026-09-25',titre:'Grand Prix ASPTT Amiens 60 ans — Doublette',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Doublette 60 ans',obs:'10€/éq. + 1000€. Limité 128 éq.'},
+      {date:'2026-09-26',titre:'Grand Prix Régional d\'Amiens — Triplette Mixte',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Triplette Mixte',obs:'15€/éq. + 2000€. Limité 128 éq.'},
+      {date:'2026-09-27',titre:'Grand Prix de l\'ASPTT Amiens — Doublette',type:'gp',lieu:'ASPTT Amiens',heure:'',formation:'Doublette',obs:'10€/éq. + 1000€. Limité 128 éq.'},
+      {date:'2026-10-03',titre:'CHPT DÉPRT — Clubs Open et Féminin (J1)',type:'cdc',lieu:'Feuquières et Dreuil',heure:'',formation:'Open / Féminin'},
+      {date:'2026-10-17',titre:'CHPT DÉPRT — Clubs Open et Féminin (J2)',type:'cdc',lieu:'ASPTT et Ault/Béthencourt',heure:'',formation:'Open / Féminin'},
+      {date:'2026-11-07',titre:'FINALES CHPT DÉPRT — Clubs Open et Féminin',type:'cdc',lieu:'Abbeville',heure:'',formation:'Open / Féminin'},
+      {date:'2026-11-21',titre:'ASSEMBLÉE DU COMITÉ',type:'champ',lieu:'Amiens',heure:'10h00',formation:'',obs:'Assemblée générale annuelle'},
+    ];
+
+    const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    const JOURS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    const TYPE_CLASS = {champ:'cat-champ',concours:'cat-concours',gp:'cat-gp',cdc:'cat-cdc',jeunes:'cat-jeunes',veterans:'cat-veterans',regional:'cat-regional'};
+    const TYPE_LABEL = {champ:'🏆 Championnat',concours:'🎯 Concours',gp:'⭐ Grand Prix',cdc:'🏅 Champ. Clubs',jeunes:'👦 Jeunes',veterans:'🎖️ Vétérans',regional:'🗺️ Régional/France'};
+
+    let year=2026, month=4, activeFilter='all';
+    const today = new Date();
+
+    function eventsFor(dateStr){ return EVENTS.filter(e=>e.date===dateStr&&(activeFilter==='all'||e.type===activeFilter)); }
+
+    function renderCalendar(){
+      document.getElementById('cal-month-label').textContent = MOIS[month]+' '+year;
+      const grid = document.getElementById('cal-grid');
+      grid.innerHTML = '';
+      JOURS.forEach(j=>{ const h=document.createElement('div'); h.className='cal-day-header'; h.textContent=j; grid.appendChild(h); });
+      const first=new Date(year,month,1);
+      let dow=first.getDay(); dow=dow===0?6:dow-1;
+      const daysInMonth=new Date(year,month+1,0).getDate();
+      const prevDays=new Date(year,month,0).getDate();
+      for(let i=0;i<dow;i++){ const c=document.createElement('div'); c.className='cal-cell other-month'; c.innerHTML=`<span class="cal-cell-num">${prevDays-dow+1+i}</span>`; grid.appendChild(c); }
+      for(let d=1;d<=daysInMonth;d++){
+        const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const evs=eventsFor(ds);
+        const isToday=(today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d);
+        const c=document.createElement('div');
+        c.className='cal-cell'+(isToday?' today':'')+(evs.length?' has-events':'');
+        let html=`<span class="cal-cell-num">${d}</span>`;
+        evs.slice(0,2).forEach(e=>{ html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">${e.titre}</span>`; });
+        if(evs.length>2) html+=`<span class="cal-more">+${evs.length-2} autres</span>`;
+        c.innerHTML=html;
+        if(evs.length) c.addEventListener('click',()=>openModal(ds,evs));
+        grid.appendChild(c);
+      }
+      const total=dow+daysInMonth; const trailing=total%7===0?0:7-(total%7);
+      for(let i=1;i<=trailing;i++){ const c=document.createElement('div'); c.className='cal-cell other-month'; c.innerHTML=`<span class="cal-cell-num">${i}</span>`; grid.appendChild(c); }
+    }
+
+    function openModal(ds,evs){
+      const [y,m,d]=ds.split('-');
+      document.getElementById('cal-modal-date').textContent=parseInt(d)+' '+MOIS[parseInt(m)-1]+' '+y;
+      document.getElementById('cal-modal-content').innerHTML=evs.map(e=>`
+        <div class="cal-modal-event">
+          <div class="cal-modal-event-title">${e.titre}</div>
+          <div class="cal-modal-event-meta">
+            ${e.lieu?`<span>📍 ${e.lieu}</span>`:''}
+            ${e.heure?`<span>⏰ ${e.heure}</span>`:''}
+            ${e.formation?`<span>👥 ${e.formation}</span>`:''}
+            <span class="${TYPE_CLASS[e.type]||'cat-concours'}" style="padding:2px 7px;border-radius:10px">${TYPE_LABEL[e.type]||e.type}</span>
+            ${e.obs?`<span style="font-style:italic">ℹ️ ${e.obs}</span>`:''}
+          </div>
+        </div>`).join('');
+      document.getElementById('cal-modal-overlay').classList.add('open');
+    }
+
+    document.getElementById('cal-prev').addEventListener('click',()=>{ month--; if(month<0){month=11;year--;} renderCalendar(); });
+    document.getElementById('cal-next').addEventListener('click',()=>{ month++; if(month>11){month=0;year++;} renderCalendar(); });
+    document.getElementById('cal-modal-close').addEventListener('click',()=>{ document.getElementById('cal-modal-overlay').classList.remove('open'); });
+    document.getElementById('cal-modal-overlay').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+    document.querySelectorAll('.cal-filter-btn').forEach(btn=>{
+      btn.addEventListener('click',function(){
+        document.querySelectorAll('.cal-filter-btn').forEach(b=>b.classList.remove('active'));
+        this.classList.add('active'); activeFilter=this.dataset.filter; renderCalendar();
+      });
+    });
+    renderCalendar();
+  })();
+</script>
+</body>
+</html>
