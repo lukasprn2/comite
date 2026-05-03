@@ -7,160 +7,201 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
-body { font-family: Arial; margin:0; background:#f4f6f9; }
+body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#eef1f5;
+}
 
+/* HEADER */
 header {
-    background: linear-gradient(90deg,#0d47a1,#1976d2);
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
     color:white;
+    padding:30px;
     text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    margin:0;
+    font-size:32px;
+}
+
+/* CONTAINER */
+.container {
+    max-width:1100px;
+    margin:40px auto;
     padding:20px;
 }
 
-.container { max-width:1200px; margin:auto; padding:20px; }
-
-.section { margin-bottom:50px; }
-
-h2 {
-    border-left:6px solid #1976d2;
-    padding-left:10px;
+/* CARDS */
+.section {
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    transition:0.3s;
 }
 
+.section:hover {
+    transform:translateY(-3px);
+}
+
+/* TITRES */
+.section h2 {
+    margin-top:0;
+    color:#2a5298;
+}
+
+/* SEARCH */
 input {
-    padding:10px;
     width:100%;
-    margin:10px 0;
-    border-radius:5px;
+    padding:12px;
+    margin:10px 0 15px;
+    border-radius:8px;
     border:1px solid #ccc;
+}
+
+/* TABLE */
+.table-container {
+    max-height:400px;
+    overflow:auto;
+    border-radius:10px;
 }
 
 table {
     width:100%;
     border-collapse:collapse;
-    background:white;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 th, td {
     padding:10px;
-    border-bottom:1px solid #ddd;
     text-align:left;
 }
 
 th {
-    background:#1976d2;
+    background:#2a5298;
     color:white;
+    position:sticky;
+    top:0;
     cursor:pointer;
 }
 
-tr:hover { background:#f1f1f1; }
+tr:nth-child(even) {
+    background:#f7f9fc;
+}
+
+tr:hover {
+    background:#e3ecff;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>Classements 2026</h1>
+    <h1>Classements 2026</h1>
 </header>
 
 <div class="container">
 
 <div class="section">
 <h2>Seniors</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('seniorTable', this.value)">
-<table id="seniorTable"></table>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('senior', this.value)">
+<div class="table-container">
+<table id="senior"></table>
+</div>
 </div>
 
 <div class="section">
 <h2>Clubs</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('clubTable', this.value)">
-<table id="clubTable"></table>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('clubs', this.value)">
+<div class="table-container">
+<table id="clubs"></table>
+</div>
 </div>
 
 <div class="section">
 <h2>Vétérans</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('vetTable', this.value)">
-<table id="vetTable"></table>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('vet', this.value)">
+<div class="table-container">
+<table id="vet"></table>
+</div>
 </div>
 
 <div class="section">
 <h2>Féminines</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('femTable', this.value)">
-<table id="femTable"></table>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('fem', this.value)">
+<div class="table-container">
+<table id="fem"></table>
+</div>
 </div>
 
 <div class="section">
 <h2>Jeunes</h2>
-<input type="text" placeholder="Rechercher..." onkeyup="filterTable('jeuneTable', this.value)">
-<table id="jeuneTable"></table>
+<input type="text" placeholder="Rechercher..." onkeyup="filterTable('jeunes', this.value)">
+<div class="table-container">
+<table id="jeunes"></table>
+</div>
 </div>
 
 </div>
 
 <script>
-// Charger Excel
 function loadExcel(file, tableId) {
     fetch(file)
     .then(res => res.arrayBuffer())
     .then(data => {
-        let workbook = XLSX.read(data);
-        let sheet = workbook.Sheets[workbook.SheetNames[0]];
+        let wb = XLSX.read(data);
+        let sheet = wb.Sheets[wb.SheetNames[0]];
         let json = XLSX.utils.sheet_to_json(sheet);
 
         displayTable(json, tableId);
     });
 }
 
-// Affichage tableau
-function displayTable(data, tableId) {
-    let table = document.getElementById(tableId);
-    table.innerHTML = "";
-
-    if (data.length === 0) return;
+function displayTable(data, id) {
+    let table = document.getElementById(id);
+    if (!data.length) return;
 
     let headers = Object.keys(data[0]);
 
-    // Header
-    let thead = "<thead><tr>";
+    let html = "<thead><tr>";
     headers.forEach(h => {
-        thead += `<th onclick="sortTable('${tableId}','${h}')">${h}</th>`;
+        html += `<th onclick="sortTable('${id}', '${h}')">${h}</th>`;
     });
-    thead += "</tr></thead>";
+    html += "</tr></thead><tbody>";
 
-    // Body
-    let tbody = "<tbody>";
     data.forEach(row => {
-        tbody += "<tr>";
+        html += "<tr>";
         headers.forEach(h => {
-            tbody += `<td>${row[h] || ""}</td>`;
+            html += `<td>${row[h] || ""}</td>`;
         });
-        tbody += "</tr>";
+        html += "</tr>";
     });
-    tbody += "</tbody>";
 
-    table.innerHTML = thead + tbody;
+    html += "</tbody>";
+    table.innerHTML = html;
 }
 
-// Recherche
-function filterTable(tableId, value) {
-    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+function filterTable(id, value) {
+    let rows = document.querySelectorAll(`#${id} tbody tr`);
     value = value.toLowerCase();
 
-    rows.forEach(row => {
-        row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+    rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(value) ? "" : "none";
     });
 }
 
-// Tri
-function sortTable(tableId, column) {
-    let table = document.getElementById(tableId);
+function sortTable(id, col) {
+    let table = document.getElementById(id);
     let rows = Array.from(table.querySelectorAll("tbody tr"));
-
-    let index = Array.from(table.querySelectorAll("th")).findIndex(th => th.innerText === column);
+    let index = Array.from(table.querySelectorAll("th")).findIndex(th => th.innerText === col);
 
     rows.sort((a, b) => {
         let A = a.children[index].innerText;
         let B = b.children[index].innerText;
-
         return isNaN(A) ? A.localeCompare(B) : B - A;
     });
 
@@ -169,13 +210,12 @@ function sortTable(tableId, column) {
     rows.forEach(r => tbody.appendChild(r));
 }
 
-// Charger tes fichiers
-loadExcel("point-senior-21042026.xlsx", "seniorTable");
-loadExcel("point-clubs-21042026.xlsx", "clubTable");
-loadExcel("point-vet-21042026.xlsx", "vetTable");
-loadExcel("point-fem-21042026.xlsx", "femTable");
-loadExcel("point-jeunes-19032026.xlsx", "jeuneTable");
-
+/* TES FICHIERS */
+loadExcel("point-senior-21042026.xlsx", "senior");
+loadExcel("point-clubs-21042026.xlsx", "clubs");
+loadExcel("point-vet-21042026.xlsx", "vet");
+loadExcel("point-fem-21042026.xlsx", "fem");
+loadExcel("point-jeunes-19032026.xlsx", "jeunes");
 </script>
 
 </body>
