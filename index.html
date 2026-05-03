@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comité de la Somme — FFPJP Pétanque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu: #0a2342;
+    --bleu-mid: #163a6b;
+    --or: #c9a84c;
+    --or-light: #e8c97a;
+    --blanc: #f8f6f1;
+    --gris: #e8e4dc;
+    --texte: #1a1a2e;
+    --rouge: #c0392b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--blanc);
+    color: var(--texte);
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10, 35, 66, 0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--or);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 68px;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .nav-brand img {
+    height: 46px;
+    width: auto;
+    filter: drop-shadow(0 2px 6px rgba(201,168,76,0.5));
+  }
+
+  .nav-brand-text {
+    line-height: 1.1;
+  }
+
+  .nav-brand-text span {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--or);
+    font-size: 1.25rem;
+    letter-spacing: 1.5px;
+  }
+
+  .nav-brand-text small {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: color 0.2s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 50%; right: 50%;
+    height: 2px;
+    background: var(--or);
+    transition: left 0.25s, right 0.25s;
+  }
+
+  .nav-links a:hover { color: var(--or-light); }
+  .nav-links a:hover::after { left: 0.5rem; right: 0.5rem; }
+
+  /* Dropdown */
+  .nav-links li { position: relative; }
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: var(--bleu);
+    border: 1px solid var(--or);
+    border-radius: 6px;
+    min-width: 200px;
+    padding: 0.5rem 0;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .nav-links li:hover .dropdown { display: block; }
+  .dropdown a {
+    display: block;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.8rem;
+    text-transform: none;
+    letter-spacing: 0;
+    border-bottom: none;
+  }
+  .dropdown a::after { display: none; }
+
+  .nav-cta {
+    background: var(--or);
+    color: var(--bleu) !important;
+    font-weight: 600 !important;
+    padding: 0.45rem 1.2rem !important;
+    border-radius: 4px;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--or-light) !important; color: var(--bleu) !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--or);
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    height: 100vh;
+    min-height: 600px;
+    background: linear-gradient(160deg, var(--bleu) 0%, #0d3060 55%, #1a5276 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(201,168,76,0.12) 0%, transparent 70%),
+      radial-gradient(circle at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 50%);
+  }
+
+  /* Boules décoratives */
+  .boule {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    background: radial-gradient(circle at 35% 35%, var(--or), var(--bleu-mid));
+  }
+  .boule-1 { width: 320px; height: 320px; top: -80px; right: -80px; }
+  .boule-2 { width: 180px; height: 180px; bottom: 60px; left: 5%; opacity: 0.05; }
+  .boule-3 { width: 80px; height: 80px; top: 35%; left: 8%; opacity: 0.1; }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--or-light);
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0.35rem 1.2rem;
+    border-radius: 40px;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 20px rgba(201,168,76,0.4));
+    animation: fadeUp 0.9s ease both;
+    animation-delay: 0.1s;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    color: #fff;
+    letter-spacing: 3px;
+    line-height: 0.95;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 1s ease both;
+    animation-delay: 0.2s;
+  }
+
+  .hero-title em {
+    color: var(--or);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 1rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 1s ease both;
+    animation-delay: 0.3s;
+  }
+
+  .hero-desc {
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    color: rgba(255,255,255,0.75);
+    font-size: 1rem;
+    line-height: 1.7;
+    animation: fadeUp 1s ease both;
+    animation-delay: 0.4s;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 1s ease both;
+    animation-delay: 0.5s;
+  }
+
+  .btn-primary {
+    background: var(--or);
+    color: var(--bleu);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 0.85rem 2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-primary:hover { background: var(--or-light); transform: translateY(-2px); }
+
+  .btn-outline {
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: #fff;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 0.85rem 2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-outline:hover { border-color: var(--or); color: var(--or); transform: translateY(-2px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+  }
+  .hero-scroll svg { stroke: rgba(255,255,255,0.4); }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: var(--or);
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-item strong {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--bleu);
+    line-height: 1;
+  }
+
+  .stat-item span {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(10,35,66,0.75);
+    font-weight: 600;
+  }
+
+  /* ── SECTIONS COMMUNES ── */
+  section { padding: 5rem 2rem; }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--or);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--bleu);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .section-title em {
+    color: var(--or);
+    font-style: italic;
+  }
+
+  .section-lead {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 580px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ── ACTUALITÉS ── */
+  #actualites {
+    background: var(--blanc);
+  }
+
+  .actu-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .actu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .actu-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--gris);
+    box-shadow: 0 2px 18px rgba(0,0,0,0.05);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .actu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(10,35,66,0.12);
+  }
+
+  .actu-card-header {
+    background: var(--bleu);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .actu-card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 1.5rem;
+    width: 40px;
+    height: 3px;
+    background: var(--or);
+  }
+
+  .actu-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.2);
+    color: var(--or-light);
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    margin-bottom: 0.7rem;
+  }
+
+  .actu-card-header h3 {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .actu-card-body {
+    padding: 1.5rem;
+  }
+
+  .actu-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #888;
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .actu-card-body p {
+    color: #555;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .actu-link {
+    color: var(--bleu);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s;
+  }
+  .actu-link:hover { color: var(--or); }
+  .actu-link svg { transition: transform 0.2s; }
+  .actu-link:hover svg { transform: translateX(4px); }
+
+  /* Carte "urgent" */
+  .actu-card.featured .actu-card-header {
+    background: linear-gradient(135deg, #b7172e, #8b0000);
+  }
+
+  /* ── NAVIGATION RAPIDE ── */
+  #nav-rapide {
+    background: var(--bleu);
+    padding: 4rem 2rem;
+  }
+
+  .nav-rapide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .nr-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1.5rem 1.2rem;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+
+  .nr-card:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--or);
+    transform: translateY(-2px);
+  }
+
+  .nr-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(201,168,76,0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .nr-icon svg { stroke: var(--or); }
+
+  .nr-card h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+  }
+
+  .nr-card small {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ── CALENDRIER ── */
+  #calendrier {
+    background: var(--gris);
+  }
+
+  .cal-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .cal-layout { grid-template-columns: 1fr; }
+  }
+
+  .cal-download {
+    background: #fff;
+    border-radius: 10px;
+    padding: 2rem;
+    border: 1px solid var(--gris);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+
+  .cal-download h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--bleu);
+    margin-bottom: 1rem;
+  }
+
+  .cal-download p {
+    font-size: 0.88rem;
+    color: #666;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+  }
+
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--bleu);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    margin-bottom: 0.7rem;
+    margin-right: 0.5rem;
+  }
+  .dl-btn:hover { background: var(--bleu-mid); }
+  .dl-btn.gold { background: var(--or); color: var(--bleu); }
+  .dl-btn.gold:hover { background: var(--or-light); }
+
+  .championnats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .champ-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    border-left: 4px solid var(--or);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--texte);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .champ-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px rgba(10,35,66,0.1);
+  }
+
+  .champ-item span {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .champ-item small {
+    color: #888;
+    font-size: 0.78rem;
+  }
+
+  .champ-arrow { color: var(--or); }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--blanc);
+  }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .contact-layout { grid-template-columns: 1fr; }
+  }
+
+  .contact-info { }
+
+  .contact-info p {
+    color: #555;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .contact-detail-icon {
+    width: 38px;
+    height: 38px;
+    background: var(--bleu);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .contact-detail-icon svg { stroke: var(--or); }
+
+  .contact-detail-text strong {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--bleu);
+    margin-bottom: 0.2rem;
+    font-weight: 600;
+  }
+
+  .contact-detail-text a,
+  .contact-detail-text span {
+    font-size: 0.9rem;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .contact-detail-text a:hover { color: var(--or); }
+
+  .contact-form {
+    background: var(--bleu);
+    border-radius: 12px;
+    padding: 2.5rem;
+  }
+
+  .contact-form h3 {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--or); }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--or);
+    color: var(--bleu);
+    border: none;
+    border-radius: 6px;
+    padding: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .form-submit:hover { background: var(--or-light); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #070f1e;
+    border-top: 2px solid var(--or);
+    color: rgba(255,255,255,0.6);
+    padding: 3rem 2rem 1.5rem;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .footer-brand img {
+    height: 56px;
+    margin-bottom: 1rem;
+    filter: brightness(0.9);
+  }
+
+  .footer-brand p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  footer h5 {
+    color: var(--or);
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-links a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--or); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .footer-bottom a { color: var(--or); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 68px;
+      left: 0; right: 0;
+      background: var(--bleu);
+      padding: 1.5rem;
+      gap: 0.2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 2px solid var(--or);
+    }
+    .nav-links.open a { padding: 0.7rem 0.5rem; }
+    .hamburger { display: flex; }
+    .dropdown { position: static; border: none; background: rgba(255,255,255,0.04); margin-top: 0.2rem; border-radius: 4px; }
+    .nav-links li:hover .dropdown { display: none; }
+    .nav-links li.open-sub .dropdown { display: block; }
+  }
+
+  @media (max-width: 600px) {
+    .stats-band { gap: 1.5rem; }
+    .nav-rapide-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Divider */
+  .divider {
+    width: 50px;
+    height: 3px;
+    background: var(--or);
+    margin: 1rem 0 1.5rem;
+  }
+
+  /* Alert banner */
+  .alert-banner {
+    background: var(--rouge);
+    color: #fff;
+    text-align: center;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .alert-banner a { color: #ffdddd; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- ── ALERT BANNER ── -->
+<div class="alert-banner">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  Nouveau : Calendrier Somme 2026 – 3ème version disponible &nbsp;
+  <a href="https://comite-de-la-somme-3.e-monsite.com/agenda/calendrier-somme-2026-3-eme-version.html" target="_blank">Consulter →</a>
+</div>
+
+<!-- ── NAVBAR ── -->
+<nav id="navbar">
+  <a class="nav-brand" href="#">
+    <img src="https://comite-de-la-somme-3.e-monsite.com/medias/site/logos/ecusson-somme.jpg" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Accueil</a></li>
+    <li><a href="#actualites">Actualités</a></li>
+    <li>
+      <a href="#nav-rapide">Compétitions ▾</a>
+      <div class="dropdown">
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank">Championnat des clubs</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank">Résultats</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a>
+      </div>
+    </li>
+    <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/a/" target="_blank">Clubs</a></li>
+    <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li>
+      <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="nav-cta">📅 Calendrier 2026</a>
+    </li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="boule boule-1"></div>
+  <div class="boule boule-2"></div>
+  <div class="boule boule-3"></div>
+  <div>
+    <div class="hero-badge">Département de la Somme — Picardie</div>
+    <img class="hero-logo" src="https://comite-de-la-somme-3.e-monsite.com/medias/site/logos/ecusson-somme.jpg" alt="Écusson Comité de la Somme">
+    <h1 class="hero-title">Comité de<br>la <em>Somme</em></h1>
+    <p class="hero-sub">FFPJP &nbsp;·&nbsp; Fédération Française de Pétanque</p>
+    <p class="hero-desc">Toutes les informations, résultats et calendriers sur la pétanque dans le département de la Somme. Site régulièrement mis à jour.</p>
+    <div class="hero-btns">
+      <a href="#actualites" class="btn-primary">Voir les actualités</a>
+      <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="btn-outline">Calendrier 2026 ↓</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-band">
+  <div class="stat-item">
+    <strong>80</strong>
+    <span>Département</span>
+  </div>
+  <div class="stat-item">
+    <strong>2026</strong>
+    <span>Saison en cours</span>
+  </div>
+  <div class="stat-item">
+    <strong>FFPJP</strong>
+    <span>Fédération</span>
+  </div>
+  <div class="stat-item">
+    <strong>Amiens</strong>
+    <span>Siège du comité</span>
+  </div>
+</div>
+
+<!-- ── ACTUALITÉS ── -->
+<section id="actualites">
+  <div class="container">
+    <div class="actu-header reveal">
+      <div>
+        <p class="section-label">Infos & Événements</p>
+        <h2 class="section-title">Actualités <em>récentes</em></h2>
+        <div class="divider"></div>
+        <p class="section-lead">Retrouvez toutes les nouvelles du comité, les mises à jour des calendriers et les informations importantes pour la saison.</p>
+      </div>
+      <a href="https://comite-de-la-somme-3.e-monsite.com/agenda/" target="_blank" class="btn-primary" style="white-space:nowrap">Toutes les actualités</a>
+    </div>
+
+    <div class="actu-grid">
+
+      <div class="actu-card featured reveal">
+        <div class="actu-card-header">
+          <span class="actu-tag">🆕 Nouveau</span>
+          <h3>Calendrier Somme 2026 – 3ème version</h3>
+        </div>
+        <div class="actu-card-body">
+          <div class="actu-date">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            À partir du 03/05/2026
+          </div>
+          <p>La 3ème version du calendrier officiel de la saison 2026 est disponible. Consultez les dates de toutes les compétitions départementales.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/agenda/calendrier-somme-2026-3-eme-version.html" target="_blank" class="actu-link">
+            Consulter
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="actu-card reveal">
+        <div class="actu-card-header">
+          <span class="actu-tag">📅 Calendrier</span>
+          <h3>Calendrier Somme 2026 – 2ème version</h3>
+        </div>
+        <div class="actu-card-body">
+          <div class="actu-date">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Mis à jour le 01/02/2026
+          </div>
+          <p>Téléchargez la 2ème version du calendrier officiel de la saison 2026 pour la Somme. Valable jusqu'au 31/12/2026.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="actu-link">
+            Télécharger le PDF
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="actu-card reveal">
+        <div class="actu-card-header">
+          <span class="actu-tag">🏆 Compétition</span>
+          <h3>Championnat des Clubs 2026</h3>
+        </div>
+        <div class="actu-card-body">
+          <div class="actu-date">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Saison 2026
+          </div>
+          <p>Retrouvez toutes les informations sur le championnat des clubs de la Somme pour la saison 2026 : groupes, résultats et classements.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2023" target="_blank" class="actu-link">
+            Voir le championnat
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="actu-card reveal">
+        <div class="actu-card-header">
+          <span class="actu-tag">📋 Résultats</span>
+          <h3>Résultats des dernières compétitions</h3>
+        </div>
+        <div class="actu-card-body">
+          <div class="actu-date">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Mis à jour régulièrement
+          </div>
+          <p>Consultez les résultats des dernières compétitions organisées sur le département de la Somme, championnats et tournois.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank" class="actu-link">
+            Voir les résultats
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="actu-card reveal">
+        <div class="actu-card-header">
+          <span class="actu-tag">📊 Classements</span>
+          <h3>Classements des joueurs & clubs</h3>
+        </div>
+        <div class="actu-card-body">
+          <div class="actu-date">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Saison 2026
+          </div>
+          <p>Accédez aux classements officiels des joueurs et des clubs du département pour la saison en cours.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank" class="actu-link">
+            Voir les classements
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="actu-card reveal">
+        <div class="actu-card-header">
+          <span class="actu-tag">🆕 Infos</span>
+          <h3>Nouveautés & documents officiels</h3>
+        </div>
+        <div class="actu-card-body">
+          <div class="actu-date">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Régulièrement mis à jour
+          </div>
+          <p>Consultez la section nouveautés pour les derniers documents, règlements et informations diffusés par le comité.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/" target="_blank" class="actu-link">
+            Voir les nouveautés
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── NAVIGATION RAPIDE ── -->
+<section id="nav-rapide">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label" style="color:var(--or-light)">Accès direct</p>
+      <h2 class="section-title" style="color:#fff">Rubriques du <em style="color:var(--or)">comité</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="nav-rapide-grid">
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/tirage/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <h4>Le Comité</h4>
+          <small>Organisation & bureau</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/a/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div>
+          <h4>Les Clubs</h4>
+          <small>Liste et informations</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div>
+          <h4>Championnats</h4>
+          <small>Toutes les épreuves</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <div>
+          <h4>Champ. des Clubs</h4>
+          <small>2024 · 2025 · 2026</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div>
+          <h4>Classements</h4>
+          <small>Joueurs & clubs</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div>
+          <h4>Résultats</h4>
+          <small>Dernières compétitions</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div>
+          <h4>Tirages</h4>
+          <small>Règlements & tirages</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/b/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div>
+          <h4>Documentations</h4>
+          <small>Règlements & guides</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div>
+          <h4>Nouveautés</h4>
+          <small>Dernières infos</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="12" y2="11"/></svg>
+        </div>
+        <div>
+          <h4>Annuaire</h4>
+          <small>Contacts & clubs</small>
+        </div>
+      </a>
+
+      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/archives/" target="_blank" class="nr-card reveal">
+        <div class="nr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        </div>
+        <div>
+          <h4>Archives</h4>
+          <small>Historique des saisons</small>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CALENDRIER ── -->
+<section id="calendrier">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Saison 2026</p>
+      <h2 class="section-title">Calendrier & <em>Championnats</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="cal-layout">
+      <div class="reveal">
+        <div class="cal-download">
+          <h3>📅 Calendriers officiels 2026</h3>
+          <p>Téléchargez les versions officielles du calendrier de la Somme pour la saison 2026. Les mises à jour sont publiées régulièrement sur ce site.</p>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" target="_blank" class="dl-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Version 2 (PDF)
+          </a>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/agenda/calendrier-somme-2026-3-eme-version.html" target="_blank" class="dl-btn gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Version 3 — Nouveau
+          </a>
+          <p style="font-size:0.78rem;color:#999;margin-top:1rem;margin-bottom:0">Les calendriers sont susceptibles d'être modifiés en cours de saison. Vérifiez régulièrement les mises à jour.</p>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <p class="section-label" style="margin-bottom:1rem">Championnats des clubs</p>
+        <div class="championnats-list">
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2023" target="_blank" class="champ-item">
+            <div>
+              <span>Championnat des Clubs 2026</span><br>
+              <small>Saison en cours</small>
+            </div>
+            <span class="champ-arrow">→</span>
+          </a>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2025" target="_blank" class="champ-item">
+            <div>
+              <span>Championnat des Clubs 2025</span><br>
+              <small>Archives saison 2025</small>
+            </div>
+            <span class="champ-arrow">→</span>
+          </a>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/cat-2024" target="_blank" class="champ-item">
+            <div>
+              <span>Championnat des Clubs 2024</span><br>
+              <small>Archives saison 2024</small>
+            </div>
+            <span class="champ-arrow">→</span>
+          </a>
+          <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank" class="champ-item">
+            <div>
+              <span>Tous les championnats</span><br>
+              <small>Individuels, doublettes, triplettes…</small>
+            </div>
+            <span class="champ-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Nous joindre</p>
+      <h2 class="section-title">Contact & <em>Coordonnées</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="contact-layout">
+      <div class="reveal">
+        <p class="section-lead" style="margin-bottom:2rem">
+          N'hésitez pas à nous contacter pour toute question, remarque ou suggestion concernant le comité ou ce site.
+        </p>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-detail-text">
+            <strong>Adresse</strong>
+            <span>Comité de la Somme — Maison des Sports Bâtiment B<br>2, rue Lescouvé — 80000 Amiens</span>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="contact-detail-text">
+            <strong>Téléphone</strong>
+            <a href="tel:0630009369">06 30 00 93 69</a>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-detail-text">
+            <strong>Email — Informations</strong>
+            <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-detail-text">
+            <strong>Email — Webmaster</strong>
+            <a href="mailto:didierpichenot@orange.fr">didierpichenot@orange.fr</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="contact-form">
+          <h3>Nous écrire</h3>
+          <div class="form-group">
+            <label>Votre nom</label>
+            <input type="text" placeholder="Dupont Jean">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="email@exemple.fr">
+          </div>
+          <div class="form-group">
+            <label>Sujet</label>
+            <select>
+              <option value="">Choisir un sujet…</option>
+              <option>Informations générales</option>
+              <option>Résultats / Calendrier</option>
+              <option>Affiliation club</option>
+              <option>Problème technique</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Votre message…"></textarea>
+          </div>
+          <button class="form-submit" onclick="alert('Pour envoyer un message, contactez directement : CD80@petanque.fr')">Envoyer le message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="https://comite-de-la-somme-3.e-monsite.com/medias/site/logos/ecusson-somme.jpg" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal. Toutes les informations et résultats sur la pétanque de notre département.</p>
+    </div>
+    <div>
+      <h5>Rubriques</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/tirage/" target="_blank">Le Comité</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/a/" target="_blank">Les Clubs</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank">Résultats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/agenda/" target="_blank">Actualités</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/b/" target="_blank">Documentations</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/" target="_blank">Nouveautés</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/archives/" target="_blank">Archives</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/contact/" target="_blank">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const ham = document.getElementById('hamburger');
+  const links = document.getElementById('navLinks');
+  ham.addEventListener('click', () => links.classList.toggle('open'));
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Navbar shadow on scroll
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.boxShadow = window.scrollY > 30
+      ? '0 4px 30px rgba(0,0,0,0.4)'
+      : 'none';
+  });
+</script>
+</body>
+</html>
