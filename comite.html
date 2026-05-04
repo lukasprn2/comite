@@ -1,0 +1,497 @@
+<!-- ══════════════════════════════════════════════════════════
+     ORGANIGRAMME — Comité Directeur de la Somme FFPJP 2026
+     À insérer dans le site à la place du lien "Le Comité"
+     ══════════════════════════════════════════════════════════ -->
+
+<!-- Dans le <head>, ajouter si pas déjà présent :
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+-->
+
+<style>
+  /* ── ORGANIGRAMME ── */
+  #organigramme {
+    background: var(--bleu);
+    padding: 4rem 2rem;
+  }
+
+  .org-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Adresse siège */
+  .org-siege {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 8px;
+    padding: 0.9rem 1.4rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .org-siege svg { stroke: var(--or); flex-shrink: 0; }
+  .org-siege p { color: rgba(255,255,255,0.65); font-size: 0.82rem; line-height: 1.5; }
+  .org-siege a { color: var(--or-light); text-decoration: none; }
+  .org-siege a:hover { text-decoration: underline; }
+
+  /* Arbre */
+  .org-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Connecteur vertical */
+  .org-connector {
+    width: 2px;
+    height: 32px;
+    background: var(--or);
+    opacity: 0.4;
+    margin: 0 auto;
+  }
+
+  /* Ligne horizontale */
+  .org-hline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .org-hline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: rgba(201,168,76,0.3);
+  }
+
+  .org-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .org-branch::before {
+    content: '';
+    width: 2px;
+    height: 28px;
+    background: rgba(201,168,76,0.3);
+  }
+
+  /* Cartes */
+  .org-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    text-align: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    cursor: default;
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .org-card:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Président */
+  .org-card.president {
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+    border: 2px solid var(--or);
+    max-width: 300px;
+  }
+
+  .org-card.president .org-role {
+    color: var(--or);
+    font-size: 0.7rem;
+  }
+
+  /* Vice-président */
+  .org-card.vice {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(201,168,76,0.35);
+  }
+
+  /* Secrétaire / Trésorier */
+  .org-card.admin {
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* Membre */
+  .org-card.membre {
+    background: rgba(255,255,255,0.04);
+    padding: 0.8rem 1rem;
+  }
+
+  .org-role {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.75);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .org-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+  }
+
+  .org-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.5rem;
+  }
+
+  .org-tel {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
+  .org-tel svg { opacity: 0.6; }
+
+  .org-email {
+    font-size: 0.7rem;
+    color: rgba(201,168,76,0.6);
+    word-break: break-all;
+  }
+
+  /* Niveaux */
+  .org-level {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
+    padding-top: 28px;
+  }
+
+  .org-level::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: rgba(201,168,76,0.25);
+  }
+
+  .org-level .org-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 180px;
+    max-width: 240px;
+  }
+
+  .org-level .org-item::before {
+    content: '';
+    width: 2px;
+    height: 28px;
+    background: rgba(201,168,76,0.25);
+  }
+
+  /* Grid membres */
+  .membres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.7rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  .membres-label {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.6);
+    margin-bottom: 0.8rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  /* Séparateur section */
+  .org-sep {
+    width: 50px;
+    height: 2px;
+    background: rgba(201,168,76,0.3);
+    margin: 2rem auto;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .org-level {
+      flex-direction: column;
+      align-items: center;
+    }
+    .org-level::before { display: none; }
+    .org-level .org-item { max-width: 100%; width: 100%; }
+    .org-level .org-item::before { height: 16px; }
+  }
+
+  @media (max-width: 500px) {
+    .membres-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<!-- ══ SECTION ORGANIGRAMME ══ -->
+<section id="organigramme">
+  <div class="org-container">
+
+    <!-- En-tête section -->
+    <div class="reveal" style="margin-bottom:2.5rem;text-align:center">
+      <p class="section-label" style="color:var(--or-light)">FFPJP — Département 80</p>
+      <h2 class="section-title" style="color:#fff;text-align:center">Comité <em style="color:var(--or)">Directeur</em></h2>
+      <div class="divider" style="margin:1rem auto 0"></div>
+    </div>
+
+    <!-- Siège -->
+    <div class="org-siege reveal">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <p>
+        Maison des Sports, Bâtiment B — 2 Rue Lescouvé, 80000 Amiens &nbsp;·&nbsp;
+        <a href="mailto:cd80@petanque.fr">cd80@petanque.fr</a>
+        &nbsp;·&nbsp; Agréé par le ministère de la Jeunesse, des Sports et des Loisirs
+      </p>
+    </div>
+
+    <!-- Arbre -->
+    <div class="org-tree reveal">
+
+      <!-- PRÉSIDENT -->
+      <div class="org-card president">
+        <span class="org-role">Président</span>
+        <div class="org-name">Bernard PRUVOT</div>
+        <div class="org-contact">
+          <div class="org-tel">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            06 30 00 93 69
+          </div>
+          <div class="org-email">pruvotbernard@orange.fr</div>
+          <div class="org-tel" style="font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">3 Rue Hurtelle — 80460 Oust Marest</div>
+        </div>
+      </div>
+
+      <!-- Connecteur -->
+      <div class="org-connector"></div>
+
+      <!-- VICE-PRÉSIDENTS -->
+      <div class="org-level">
+        <div class="org-item">
+          <div class="org-card vice">
+            <span class="org-role">Vice-Président</span>
+            <div class="org-name">Mickaël MALHERBE</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                06 66 74 14 59
+              </div>
+              <div class="org-email">samik80@laposte.net</div>
+            </div>
+          </div>
+        </div>
+        <div class="org-item">
+          <div class="org-card vice">
+            <span class="org-role">Vice-Présidente</span>
+            <div class="org-name">Pascale CONSEIL</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                06 09 07 75 45
+              </div>
+              <div class="org-email">conseilpascale76@gmail.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="org-item">
+          <div class="org-card vice">
+            <span class="org-role">Vice-Président</span>
+            <div class="org-name">Yves DECAIX</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                06 83 60 64 45
+              </div>
+              <div class="org-email">yves.decaix@orange.fr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connecteur -->
+      <div class="org-connector"></div>
+
+      <!-- SECRÉTAIRES & TRÉSORIERS -->
+      <div class="org-level">
+        <div class="org-item">
+          <div class="org-card admin">
+            <span class="org-role">Secrétaire Général</span>
+            <div class="org-name">Bertrand DOUAY</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                06 59 20 80 13
+              </div>
+              <div class="org-email">bertrand.douay80@gmail.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="org-item">
+          <div class="org-card admin">
+            <span class="org-role">Secrétaire Adjointe</span>
+            <div class="org-name">Mégane MOREL</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                06 18 29 86 64
+              </div>
+              <div class="org-email">megane.morel80@hotmail.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="org-item">
+          <div class="org-card admin">
+            <span class="org-role">Trésorier Général</span>
+            <div class="org-name">Marc HEDOUIN</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                06 08 43 52 40
+              </div>
+              <div class="org-email">mmf.hedouin@orange.fr</div>
+            </div>
+          </div>
+        </div>
+        <div class="org-item">
+          <div class="org-card admin">
+            <span class="org-role">Trésorier Adjoint</span>
+            <div class="org-name">Pascal DUROT</div>
+            <div class="org-contact">
+              <div class="org-tel">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                07 50 40 40 38
+              </div>
+              <div class="org-email">pdurot@orange.fr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBRES -->
+      <div class="org-sep"></div>
+      <p class="membres-label">Membres du Comité Directeur</p>
+      <div class="membres-grid">
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Vincent DE BENEDITTIS</div>
+          <div class="org-contact">
+            <div class="org-tel">06 67 51 20 43</div>
+            <div class="org-email">vincent.realit@gmail.com</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Kevin EVENOU</div>
+          <div class="org-contact">
+            <div class="org-tel">06 43 31 57 43</div>
+            <div class="org-email">polipro@yahoo.com</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Sébastien LALLOT</div>
+          <div class="org-contact">
+            <div class="org-tel">06 16 59 63 57</div>
+            <div class="org-email">lallot.sebastien19@outlook.fr</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Sandrine MALHERBE</div>
+          <div class="org-contact">
+            <div class="org-tel">06 66 74 60 73</div>
+            <div class="org-email">sandrinemalherbe27@hotmail.com</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Maryse MALLET</div>
+          <div class="org-contact">
+            <div class="org-tel">06 84 48 60 84</div>
+            <div class="org-email">founou80@gmail.com</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Ophélie NATHENE</div>
+          <div class="org-contact">
+            <div class="org-tel">06 44 94 85 75</div>
+            <div class="org-email">charlot.ophelie.0104@gmail.com</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Philippe SUSTAR</div>
+          <div class="org-contact">
+            <div class="org-tel">06 81 87 65 90</div>
+            <div class="org-email">philippe.sustar@free.fr</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Olivier TESTELIN</div>
+          <div class="org-contact">
+            <div class="org-tel">06 74 74 58 56</div>
+            <div class="org-email">Olt5962@gmail.com</div>
+          </div>
+        </div>
+
+        <div class="org-card membre">
+          <span class="org-role">Membre</span>
+          <div class="org-name">Cyril VASSEUR</div>
+          <div class="org-contact">
+            <div class="org-tel">06 60 89 09 31</div>
+            <div class="org-email">vasseurcyril12@gmail.com</div>
+          </div>
+        </div>
+
+      </div><!-- /membres-grid -->
+    </div><!-- /org-tree -->
+  </div><!-- /org-container -->
+</section>
+<!-- ══ FIN ORGANIGRAMME ══ -->
