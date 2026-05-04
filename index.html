@@ -366,7 +366,7 @@
     <div>
       <h5>Rubriques</h5>
       <ul class="footer-links">
-        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/tirage/" target="_blank">Le Comité</a></li>
+       <li><a href="comite.html">Le Comité</a></li>
         <li><a href="clubs.html">Les Clubs</a></li>
         <li><a href="calendrier.html">Calendrier 2026</a></li>
         <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a></li>
@@ -394,7 +394,7 @@
 <script>
   const ham = document.getElementById('hamburger');
   const links = document.getElementById('navLinks');
-  ham.addEventListener('click', () => qslinks.classList.toggle('open'));
+  ham.addEventListener('click', () => links.classList.toggle('open'));
 
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
@@ -410,16 +410,6 @@
   });
 </script>
   <!-- À la fin du <body>, avant </body> -->
-<script>
-  fetch('organigramme.html')
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById('org-mount').innerHTML = html;
-      // Relancer les animations reveal si besoin
-      document.querySelectorAll('#organigramme .reveal').forEach(el => {
-        obs.observe(el);
-      });
-    });
-</script>
+
 </body>
 </html>
