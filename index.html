@@ -182,6 +182,259 @@
     .stats-band { gap: 1.5rem; }
     .nav-rapide-grid { grid-template-columns: 1fr 1fr; }
   }
+  
+  /* ── ORGANIGRAMME ── */
+  #organigramme {
+    background: var(--bleu);
+    padding: 4rem 2rem;
+  }
+ 
+  .org-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+ 
+  /* Adresse siège */
+  .org-siege {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 8px;
+    padding: 0.9rem 1.4rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .org-siege svg { stroke: var(--or); flex-shrink: 0; }
+  .org-siege p { color: rgba(255,255,255,0.65); font-size: 0.82rem; line-height: 1.5; }
+  .org-siege a { color: var(--or-light); text-decoration: none; }
+  .org-siege a:hover { text-decoration: underline; }
+ 
+  /* Arbre */
+  .org-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+ 
+  /* Connecteur vertical */
+  .org-connector {
+    width: 2px;
+    height: 32px;
+    background: var(--or);
+    opacity: 0.4;
+    margin: 0 auto;
+  }
+ 
+  /* Ligne horizontale */
+  .org-hline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    width: 100%;
+  }
+ 
+  .org-hline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: rgba(201,168,76,0.3);
+  }
+ 
+  .org-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+ 
+  .org-branch::before {
+    content: '';
+    width: 2px;
+    height: 28px;
+    background: rgba(201,168,76,0.3);
+  }
+ 
+  /* Cartes */
+  .org-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    text-align: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    cursor: default;
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+  }
+ 
+  .org-card:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-2px);
+  }
+ 
+  /* Président */
+  .org-card.president {
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+    border: 2px solid var(--or);
+    max-width: 300px;
+  }
+ 
+  .org-card.president .org-role {
+    color: var(--or);
+    font-size: 0.7rem;
+  }
+ 
+  /* Vice-président */
+  .org-card.vice {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(201,168,76,0.35);
+  }
+ 
+  /* Secrétaire / Trésorier */
+  .org-card.admin {
+    background: rgba(255,255,255,0.05);
+  }
+ 
+  /* Membre */
+  .org-card.membre {
+    background: rgba(255,255,255,0.04);
+    padding: 0.8rem 1rem;
+  }
+ 
+  .org-role {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.75);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+ 
+  .org-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+  }
+ 
+  .org-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.5rem;
+  }
+ 
+  .org-tel {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+ 
+  .org-tel svg { opacity: 0.6; }
+ 
+  .org-email {
+    font-size: 0.7rem;
+    color: rgba(201,168,76,0.6);
+    word-break: break-all;
+  }
+ 
+  /* Niveaux */
+  .org-level {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
+    padding-top: 28px;
+  }
+ 
+  .org-level::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: rgba(201,168,76,0.25);
+  }
+ 
+  .org-level .org-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 180px;
+    max-width: 240px;
+  }
+ 
+  .org-level .org-item::before {
+    content: '';
+    width: 2px;
+    height: 28px;
+    background: rgba(201,168,76,0.25);
+  }
+ 
+  /* Grid membres */
+  .membres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.7rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
+ 
+  .membres-label {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.6);
+    margin-bottom: 0.8rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+ 
+  /* Séparateur section */
+  .org-sep {
+    width: 50px;
+    height: 2px;
+    background: rgba(201,168,76,0.3);
+    margin: 2rem auto;
+  }
+ 
+  /* Responsive */
+  @media (max-width: 700px) {
+    .org-level {
+      flex-direction: column;
+      align-items: center;
+    }
+    .org-level::before { display: none; }
+    .org-level .org-item { max-width: 100%; width: 100%; }
+    .org-level .org-item::before { height: 16px; }
+  }
+ 
+  @media (max-width: 500px) {
+    .membres-grid { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -255,7 +508,7 @@
     </div>
     <div class="nav-rapide-grid">
 
-      <a href="https://comite-de-la-somme-3.e-monsite.com/pages/tirage/" target="_blank" class="nr-card reveal">
+      <a href="#organigramme">
         <div class="nr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <div><h4>Le Comité</h4><small>Organisation & bureau</small></div>
       </a>
