@@ -1,275 +1,245 @@
-<!-- ══════════════════════════════════════════════════════════
-     ORGANIGRAMME — Comité Directeur de la Somme FFPJP 2026
-     À insérer dans le site à la place du lien "Le Comité"
-     ══════════════════════════════════════════════════════════ -->
-
-<!-- Dans le <head>, ajouter si pas déjà présent :
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Comité — Comité de la Somme FFPJP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
--->
-
 <style>
+  :root {
+    --bleu: #0a2342;
+    --bleu-mid: #163a6b;
+    --or: #c9a84c;
+    --or-light: #e8c97a;
+    --blanc: #f8f6f1;
+    --gris: #e8e4dc;
+    --texte: #1a1a2e;
+    --rouge: #c0392b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--blanc); color: var(--texte); overflow-x: hidden; }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,35,66,0.97); backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--or);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 68px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-brand img { height: 46px; width: auto; filter: drop-shadow(0 2px 6px rgba(201,168,76,0.5)); }
+  .nav-brand-text { line-height: 1.1; }
+  .nav-brand-text span { display: block; font-family: 'Bebas Neue', sans-serif; color: var(--or); font-size: 1.25rem; letter-spacing: 1.5px; }
+  .nav-brand-text small { color: rgba(255,255,255,0.55); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; }
+  .nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; padding: 0.5rem 1rem; position: relative; transition: color 0.2s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%; height: 2px; background: var(--or); transition: left 0.25s, right 0.25s; }
+  .nav-links a:hover { color: var(--or-light); }
+  .nav-links a:hover::after { left: 0.5rem; right: 0.5rem; }
+  .nav-links a.active { color: var(--or); }
+  .nav-links a.active::after { left: 0.5rem; right: 0.5rem; }
+  .nav-links li { position: relative; }
+  .dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--bleu); border: 1px solid var(--or); border-radius: 6px; min-width: 200px; padding: 0.5rem 0; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .nav-links li:hover .dropdown { display: block; }
+  .dropdown a { display: block; padding: 0.5rem 1.2rem; font-size: 0.8rem; text-transform: none; letter-spacing: 0; }
+  .dropdown a::after { display: none; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 26px; height: 2px; background: var(--or); border-radius: 2px; transition: 0.3s; }
+
+  /* ── PAGE HERO (plus compact que l'index) ── */
+  .page-hero {
+    background: linear-gradient(160deg, var(--bleu) 0%, #0d3060 55%, #1a5276 100%);
+    padding: 120px 2rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid var(--or);
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .boule { position: absolute; border-radius: 50%; opacity: 0.07; background: radial-gradient(circle at 35% 35%, var(--or), var(--bleu-mid)); }
+  .boule-1 { width: 280px; height: 280px; top: -60px; right: -60px; }
+  .boule-2 { width: 140px; height: 140px; bottom: -20px; left: 4%; }
+  .page-hero-badge { display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35); color: var(--or-light); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 40px; margin-bottom: 1rem; }
+  .page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; letter-spacing: 3px; line-height: 1; margin-bottom: 0.5rem; }
+  .page-hero h1 em { color: var(--or); font-style: normal; }
+  .page-hero p { color: rgba(255,255,255,0.55); font-size: 0.82rem; letter-spacing: 3px; text-transform: uppercase; }
+  .breadcrumb { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+  .breadcrumb a { color: var(--or-light); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .section-label { font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 0.5rem; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--bleu); line-height: 1.15; margin-bottom: 1rem; }
+  .section-title em { color: var(--or); font-style: italic; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .divider { width: 50px; height: 3px; background: var(--or); margin: 1rem 0 1.5rem; }
+
   /* ── ORGANIGRAMME ── */
-  #organigramme {
-    background: var(--bleu);
-    padding: 4rem 2rem;
-  }
+  #organigramme { background: var(--bleu); padding: 4rem 2rem 5rem; }
 
-  .org-container {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  /* Adresse siège */
   .org-siege {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 8px;
-    padding: 0.9rem 1.4rem;
-    margin-bottom: 2.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 8px; padding: 0.9rem 1.4rem; margin-bottom: 2.5rem;
+    display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
   }
   .org-siege svg { stroke: var(--or); flex-shrink: 0; }
   .org-siege p { color: rgba(255,255,255,0.65); font-size: 0.82rem; line-height: 1.5; }
   .org-siege a { color: var(--or-light); text-decoration: none; }
   .org-siege a:hover { text-decoration: underline; }
 
-  /* Arbre */
-  .org-tree {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-
-  /* Connecteur vertical */
-  .org-connector {
-    width: 2px;
-    height: 32px;
-    background: var(--or);
-    opacity: 0.4;
-    margin: 0 auto;
-  }
-
-  /* Ligne horizontale */
-  .org-hline {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-    position: relative;
-    width: 100%;
-  }
-
-  .org-hline::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 2px;
-    background: rgba(201,168,76,0.3);
-  }
-
-  .org-branch {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-  }
-
-  .org-branch::before {
-    content: '';
-    width: 2px;
-    height: 28px;
-    background: rgba(201,168,76,0.3);
-  }
-
-  /* Cartes */
-  .org-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 1.1rem 1.3rem;
-    text-align: center;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    cursor: default;
-    position: relative;
-    width: 100%;
-    max-width: 260px;
-  }
-
-  .org-card:hover {
-    background: rgba(201,168,76,0.08);
-    border-color: rgba(201,168,76,0.4);
-    transform: translateY(-2px);
-  }
-
-  /* Président */
-  .org-card.president {
-    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
-    border: 2px solid var(--or);
-    max-width: 300px;
-  }
-
-  .org-card.president .org-role {
-    color: var(--or);
-    font-size: 0.7rem;
-  }
-
-  /* Vice-président */
-  .org-card.vice {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(201,168,76,0.35);
-  }
-
-  /* Secrétaire / Trésorier */
-  .org-card.admin {
-    background: rgba(255,255,255,0.05);
-  }
-
-  /* Membre */
-  .org-card.membre {
-    background: rgba(255,255,255,0.04);
-    padding: 0.8rem 1rem;
-  }
-
-  .org-role {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(201,168,76,0.75);
-    margin-bottom: 0.4rem;
-    display: block;
-  }
-
-  .org-name {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.2;
-    margin-bottom: 0.25rem;
-  }
-
-  .org-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    margin-top: 0.5rem;
-  }
-
-  .org-tel {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-  }
-
-  .org-tel svg { opacity: 0.6; }
-
-  .org-email {
-    font-size: 0.7rem;
-    color: rgba(201,168,76,0.6);
-    word-break: break-all;
-  }
+  /* ── ARBRE ── */
+  .org-tree { display: flex; flex-direction: column; align-items: center; }
+  .org-connector { width: 2px; height: 32px; background: var(--or); opacity: 0.4; }
 
   /* Niveaux */
   .org-level {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    width: 100%;
-    position: relative;
-    padding-top: 28px;
+    display: flex; justify-content: center; gap: 1rem;
+    flex-wrap: wrap; width: 100%; position: relative; padding-top: 28px;
   }
-
   .org-level::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 2px;
-    background: rgba(201,168,76,0.25);
+    content: ''; position: absolute; top: 0;
+    left: 15%; right: 15%; height: 2px; background: rgba(201,168,76,0.25);
   }
+  .org-item { display: flex; flex-direction: column; align-items: center; flex: 1; min-width: 190px; max-width: 250px; }
+  .org-item::before { content: ''; width: 2px; height: 28px; background: rgba(201,168,76,0.25); }
 
-  .org-level .org-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    min-width: 180px;
-    max-width: 240px;
+  /* Cartes */
+  .org-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 1.1rem 1.3rem; text-align: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    width: 100%; max-width: 260px;
   }
+  .org-card:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
 
-  .org-level .org-item::before {
-    content: '';
-    width: 2px;
-    height: 28px;
-    background: rgba(201,168,76,0.25);
+  .org-card.president {
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.07));
+    border: 2px solid var(--or); max-width: 310px;
   }
+  .org-card.president .org-role { color: var(--or); }
+  .org-card.vice { border-color: rgba(201,168,76,0.3); }
+  .org-card.admin { background: rgba(255,255,255,0.04); }
+  .org-card.membre { background: rgba(255,255,255,0.03); padding: 0.85rem 1rem; }
+
+  .org-role { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(201,168,76,0.7); margin-bottom: 0.4rem; display: block; }
+  .org-name { font-size: 0.95rem; font-weight: 600; color: #fff; line-height: 1.2; margin-bottom: 0.3rem; }
+  .org-contact { display: flex; flex-direction: column; gap: 0.15rem; margin-top: 0.45rem; }
+  .org-tel { font-size: 0.75rem; color: rgba(255,255,255,0.45); display: flex; align-items: center; justify-content: center; gap: 0.3rem; }
+  .org-tel svg { opacity: 0.5; }
+  .org-email { font-size: 0.68rem; color: rgba(201,168,76,0.55); word-break: break-all; }
 
   /* Grid membres */
-  .membres-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.7rem;
-    margin-top: 2rem;
-    width: 100%;
-  }
+  .membres-section { width: 100%; margin-top: 2.5rem; }
+  .membres-label { text-align: center; font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,0.55); margin-bottom: 1rem; display: block; }
+  .org-sep { width: 60px; height: 2px; background: rgba(201,168,76,0.25); margin: 0 auto 1.5rem; }
+  .membres-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.7rem; }
 
-  .membres-label {
-    text-align: center;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(201,168,76,0.6);
-    margin-bottom: 0.8rem;
-    margin-top: 0.5rem;
-    width: 100%;
-  }
+  /* ── FOOTER ── */
+  footer { background: #070f1e; border-top: 2px solid var(--or); color: rgba(255,255,255,0.6); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+  .footer-brand img { height: 56px; margin-bottom: 1rem; filter: brightness(0.9); }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+  footer h5 { color: var(--or); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; font-weight: 600; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--or); }
+  .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-bottom a { color: var(--or); text-decoration: none; }
 
-  /* Séparateur section */
-  .org-sep {
-    width: 50px;
-    height: 2px;
-    background: rgba(201,168,76,0.3);
-    margin: 2rem auto;
-  }
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* Responsive */
-  @media (max-width: 700px) {
-    .org-level {
-      flex-direction: column;
-      align-items: center;
-    }
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 68px; left: 0; right: 0; background: var(--bleu); padding: 1.5rem; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid var(--or); }
+    .nav-links.open li a { padding: 0.7rem 0.5rem; }
+    .hamburger { display: flex; }
+    .dropdown { position: static; border: none; background: rgba(255,255,255,0.04); margin-top: 0.2rem; border-radius: 4px; }
+    .nav-links li:hover .dropdown { display: none; }
+    .nav-links li.open-sub .dropdown { display: block; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .org-level::before { left: 5%; right: 5%; }
+  }
+  @media (max-width: 650px) {
+    .org-level { padding-top: 0; }
     .org-level::before { display: none; }
-    .org-level .org-item { max-width: 100%; width: 100%; }
-    .org-level .org-item::before { height: 16px; }
+    .org-item { max-width: 100%; width: 100%; }
+    .org-item::before { height: 14px; }
+    .membres-grid { grid-template-columns: 1fr 1fr; }
   }
-
-  @media (max-width: 500px) {
+  @media (max-width: 420px) {
     .membres-grid { grid-template-columns: 1fr; }
   }
 </style>
+</head>
+<body>
 
-<!-- ══ SECTION ORGANIGRAMME ══ -->
+<!-- ── NAVBAR ── -->
+<nav id="navbar">
+  <a class="nav-brand" href="index.html">
+    <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Accueil</a></li>
+    <li>
+      <a href="#" onclick="return false;">Compétitions ▾</a>
+      <div class="dropdown">
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank">Championnat des clubs</a>
+        <a href="classement.html">Résultats</a>
+        <a href="classement.html">Classements</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/reglements/" target="_blank">Tirages</a>
+      </div>
+    </li>
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html">Calendrier</a></li>
+    <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+    <li><a href="comite.html" class="active">Le Comité</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+  <div class="boule boule-1"></div>
+  <div class="boule boule-2"></div>
+  <div class="page-hero-badge">FFPJP — Département 80</div>
+  <h1>Le <em>Comité</em></h1>
+  <p>Organisation & Bureau Directeur 2026</p>
+  <div class="breadcrumb">
+    <a href="index.html">Accueil</a>
+    <span>›</span>
+    <span>Le Comité</span>
+  </div>
+</div>
+
+<!-- ── ORGANIGRAMME ── -->
 <section id="organigramme">
-  <div class="org-container">
+  <div class="container">
 
-    <!-- En-tête section -->
-    <div class="reveal" style="margin-bottom:2.5rem;text-align:center">
-      <p class="section-label" style="color:var(--or-light)">FFPJP — Département 80</p>
-      <h2 class="section-title" style="color:#fff;text-align:center">Comité <em style="color:var(--or)">Directeur</em></h2>
-      <div class="divider" style="margin:1rem auto 0"></div>
+    <div class="reveal" style="text-align:center; margin-bottom:2.5rem">
+      <p class="section-label" style="color:var(--or-light)">Saison 2026</p>
+      <h2 class="section-title" style="color:#fff; text-align:center">Comité <em style="color:var(--or)">Directeur</em></h2>
+      <div class="divider" style="margin: 1rem auto 0"></div>
     </div>
 
     <!-- Siège -->
@@ -282,11 +252,11 @@
       </p>
     </div>
 
-    <!-- Arbre -->
-    <div class="org-tree reveal">
+    <!-- Arbre hiérarchique -->
+    <div class="org-tree">
 
       <!-- PRÉSIDENT -->
-      <div class="org-card president">
+      <div class="org-card president reveal">
         <span class="org-role">Président</span>
         <div class="org-name">Bernard PRUVOT</div>
         <div class="org-contact">
@@ -295,24 +265,20 @@
             06 30 00 93 69
           </div>
           <div class="org-email">pruvotbernard@orange.fr</div>
-          <div class="org-tel" style="font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">3 Rue Hurtelle — 80460 Oust Marest</div>
+          <div class="org-tel" style="font-size:0.66rem;color:rgba(255,255,255,0.3);margin-top:0.15rem">3 Rue Hurtelle — 80460 Oust Marest</div>
         </div>
       </div>
 
-      <!-- Connecteur -->
       <div class="org-connector"></div>
 
       <!-- VICE-PRÉSIDENTS -->
-      <div class="org-level">
+      <div class="org-level reveal">
         <div class="org-item">
           <div class="org-card vice">
             <span class="org-role">Vice-Président</span>
             <div class="org-name">Mickaël MALHERBE</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                06 66 74 14 59
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>06 66 74 14 59</div>
               <div class="org-email">samik80@laposte.net</div>
             </div>
           </div>
@@ -322,10 +288,7 @@
             <span class="org-role">Vice-Présidente</span>
             <div class="org-name">Pascale CONSEIL</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                06 09 07 75 45
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>06 09 07 75 45</div>
               <div class="org-email">conseilpascale76@gmail.com</div>
             </div>
           </div>
@@ -335,30 +298,23 @@
             <span class="org-role">Vice-Président</span>
             <div class="org-name">Yves DECAIX</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                06 83 60 64 45
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>06 83 60 64 45</div>
               <div class="org-email">yves.decaix@orange.fr</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Connecteur -->
       <div class="org-connector"></div>
 
       <!-- SECRÉTAIRES & TRÉSORIERS -->
-      <div class="org-level">
+      <div class="org-level reveal">
         <div class="org-item">
           <div class="org-card admin">
             <span class="org-role">Secrétaire Général</span>
             <div class="org-name">Bertrand DOUAY</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                06 59 20 80 13
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>06 59 20 80 13</div>
               <div class="org-email">bertrand.douay80@gmail.com</div>
             </div>
           </div>
@@ -368,10 +324,7 @@
             <span class="org-role">Secrétaire Adjointe</span>
             <div class="org-name">Mégane MOREL</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                06 18 29 86 64
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>06 18 29 86 64</div>
               <div class="org-email">megane.morel80@hotmail.com</div>
             </div>
           </div>
@@ -381,10 +334,7 @@
             <span class="org-role">Trésorier Général</span>
             <div class="org-name">Marc HEDOUIN</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                06 08 43 52 40
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>06 08 43 52 40</div>
               <div class="org-email">mmf.hedouin@orange.fr</div>
             </div>
           </div>
@@ -394,10 +344,7 @@
             <span class="org-role">Trésorier Adjoint</span>
             <div class="org-name">Pascal DUROT</div>
             <div class="org-contact">
-              <div class="org-tel">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                07 50 40 40 38
-              </div>
+              <div class="org-tel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.81h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>07 50 40 40 38</div>
               <div class="org-email">pdurot@orange.fr</div>
             </div>
           </div>
@@ -405,93 +352,156 @@
       </div>
 
       <!-- MEMBRES -->
-      <div class="org-sep"></div>
-      <p class="membres-label">Membres du Comité Directeur</p>
-      <div class="membres-grid">
+      <div class="membres-section reveal">
+        <div class="org-sep"></div>
+        <span class="membres-label">Membres du Comité Directeur</span>
+        <div class="membres-grid">
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Vincent DE BENEDITTIS</div>
-          <div class="org-contact">
-            <div class="org-tel">06 67 51 20 43</div>
-            <div class="org-email">vincent.realit@gmail.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Vincent DE BENEDITTIS</div>
+            <div class="org-contact">
+              <div class="org-tel">06 67 51 20 43</div>
+              <div class="org-email">vincent.realit@gmail.com</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Kevin EVENOU</div>
-          <div class="org-contact">
-            <div class="org-tel">06 43 31 57 43</div>
-            <div class="org-email">polipro@yahoo.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Kevin EVENOU</div>
+            <div class="org-contact">
+              <div class="org-tel">06 43 31 57 43</div>
+              <div class="org-email">polipro@yahoo.com</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Sébastien LALLOT</div>
-          <div class="org-contact">
-            <div class="org-tel">06 16 59 63 57</div>
-            <div class="org-email">lallot.sebastien19@outlook.fr</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Sébastien LALLOT</div>
+            <div class="org-contact">
+              <div class="org-tel">06 16 59 63 57</div>
+              <div class="org-email">lallot.sebastien19@outlook.fr</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Sandrine MALHERBE</div>
-          <div class="org-contact">
-            <div class="org-tel">06 66 74 60 73</div>
-            <div class="org-email">sandrinemalherbe27@hotmail.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Sandrine MALHERBE</div>
+            <div class="org-contact">
+              <div class="org-tel">06 66 74 60 73</div>
+              <div class="org-email">sandrinemalherbe27@hotmail.com</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Maryse MALLET</div>
-          <div class="org-contact">
-            <div class="org-tel">06 84 48 60 84</div>
-            <div class="org-email">founou80@gmail.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Maryse MALLET</div>
+            <div class="org-contact">
+              <div class="org-tel">06 84 48 60 84</div>
+              <div class="org-email">founou80@gmail.com</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Ophélie NATHENE</div>
-          <div class="org-contact">
-            <div class="org-tel">06 44 94 85 75</div>
-            <div class="org-email">charlot.ophelie.0104@gmail.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Ophélie NATHENE</div>
+            <div class="org-contact">
+              <div class="org-tel">06 44 94 85 75</div>
+              <div class="org-email">charlot.ophelie.0104@gmail.com</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Philippe SUSTAR</div>
-          <div class="org-contact">
-            <div class="org-tel">06 81 87 65 90</div>
-            <div class="org-email">philippe.sustar@free.fr</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Philippe SUSTAR</div>
+            <div class="org-contact">
+              <div class="org-tel">06 81 87 65 90</div>
+              <div class="org-email">philippe.sustar@free.fr</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Olivier TESTELIN</div>
-          <div class="org-contact">
-            <div class="org-tel">06 74 74 58 56</div>
-            <div class="org-email">Olt5962@gmail.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Olivier TESTELIN</div>
+            <div class="org-contact">
+              <div class="org-tel">06 74 74 58 56</div>
+              <div class="org-email">Olt5962@gmail.com</div>
+            </div>
           </div>
-        </div>
 
-        <div class="org-card membre">
-          <span class="org-role">Membre</span>
-          <div class="org-name">Cyril VASSEUR</div>
-          <div class="org-contact">
-            <div class="org-tel">06 60 89 09 31</div>
-            <div class="org-email">vasseurcyril12@gmail.com</div>
+          <div class="org-card membre">
+            <span class="org-role">Membre</span>
+            <div class="org-name">Cyril VASSEUR</div>
+            <div class="org-contact">
+              <div class="org-tel">06 60 89 09 31</div>
+              <div class="org-email">vasseurcyril12@gmail.com</div>
+            </div>
           </div>
-        </div>
 
-      </div><!-- /membres-grid -->
+        </div>
+      </div>
     </div><!-- /org-tree -->
-  </div><!-- /org-container -->
+  </div><!-- /container -->
 </section>
-<!-- ══ FIN ORGANIGRAMME ══ -->
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logocomite.png" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal. Toutes les informations et résultats sur la pétanque de notre département.</p>
+    </div>
+    <div>
+      <h5>Rubriques</h5>
+      <ul class="footer-links">
+        <li><a href="comite.html">Le Comité</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank">Résultats</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/b/" target="_blank">Documentations</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/" target="_blank">Nouveautés</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/archives/" target="_blank">Archives</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const ham = document.getElementById('hamburger');
+  const links = document.getElementById('navLinks');
+  ham.addEventListener('click', () => links.classList.toggle('open'));
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Navbar shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow =
+      window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+  });
+</script>
+</body>
+</html>
