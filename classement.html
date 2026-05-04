@@ -2,223 +2,410 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Classements 2026</title>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classements 2026 — Comité de la Somme FFPJP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bleu:#0a2342;--bleu-mid:#163a6b;--or:#c9a84c;--or-light:#e8c97a;
+    --blanc:#f8f6f1;--gris:#e8e4dc;--texte:#1a1a2e;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"DM Sans",sans-serif;background:var(--blanc);color:var(--texte);overflow-x:hidden}
 
-/* GLOBAL */
-body {
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background:#f0f2f5;
-}
+  /* NAVBAR */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,35,66,.97);backdrop-filter:blur(12px);border-bottom:2px solid var(--or);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:68px}
+  .nav-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .nav-brand img{height:46px;width:auto;filter:drop-shadow(0 2px 6px rgba(201,168,76,.5))}
+  .nav-brand-text{line-height:1.1}
+  .nav-brand-text span{display:block;font-family:"Bebas Neue",sans-serif;color:var(--or);font-size:1.25rem;letter-spacing:1.5px}
+  .nav-brand-text small{color:rgba(255,255,255,.55);font-size:.65rem;letter-spacing:3px;text-transform:uppercase}
+  .nav-links{display:flex;align-items:center;gap:0;list-style:none}
+  .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;padding:.5rem 1rem;position:relative;transition:color .2s}
+  .nav-links a::after{content:"";position:absolute;bottom:-2px;left:50%;right:50%;height:2px;background:var(--or);transition:left .25s,right .25s}
+  .nav-links a:hover{color:var(--or-light)}
+  .nav-links a:hover::after{left:.5rem;right:.5rem}
+  .nav-links a.active{color:var(--or)}
+  .nav-links a.active::after{left:.5rem;right:.5rem}
+  .nav-links li{position:relative}
+  .dropdown{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--bleu);border:1px solid var(--or);border-radius:6px;min-width:200px;padding:.5rem 0;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+  .nav-links li:hover .dropdown{display:block}
+  .dropdown a{display:block;padding:.5rem 1.2rem;font-size:.8rem;text-transform:none;letter-spacing:0}
+  .dropdown a::after{display:none}
+  .nav-cta{background:var(--or);color:var(--bleu)!important;font-weight:600!important;padding:.45rem 1.2rem!important;border-radius:4px;transition:background .2s!important}
+  .nav-cta:hover{background:var(--or-light)!important;color:var(--bleu)!important}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+  .hamburger span{display:block;width:26px;height:2px;background:var(--or);border-radius:2px;transition:.3s}
 
-/* HEADER (IDENTIQUE STYLE CALENDRIER) */
-header {
-    background: linear-gradient(135deg, #1d3557, #457b9d);
-    color:white;
-    text-align:center;
-    padding:30px 20px;
-}
+  /* PAGE HEADER */
+  .page-header{background:linear-gradient(160deg,var(--bleu) 0%,#0d3060 60%,#163a6b 100%);padding:120px 2rem 4rem;text-align:center;position:relative;overflow:hidden}
+  .page-header::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 120%,rgba(201,168,76,.1) 0%,transparent 70%)}
+  .page-header-badge{display:inline-block;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);color:var(--or-light);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;padding:.35rem 1.2rem;border-radius:40px;margin-bottom:1.2rem;animation:fadeUp .7s ease both}
+  .page-header h1{font-family:"Bebas Neue",sans-serif;font-size:clamp(2.5rem,6vw,5rem);color:#fff;letter-spacing:3px;animation:fadeUp .8s ease both .1s}
+  .page-header h1 em{color:var(--or);font-style:normal}
+  .page-header p{color:rgba(255,255,255,.65);font-size:1rem;margin-top:.8rem;animation:fadeUp .9s ease both .2s}
+  .breadcrumb{position:absolute;top:80px;left:2.5rem;display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:rgba(255,255,255,.45)}
+  .breadcrumb a{color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s}
+  .breadcrumb a:hover{color:var(--or)}
 
-header h1 {
-    margin:0;
-    font-size:32px;
-}
+  /* CONTENT */
+  .page-content{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 5rem}
 
-/* CONTAINER */
-.container {
-    max-width:1000px;
-    margin:40px auto;
-    padding:0 20px;
-}
+  /* INFOS MAJ */
+  .maj-bar{background:var(--bleu);border-radius:8px;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+  .maj-bar p{color:rgba(255,255,255,.75);font-size:.85rem}
+  .maj-bar strong{color:var(--or)}
 
-/* CARD STYLE */
-.card {
-    background:white;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:25px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.08);
-}
+  /* ONGLETS CATÉGORIE */
+  .cat-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+  .cat-tab{border:2px solid var(--gris);background:#fff;color:#555;font-size:.85rem;font-weight:600;letter-spacing:.3px;padding:.55rem 1.3rem;border-radius:25px;cursor:pointer;transition:all .2s;font-family:"DM Sans",sans-serif;display:flex;align-items:center;gap:.4rem}
+  .cat-tab.active,.cat-tab:hover{background:var(--bleu);color:var(--or);border-color:var(--bleu)}
 
-/* TITRE */
-.card h2 {
-    margin-top:0;
-    color:#1d3557;
-}
+  /* BARRE RECHERCHE + FILTRES */
+  .controls{display:flex;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap;align-items:center}
+  .search-wrap{position:relative;flex:1;min-width:220px;background:#fff;border:2px solid var(--gris);border-radius:8px;display:flex;align-items:center;gap:.7rem;padding:.6rem 1rem;transition:border-color .2s}
+  .search-wrap:focus-within{border-color:var(--or)}
+  .search-wrap input{flex:1;border:none;outline:none;font-family:"DM Sans",sans-serif;font-size:.9rem;color:var(--texte);background:transparent}
+  .search-wrap input::placeholder{color:#bbb}
+  .filter-select{border:2px solid var(--gris);background:#fff;border-radius:8px;padding:.6rem 1rem;font-family:"DM Sans",sans-serif;font-size:.85rem;color:var(--texte);cursor:pointer;outline:none;transition:border-color .2s}
+  .filter-select:focus{border-color:var(--or)}
 
-/* SEARCH */
-.search {
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    margin:10px 0 15px;
-}
+  /* TABLE */
+  .table-wrap{background:#fff;border-radius:10px;border:1px solid var(--gris);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .result-count{font-size:.8rem;color:#999;margin-bottom:.6rem}
+  table{width:100%;border-collapse:collapse}
+  thead{background:var(--bleu)}
+  thead th{color:var(--or);font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem 1rem;text-align:left;white-space:nowrap}
+  thead th.right{text-align:right}
+  tbody tr{border-bottom:1px solid var(--gris);transition:background .15s}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:#faf8f4}
+  tbody td{padding:.75rem 1rem;font-size:.88rem;color:var(--texte)}
+  tbody td.right{text-align:right;font-weight:700;color:var(--bleu)}
+  .rank-cell{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;color:#bbb;width:40px;text-align:center}
+  .rank-cell.top1{color:#c9a84c}
+  .rank-cell.top2{color:#9ba0a8}
+  .rank-cell.top3{color:#c8855a}
 
-/* TABLE */
-.table-wrapper {
-    overflow:auto;
-    max-height:400px;
-}
+  /* BADGE CLASSIFICATION */
+  .badge{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:10px;text-transform:uppercase;white-space:nowrap}
+  .badge-Elite{background:#e8f0fe;color:#1a3a8a}
+  .badge-Honneur{background:#e8f9ee;color:#1a6a35}
+  .badge-Promotion{background:#fff8e0;color:#7a5500}
+  .badge-Non-Class{background:#f3f3f3;color:#888}
 
-table {
-    width:100%;
-    border-collapse:collapse;
-}
+  /* SEXE */
+  .sexe-M{color:#1a5276;font-weight:700}
+  .sexe-F{color:#8a0050;font-weight:700}
 
-th, td {
-    padding:10px;
-}
+  /* CLUBS TABLE special */
+  .club-rank-bar{display:flex;align-items:center;gap:.8rem}
+  .bar-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--or),var(--or-light));flex-shrink:0}
 
-th {
-    background:#457b9d;
-    color:white;
-    position:sticky;
-    top:0;
-    cursor:pointer;
-}
+  /* NO RESULT */
+  .no-result{text-align:center;padding:3rem 1rem;color:#bbb;font-size:.95rem}
 
-tr:nth-child(even) {
-    background:#f8f9fa;
-}
+  /* FOOTER */
+  footer{background:#070f1e;border-top:2px solid var(--or);color:rgba(255,255,255,.6);padding:3rem 2rem 1.5rem}
+  .footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+  .footer-brand img{height:56px;margin-bottom:1rem;filter:brightness(.9)}
+  .footer-brand p{font-size:.85rem;line-height:1.7;max-width:280px}
+  footer h5{color:var(--or);font-size:.72rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;font-weight:600}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .footer-links a{color:rgba(255,255,255,.55);text-decoration:none;font-size:.85rem;transition:color .2s}
+  .footer-links a:hover{color:var(--or)}
+  .footer-bottom{max-width:1200px;margin:0 auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;font-size:.78rem;flex-wrap:wrap;gap:.5rem}
+  .footer-bottom a{color:var(--or);text-decoration:none}
 
-tr:hover {
-    background:#e6f0ff;
-}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
 
+  @media(max-width:900px){
+    .nav-links{display:none}
+    .nav-links.open{display:flex;flex-direction:column;position:fixed;top:68px;left:0;right:0;background:var(--bleu);padding:1.5rem;gap:.2rem;border-top:1px solid rgba(255,255,255,.1);border-bottom:2px solid var(--or)}
+    .nav-links.open li a{padding:.7rem .5rem}
+    .hamburger{display:flex}
+    .dropdown{position:static;border:none;background:rgba(255,255,255,.04);margin-top:.2rem;border-radius:4px}
+    .nav-links li:hover .dropdown{display:none}
+    .footer-inner{grid-template-columns:1fr;gap:2rem}
+    .breadcrumb{display:none}
+    .controls{flex-direction:column}
+    .search-wrap{width:100%}
+    thead th:nth-child(5),tbody td:nth-child(5){display:none}
+  }
+  @media(max-width:600px){
+    .cat-tabs{gap:.3rem}
+    .cat-tab{font-size:.78rem;padding:.45rem .9rem}
+    thead th:nth-child(4),tbody td:nth-child(4){display:none}
+  }
 </style>
 </head>
-
 <body>
 
-<header>
-<h1>Classements 2026</h1>
-</header>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a class="nav-brand" href="index.html">
+    <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Accueil</a></li>
+    <li>
+      <a href="#" onclick="return false;">Compétitions ▾</a>
+      <div class="dropdown">
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnat-des-clubs/" target="_blank">Championnat des clubs</a>
+        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank">Résultats</a>
+        <a href="classement.html" class="active">Classements</a>
+      </div>
+    </li>
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html">Calendrier</a></li>
+    <li><a href="classement.html" class="active">Classements</a></li>
+    <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="calendrier.html" class="nav-cta">📅 Calendrier 2026</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
 
-<div class="container">
-
-<!-- SECTION TEMPLATE -->
-<div class="card">
-<h2>Seniors</h2>
-<input class="search" placeholder="Rechercher..." onkeyup="filter('senior', this.value)">
-<div class="table-wrapper">
-<table id="senior"></table>
-</div>
-</div>
-
-<div class="card">
-<h2>Clubs</h2>
-<input class="search" placeholder="Rechercher..." onkeyup="filter('clubs', this.value)">
-<div class="table-wrapper">
-<table id="clubs"></table>
-</div>
-</div>
-
-<div class="card">
-<h2>Vétérans</h2>
-<input class="search" placeholder="Rechercher..." onkeyup="filter('vet', this.value)">
-<div class="table-wrapper">
-<table id="vet"></table>
-</div>
-</div>
-
-<div class="card">
-<h2>Féminines</h2>
-<input class="search" placeholder="Rechercher..." onkeyup="filter('fem', this.value)">
-<div class="table-wrapper">
-<table id="fem"></table>
-</div>
-</div>
-
-<div class="card">
-<h2>Jeunes</h2>
-<input class="search" placeholder="Rechercher..." onkeyup="filter('jeunes', this.value)">
-<div class="table-wrapper">
-<table id="jeunes"></table>
-</div>
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html">Accueil</a>
+    <span>›</span>
+    <span style="color:rgba(255,255,255,.7)">Classements</span>
+  </div>
+  <div class="page-header-badge">Saison 2026</div>
+  <h1>Classements <em>des joueurs</em></h1>
+  <p>Classements officiels du Comité de la Somme — mis à jour régulièrement</p>
 </div>
 
+<!-- CONTENT -->
+<div class="page-content">
+
+  <div class="maj-bar reveal">
+    <span style="font-size:1.3rem">📊</span>
+    <p>Dernières mises à jour : <strong>Vétérans & Féminin & Clubs</strong> — 21/04/2026 &nbsp;|&nbsp; <strong>Senior & Jeunes</strong> — 19/03/2026</p>
+  </div>
+
+  <!-- ONGLETS -->
+  <div class="cat-tabs reveal">
+    <button class="cat-tab active" onclick="setTab('senior',this)">🏆 Senior mixte</button>
+    <button class="cat-tab" onclick="setTab('fem',this)">👩 Féminin</button>
+    <button class="cat-tab" onclick="setTab('vet',this)">🎖️ Vétérans</button>
+    <button class="cat-tab" onclick="setTab('jeunes',this)">👦 Jeunes</button>
+    <button class="cat-tab" onclick="setTab('clubs',this)">🏅 Clubs</button>
+  </div>
+
+  <!-- CONTRÔLES (recherche + filtre) -->
+  <div class="controls reveal" id="controls-players">
+    <div class="search-wrap">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Rechercher un joueur, un club…" oninput="renderTable()">
+    </div>
+    <select class="filter-select" id="filter-classif" onchange="renderTable()">
+      <option value="">Toutes les classifications</option>
+      <option value="Elite">Elite</option>
+      <option value="Honneur">Honneur</option>
+      <option value="Promotion">Promotion</option>
+      <option value="Non Classé">Non Classé</option>
+    </select>
+    <select class="filter-select" id="filter-sexe" onchange="renderTable()" style="display:none">
+      <option value="">Tous (H/F)</option>
+      <option value="M">Hommes</option>
+      <option value="F">Femmes</option>
+    </select>
+  </div>
+
+  <p class="result-count reveal" id="result-count"></p>
+
+  <div class="table-wrap reveal" id="table-container"></div>
+
 </div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logocomite.png" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal.</p>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <ul class="footer-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
+        <li><a href="classement.html">Classements</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/" target="_blank">Championnats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements officiels</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
 
 <script>
+const DATA = {"senior":[{"nom":"AGUENIS","prenom":"Cédric","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Elite","pts":41,"concours":22},{"nom":"COUVERCHEL","prenom":"Florentin","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Elite","pts":40,"concours":19},{"nom":"TIXIER","prenom":"Jeremy","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":37,"concours":13},{"nom":"COUVERCHEL","prenom":"Lucie","club":"ASPTT AMIENS","sexe":"F","classif":"Honneur","pts":33,"concours":16},{"nom":"MAUDUIT","prenom":"Logan","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":24,"concours":17},{"nom":"CORNET","prenom":"Jean-Baptiste","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":21,"concours":14},{"nom":"DEMARET","prenom":"Alain","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":18,"concours":11},{"nom":"BULANT","prenom":"Kevin","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":16,"concours":13},{"nom":"RENAULT","prenom":"Jerome","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":16,"concours":14},{"nom":"DELATTRE","prenom":"Sullivan","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":15,"concours":11},{"nom":"GALLOPIN","prenom":"Patrick","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":14,"concours":8},{"nom":"TELLIER","prenom":"Steven","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":14,"concours":6},{"nom":"BENHENNI","prenom":"Djillali","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":14,"concours":7},{"nom":"DUPONT","prenom":"Mattéo","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":14,"concours":11},{"nom":"DAMVILLE","prenom":"Christophe","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Honneur","pts":12,"concours":13},{"nom":"CROISE","prenom":"Frédéric","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":12,"concours":6},{"nom":"DELAHAYE","prenom":"Kevin","club":"ASPTT AMIENS","sexe":"M","classif":"Elite","pts":12,"concours":6},{"nom":"EVRARD","prenom":"Hélene","club":"PETANQUE ABBEVILLOISE","sexe":"F","classif":"Honneur","pts":12,"concours":6},{"nom":"FOUQUIER","prenom":"Jonathan","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":11,"concours":7},{"nom":"LECERF","prenom":"Alexandre","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":11,"concours":15},{"nom":"PRUVOT","prenom":"Manon","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Elite","pts":11,"concours":11},{"nom":"LECONTE","prenom":"Isabelle","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Honneur","pts":10,"concours":11},{"nom":"PERRIER","prenom":"Romain","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":10,"concours":14},{"nom":"LAGNEAU","prenom":"Jean-Christophe","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Honneur","pts":10,"concours":10},{"nom":"BALEDENT","prenom":"Reynald","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":10,"concours":13},{"nom":"TARTARE","prenom":"Dylan","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":10,"concours":13},{"nom":"COUVERCHEL","prenom":"Alexandra","club":"ASPTT AMIENS","sexe":"F","classif":"Honneur","pts":9,"concours":12},{"nom":"MALHERBE","prenom":"Kentin","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Promotion","pts":9,"concours":17},{"nom":"EVENOU","prenom":"Kevin","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":8,"concours":8},{"nom":"PAUCHET","prenom":"Julien","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":8,"concours":8},{"nom":"MOROTTI","prenom":"Laurence","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Elite","pts":8,"concours":5},{"nom":"GRIMAUX","prenom":"Grégory","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":8,"concours":2},{"nom":"FAUVEAUX","prenom":"Grégory","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":8,"concours":5},{"nom":"BAUDUIN","prenom":"Caroline","club":"ASPTT AMIENS","sexe":"F","classif":"Honneur","pts":7,"concours":7},{"nom":"DEVAUCHELLE","prenom":"Arnaud","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":7,"concours":9},{"nom":"BAUDRY","prenom":"Thomas","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Honneur","pts":7,"concours":6},{"nom":"BEAUVISAGE","prenom":"Vincent","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":7,"concours":6},{"nom":"BONGARD","prenom":"Nicolas","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Promotion","pts":7,"concours":3},{"nom":"PHILIPSON","prenom":"Julien","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":7,"concours":7},{"nom":"CHARLEY","prenom":"Sonia","club":"ASPTT AMIENS","sexe":"F","classif":"Honneur","pts":7,"concours":9},{"nom":"GOBEAUT","prenom":"Kevin","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Honneur","pts":7,"concours":8},{"nom":"RUBIGNY","prenom":"Andre","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":7,"concours":14},{"nom":"BOSCHER","prenom":"Pascal","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Elite","pts":6,"concours":6},{"nom":"OLEN","prenom":"Marcel","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":6,"concours":6},{"nom":"BULANT","prenom":"Bruno","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":6,"concours":4},{"nom":"GOSSART","prenom":"Ludwig","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":6,"concours":5},{"nom":"OLEN","prenom":"Jordan","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":6,"concours":7},{"nom":"PHILIPSON","prenom":"Amandine","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Promotion","pts":6,"concours":5},{"nom":"BELLAMY","prenom":"Brice","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Promotion","pts":6,"concours":8},{"nom":"LEFEVRE","prenom":"Elodie","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":6,"concours":4},{"nom":"DEVISSCHER","prenom":"Kevin","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Honneur","pts":6,"concours":11},{"nom":"DE-COCK","prenom":"Alan","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Honneur","pts":6,"concours":10},{"nom":"IN","prenom":"Chiworn","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":6,"concours":5},{"nom":"BEAUBECQ","prenom":"Cyril","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Promotion","pts":6,"concours":6},{"nom":"MORICE","prenom":"Alain","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":5,"concours":5},{"nom":"DEMESTRE","prenom":"Paolo","club":"ASPTT AMIENS","sexe":"M","classif":"Elite","pts":5,"concours":8},{"nom":"DUVAL","prenom":"Gérard","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":5,"concours":8},{"nom":"DIGNOCOURT","prenom":"Yoan","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Promotion","pts":5,"concours":3},{"nom":"CHARPENTIER","prenom":"Bruno","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":5,"concours":1},{"nom":"BORE","prenom":"Sébastien","club":"PETANQUE BOVES","sexe":"M","classif":"Honneur","pts":5,"concours":11},{"nom":"MOREAU","prenom":"Damien","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":5,"concours":7},{"nom":"LAURENT","prenom":"Christian","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":5,"concours":3},{"nom":"TUNC","prenom":"NATHALIE","club":"CP FIENVILLERS DOULLENS","sexe":"F","classif":"Non Classé","pts":4,"concours":6},{"nom":"DEDEMOGLU","prenom":"Sélim","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":4,"concours":4},{"nom":"DEDEMOGLU","prenom":"Marie","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Honneur","pts":4,"concours":2},{"nom":"ENGSTER","prenom":"Matthieu","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Honneur","pts":4,"concours":5},{"nom":"SLAGMULDER","prenom":"Dylan","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":4,"concours":6},{"nom":"FOUILLARD","prenom":"Thierry","club":"ASPTT AMIENS","sexe":"M","classif":"Elite","pts":4,"concours":6},{"nom":"VASSEUR","prenom":"Olivier","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":4,"concours":7},{"nom":"MALHERBE","prenom":"Mickael","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Honneur","pts":4,"concours":8},{"nom":"DUBOT","prenom":"Jérôme","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Promotion","pts":4,"concours":1},{"nom":"BLANCHARD","prenom":"Bruno","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Non Classé","pts":4,"concours":3},{"nom":"STACHOWSKI","prenom":"Julien","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":4,"concours":2},{"nom":"DANTEN","prenom":"Bryan","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":4,"concours":4},{"nom":"COLANGE","prenom":"Katheleen","club":"PETANQUE FLIXECOURTOISE","sexe":"F","classif":"Non Classé","pts":4,"concours":2},{"nom":"MIGNOT","prenom":"Monique","club":"PETANQUE ABBEVILLOISE","sexe":"F","classif":"Non Classé","pts":4,"concours":1},{"nom":"TARTARE","prenom":"Didier","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":4,"concours":1},{"nom":"SELINGUE","prenom":"Bernard","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":4,"concours":6},{"nom":"CAUCHOIS","prenom":"Wesley","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":4,"concours":4},{"nom":"QUENNEHEN","prenom":"Guylaine","club":"ASPTT AMIENS","sexe":"F","classif":"Honneur","pts":4,"concours":8},{"nom":"CHAMAND","prenom":"Loic-Adrien","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":4,"concours":4},{"nom":"BARRE","prenom":"Thomas","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Non Classé","pts":4,"concours":8},{"nom":"NACHUN","prenom":"Mickaël","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Promotion","pts":4,"concours":2},{"nom":"DEGARDIN","prenom":"Grégory","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":4,"concours":7},{"nom":"SEMEDO","prenom":"Alexis","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":4,"concours":15},{"nom":"KICKA","prenom":"Valerie","club":"PETANQUE BOURDONNAISE","sexe":"F","classif":"Non Classé","pts":4,"concours":8},{"nom":"CHARLOT","prenom":"Sebastien","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Promotion","pts":3,"concours":13},{"nom":"DUPIR","prenom":"Julien","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":3,"concours":2},{"nom":"PREVOST","prenom":"Vincent","club":"PETANQUE MONTDIDIER","sexe":"M","classif":"Honneur","pts":3,"concours":9},{"nom":"FOURNIER","prenom":"Joël","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":3,"concours":2},{"nom":"FONTAINE","prenom":"Gilles","club":"ROYE PETANQUE","sexe":"M","classif":"Promotion","pts":3,"concours":1},{"nom":"DESPOIS DE FOLLEVILL","prenom":"Tony","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":3,"concours":1},{"nom":"DAUSSY","prenom":"PHILIPPE","club":"PETANQUE FLIXECOURTOISE","sexe":"M","classif":"Promotion","pts":3,"concours":4},{"nom":"EVENOU","prenom":"Eric","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":3,"concours":4},{"nom":"BALIQUE","prenom":"Xavier","club":"PETANQUE HAMOISE","sexe":"M","classif":"Non Classé","pts":3,"concours":2},{"nom":"ALEXANDRE","prenom":"Alain","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":3,"concours":1},{"nom":"ALEXANDRE","prenom":"Cedric","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":3,"concours":5},{"nom":"AUZOUX","prenom":"Samuel","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Promotion","pts":3,"concours":3},{"nom":"KHEFIF","prenom":"Houari","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":3,"concours":5},{"nom":"MASLANKA","prenom":"Rodrigue","club":"ROYE PETANQUE","sexe":"M","classif":"Honneur","pts":3,"concours":6},{"nom":"VALBUR","prenom":"Jean-Claude","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":3,"concours":2},{"nom":"CAYLUS","prenom":"Christophe","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Non Classé","pts":3,"concours":1},{"nom":"DEVRAIGNE","prenom":"Fabien","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":3,"concours":3},{"nom":"CANTREL","prenom":"Cyril","club":"ROYE PETANQUE","sexe":"M","classif":"Honneur","pts":3,"concours":6},{"nom":"PAGNIEZ","prenom":"Stephane","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Promotion","pts":3,"concours":5},{"nom":"LEFEVRE","prenom":"Teddy","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":3,"concours":7},{"nom":"BULANT","prenom":"Dylan","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":3,"concours":3},{"nom":"PARISY","prenom":"Alain","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":3,"concours":11},{"nom":"DUQUENNE","prenom":"Stephane","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":3,"concours":5},{"nom":"AOUAD","prenom":"Youcef","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":3,"concours":2},{"nom":"DUMONT","prenom":"Romain","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":3,"concours":3},{"nom":"DUMONT","prenom":"Tony","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":3,"concours":3},{"nom":"GLACHANT","prenom":"Franck","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":3,"concours":5},{"nom":"MOUILLART","prenom":"Maëva","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Elite","pts":3,"concours":12},{"nom":"VAURY","prenom":"Jérémy","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":3,"concours":3},{"nom":"WOURMS","prenom":"Karl","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":3,"concours":3},{"nom":"BAUDELOT","prenom":"Antoine","club":"POIX SPORT PETANQUE","sexe":"M","classif":"Non Classé","pts":3,"concours":1},{"nom":"BRIAULT","prenom":"Jean-Philippe","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":3,"concours":2},{"nom":"DEMARQUET","prenom":"Kevin","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":3,"concours":6},{"nom":"MAGNIER","prenom":"Hervé","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Promotion","pts":3,"concours":8},{"nom":"LESIEUX","prenom":"Jessy","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Honneur","pts":3,"concours":2},{"nom":"GHYSSELS","prenom":"Charly","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":3,"concours":4},{"nom":"DELCENSERIE","prenom":"François","club":"ROYE PETANQUE","sexe":"M","classif":"Honneur","pts":3,"concours":3},{"nom":"VANEGUE","prenom":"Anthony","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Non Classé","pts":3,"concours":7},{"nom":"DELATTRE","prenom":"Pascal","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":3,"concours":8},{"nom":"BARRE","prenom":"Samuel","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Promotion","pts":3,"concours":5},{"nom":"DURIEUX","prenom":"Pauline","club":"LA BOULE PERONNAISE","sexe":"F","classif":"Promotion","pts":3,"concours":3},{"nom":"VILLATTE","prenom":"Mickaël","club":"ROYE PETANQUE","sexe":"M","classif":"Non Classé","pts":3,"concours":3},{"nom":"BOITIER","prenom":"Sullivan","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":3,"concours":5},{"nom":"SMAGGHE","prenom":"Philippe","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Non Classé","pts":3,"concours":6},{"nom":"LOGEZ","prenom":"Marine","club":"LA BOULE PERONNAISE","sexe":"F","classif":"Non Classé","pts":3,"concours":1},{"nom":"PLEYNET","prenom":"Fabrice","club":"ASPTT AMIENS","sexe":"M","classif":"Honneur","pts":2,"concours":1},{"nom":"BLANCART","prenom":"Bernard","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":2,"concours":2},{"nom":"PAUMIER","prenom":"Jean-Marie","club":"PERNOIS PETANQUE","sexe":"M","classif":"Non Classé","pts":2,"concours":2},{"nom":"POLROT","prenom":"Franck","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":2,"concours":5},{"nom":"LEVASSEUR","prenom":"Bruno","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":2,"concours":2},{"nom":"GRARE","prenom":"Ludovic","club":"PERNOIS PETANQUE","sexe":"M","classif":"Promotion","pts":2,"concours":1},{"nom":"BEAUVISAGE","prenom":"David","club":"PERNOIS PETANQUE","sexe":"M","classif":"Promotion","pts":2,"concours":7},{"nom":"LEBLOND","prenom":"Franck","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":2,"concours":1},{"nom":"DEVAUCHELLE","prenom":"Nicolas","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":2,"concours":6},{"nom":"HENOCQUE","prenom":"Florent","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Honneur","pts":2,"concours":4},{"nom":"MAISAN","prenom":"Philippe","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2,"concours":1},{"nom":"MILES","prenom":"Agnès","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Non Classé","pts":2,"concours":1},{"nom":"DUROT","prenom":"Pascal","club":"UNION B BETHENCOURTOISE","sexe":"M","classif":"Promotion","pts":2,"concours":3},{"nom":"DUROT","prenom":"Alexandre","club":"UNION B BETHENCOURTOISE","sexe":"M","classif":"Promotion","pts":2,"concours":5},{"nom":"DECLE","prenom":"Sebastien","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":2,"concours":6},{"nom":"VASSEUR","prenom":"Florian","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":2,"concours":4},{"nom":"ROBILLARD","prenom":"Patrick","club":"UNION B BETHENCOURTOISE","sexe":"M","classif":"Non Classé","pts":2,"concours":3},{"nom":"BENDAMOUCHE","prenom":"Said","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2,"concours":2},{"nom":"MOREL","prenom":"Oceane","club":"OISEMONT ABC","sexe":"F","classif":"Honneur","pts":2,"concours":5},{"nom":"DARRAS","prenom":"Mélinda","club":"PETANQUE MONTDIDIER","sexe":"F","classif":"Non Classé","pts":2,"concours":2},{"nom":"GIGNON","prenom":"Mathieu","club":"ASSOCIATION DES BOULISTES DARGNIESIENS","sexe":"M","classif":"Non Classé","pts":2,"concours":6},{"nom":"GIGNON","prenom":"Léa","club":"AS PETANQUE GAMACHOISE","sexe":"F","classif":"Non Classé","pts":2,"concours":5},{"nom":"BART","prenom":"Félicien","club":"CP FIENVILLERS DOULLENS","sexe":"M","classif":"Promotion","pts":2,"concours":5},{"nom":"VAN LOO","prenom":"Claude","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":2,"concours":3},{"nom":"GAEREMYNCK","prenom":"Nicole","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":2,"concours":2},{"nom":"LEMAIRE","prenom":"Cedric","club":"PERNOIS PETANQUE","sexe":"M","classif":"Promotion","pts":2,"concours":2},{"nom":"BEAUJOUAN","prenom":"Sophie","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":2,"concours":3},{"nom":"BOULY-DE-LESDAIN","prenom":"Arnaud","club":"ROYE PETANQUE","sexe":"M","classif":"Non Classé","pts":2,"concours":2},{"nom":"MAGNIER","prenom":"Ludovic","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2,"concours":4},{"nom":"ANCELLE","prenom":"Denis","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":2,"concours":6},{"nom":"SAUTEUR","prenom":"Hélène","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":2,"concours":6},{"nom":"ETH","prenom":"Daria","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2,"concours":5},{"nom":"CAGNIART","prenom":"Gilberte","club":"LA BOULE PERONNAISE","sexe":"F","classif":"Promotion","pts":2,"concours":1},{"nom":"HAGARD","prenom":"Eddie","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":2,"concours":1},{"nom":"GEOFFREY","prenom":"Quentin","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":2,"concours":3},{"nom":"DRON","prenom":"Wilfried","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":2,"concours":9},{"nom":"NOEL","prenom":"Bruno","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":2,"concours":1},{"nom":"MOMMAIRE","prenom":"Maryline","club":"PETANQUE MONTDIDIER","sexe":"F","classif":"Non Classé","pts":2,"concours":1},{"nom":"OMNES","prenom":"Dylan","club":"ROYE PETANQUE","sexe":"M","classif":"Non Classé","pts":2,"concours":2},{"nom":"MASSOULLE-VILLATTE","prenom":"Loïc","club":"ROYE PETANQUE","sexe":"M","classif":"Non Classé","pts":2,"concours":2},{"nom":"NAMPONT","prenom":"Maxime","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":2,"concours":1},{"nom":"DUCHESNE","prenom":"Sébastien","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":2,"concours":5},{"nom":"LEROY","prenom":"Quentin","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":2,"concours":3},{"nom":"CANTOIS","prenom":"Logan","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2,"concours":2},{"nom":"UTIA","prenom":"Hetetia","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2,"concours":8},{"nom":"LOZANO","prenom":"Mathis","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":2,"concours":4},{"nom":"MASCLEF","prenom":"Terence","club":"CP FIENVILLERS DOULLENS","sexe":"M","classif":"Non Classé","pts":2,"concours":2},{"nom":"NOEL","prenom":"José","club":"PETANQUE HAMOISE","sexe":"M","classif":"Honneur","pts":1,"concours":6},{"nom":"POCHAT","prenom":"YANNICK","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":1,"concours":4},{"nom":"DEMESTRE","prenom":"Eddy","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":1,"concours":4},{"nom":"GAUTRIN","prenom":"Nicolas","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":1,"concours":3},{"nom":"NATHENE","prenom":"Matthieu","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Promotion","pts":1,"concours":9},{"nom":"PINAULT","prenom":"Tony","club":"OISEMONT ABC","sexe":"M","classif":"Honneur","pts":1,"concours":8},{"nom":"SELLIER","prenom":"Bruno","club":"OISEMONT ABC","sexe":"M","classif":"Non Classé","pts":1,"concours":2},{"nom":"SORET","prenom":"Philippe","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":1,"concours":5},{"nom":"MARTELOT","prenom":"Frederic","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":1,"concours":2},{"nom":"MARQUANT","prenom":"Philippe","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":1,"concours":3},{"nom":"SELINGUE","prenom":"Alexandre","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Promotion","pts":1,"concours":4},{"nom":"CHAMPION","prenom":"Christopher","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":1,"concours":2},{"nom":"LECLERC","prenom":"Huguette","club":"PETANQUE ABBEVILLOISE","sexe":"F","classif":"Promotion","pts":1,"concours":4},{"nom":"WARO","prenom":"David","club":"PETANQUE BOURDONNAISE","sexe":"M","classif":"Promotion","pts":1,"concours":5},{"nom":"DEPOILLY","prenom":"Philippe","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":1,"concours":2},{"nom":"FABLE","prenom":"Didier","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":1,"concours":2},{"nom":"FABLE","prenom":"Yolande","club":"AS PETANQUE GAMACHOISE","sexe":"F","classif":"Non Classé","pts":1,"concours":3},{"nom":"GIACOMINI","prenom":"Stéphane","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Honneur","pts":1,"concours":8},{"nom":"MITON","prenom":"Brandon","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Non Classé","pts":1,"concours":6},{"nom":"BEGUIN","prenom":"Jérémy","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Non Classé","pts":1,"concours":3},{"nom":"GOURLIN","prenom":"Lorenzo","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":1,"concours":9},{"nom":"METTE","prenom":"Jérémy","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":1,"concours":12},{"nom":"DULSKA","prenom":"Stanislas","club":"PETANQUE FLIXECOURTOISE","sexe":"M","classif":"Non Classé","pts":1,"concours":10},{"nom":"POYE","prenom":"Theo","club":"OISEMONT ABC","sexe":"M","classif":"Non Classé","pts":1,"concours":2},{"nom":"POURQUIER","prenom":"Claire","club":"PETANQUE BOURDONNAISE","sexe":"F","classif":"Non Classé","pts":1,"concours":1},{"nom":"BOITIER","prenom":"Judicaelle","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":1,"concours":7},{"nom":"MARECHAL","prenom":"Christophe","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Non Classé","pts":1,"concours":6},{"nom":"LOZANO","prenom":"Frederic","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":1,"concours":3}],"fem":[{"nom":"COUVERCHEL","prenom":"Lucie","club":"ASPTT AMIENS","classif":"Honneur","pts":45},{"nom":"LECONTE","prenom":"Isabelle","club":"U. B. FEUQUIEROISE","classif":"Honneur","pts":23},{"nom":"PRUVOT","prenom":"Manon","club":"U. B. FEUQUIEROISE","classif":"Elite","pts":22},{"nom":"MOROTTI","prenom":"Laurence","club":"U. B. FEUQUIEROISE","classif":"Elite","pts":17},{"nom":"COUVERCHEL","prenom":"Alexandra","club":"ASPTT AMIENS","classif":"Honneur","pts":15},{"nom":"MOUILLART","prenom":"Maëva","club":"U. B. FEUQUIEROISE","classif":"Elite","pts":14},{"nom":"BAUDUIN","prenom":"Caroline","club":"ASPTT AMIENS","classif":"Honneur","pts":13},{"nom":"DEDEMOGLU","prenom":"Marie","club":"U. B. FEUQUIEROISE","classif":"Honneur","pts":13},{"nom":"CHARLEY","prenom":"Sonia","club":"ASPTT AMIENS","classif":"Honneur","pts":12},{"nom":"QUENNEHEN","prenom":"Guylaine","club":"ASPTT AMIENS","classif":"Honneur","pts":12},{"nom":"EVRARD","prenom":"Hélene","club":"PETANQUE ABBEVILLOISE","classif":"Honneur","pts":12},{"nom":"WATRIN","prenom":"Justine","club":"U. B. FEUQUIEROISE","classif":"Elite","pts":11},{"nom":"ROGER","prenom":"Laurine","club":"U. B. FEUQUIEROISE","classif":"Elite","pts":11},{"nom":"PHILIPSON","prenom":"Amandine","club":"U. B. FEUQUIEROISE","classif":"Promotion","pts":10},{"nom":"MOREL","prenom":"Oceane","club":"OISEMONT ABC","classif":"Honneur","pts":8},{"nom":"DEMOUY","prenom":"Anne","club":"ASPTT AMIENS","classif":"Promotion","pts":7},{"nom":"PARISY","prenom":"Elise","club":"U. B. FEUQUIEROISE","classif":"Promotion","pts":7},{"nom":"LEFEVRE","prenom":"Elodie","club":"ASPTT AMIENS","classif":"Promotion","pts":6},{"nom":"LALLOT","prenom":"Fanny","club":"U. B. FEUQUIEROISE","classif":"Promotion","pts":6},{"nom":"DELAPORTE","prenom":"Nathalie","club":"B CLUB MERS LES BAINS","classif":"Honneur","pts":5},{"nom":"COLSON","prenom":"Daniele","club":"ASPTT AMIENS","classif":"Non Classé","pts":5},{"nom":"DOURNEL","prenom":"Laurence","club":"ASPTT AMIENS","classif":"Non Classé","pts":5},{"nom":"CHARLEY","prenom":"Therese","club":"ASPTT AMIENS","classif":"Promotion","pts":5},{"nom":"LELIEVRE","prenom":"Chantal","club":"ASPTT AMIENS","classif":"Non Classé","pts":4},{"nom":"BIENDINE","prenom":"Malory","club":"ASPTT AMIENS","classif":"Non Classé","pts":4},{"nom":"GODARD","prenom":"Claudine","club":"ASPTT AMIENS","classif":"Promotion","pts":4},{"nom":"COLANGE","prenom":"Katheleen","club":"PETANQUE FLIXECOURTOISE","classif":"Non Classé","pts":4},{"nom":"CORNET","prenom":"Nicole","club":"U. B. FEUQUIEROISE","classif":"Promotion","pts":4},{"nom":"KICKA","prenom":"Valerie","club":"PETANQUE BOURDONNAISE","classif":"Non Classé","pts":4},{"nom":"MIGNOT","prenom":"Monique","club":"PETANQUE ABBEVILLOISE","classif":"Non Classé","pts":4},{"nom":"TUNC","prenom":"NATHALIE","club":"CP FIENVILLERS DOULLENS","classif":"Non Classé","pts":4},{"nom":"AUZOUX","prenom":"Alicia","club":"B CLUB MERS LES BAINS","classif":"Non Classé","pts":3},{"nom":"NICOLAS","prenom":"Virginie","club":"B CLUB MERS LES BAINS","classif":"Promotion","pts":3},{"nom":"BODIVIT","prenom":"Sophie","club":"B CLUB MERS LES BAINS","classif":"Promotion","pts":3},{"nom":"LACOUR","prenom":"Patricia","club":"ASPTT AMIENS","classif":"Promotion","pts":3},{"nom":"HEBERT","prenom":"Pascale","club":"ASPTT AMIENS","classif":"Non Classé","pts":3},{"nom":"RAMETTE","prenom":"Dany","club":"ASPTT AMIENS","classif":"Promotion","pts":3},{"nom":"TRENCART","prenom":"Claudine","club":"ASPTT AMIENS","classif":"Promotion","pts":3},{"nom":"MONTOYA","prenom":"Corinne","club":"ASPTT AMIENS","classif":"Promotion","pts":3},{"nom":"NAYET","prenom":"Claudine","club":"ASPTT AMIENS","classif":"Non Classé","pts":3},{"nom":"CAILLEUX","prenom":"Marjolaine","club":"PETANQUE HAMOISE","classif":"Promotion","pts":3},{"nom":"MOREL","prenom":"Megane","club":"OISEMONT ABC","classif":"Honneur","pts":3},{"nom":"GOURDE","prenom":"Clemence","club":"OISEMONT ABC","classif":"Non Classé","pts":3},{"nom":"DURIEUX","prenom":"Pauline","club":"LA BOULE PERONNAISE","classif":"Promotion","pts":3},{"nom":"WIART","prenom":"Wendy","club":"LA BOULE PERONNAISE","classif":"Non Classé","pts":3},{"nom":"LOGEZ","prenom":"Marine","club":"LA BOULE PERONNAISE","classif":"Non Classé","pts":3},{"nom":"DAQUIN","prenom":"Cecile","club":"PERNOIS PETANQUE","classif":"Non Classé","pts":3},{"nom":"GIGNON","prenom":"Léa","club":"AS PETANQUE GAMACHOISE","classif":"Non Classé","pts":2},{"nom":"GAEREMYNCK","prenom":"Nicole","club":"ASPTT AMIENS","classif":"Non Classé","pts":2},{"nom":"BEAUJOUAN","prenom":"Sophie","club":"ASPTT AMIENS","classif":"Promotion","pts":2},{"nom":"SAUTEUR","prenom":"Hélène","club":"ASPTT AMIENS","classif":"Promotion","pts":2},{"nom":"DARRAS","prenom":"Mélinda","club":"PETANQUE MONTDIDIER","classif":"Non Classé","pts":2},{"nom":"MOMMAIRE","prenom":"Maryline","club":"PETANQUE MONTDIDIER","classif":"Non Classé","pts":2},{"nom":"MILES","prenom":"Agnès","club":"U. B. FEUQUIEROISE","classif":"Non Classé","pts":2},{"nom":"SAUVEUR","prenom":"Clotilde","club":"PETANQUE BOVES","classif":"Non Classé","pts":2},{"nom":"CAGNIART","prenom":"Gilberte","club":"LA BOULE PERONNAISE","classif":"Promotion","pts":2},{"nom":"FABLE","prenom":"Yolande","club":"AS PETANQUE GAMACHOISE","classif":"Non Classé","pts":1},{"nom":"BOITIER","prenom":"Judicaelle","club":"ASPTT AMIENS","classif":"Non Classé","pts":1},{"nom":"POURQUIER","prenom":"Claire","club":"PETANQUE BOURDONNAISE","classif":"Non Classé","pts":1},{"nom":"LECLERC","prenom":"Huguette","club":"PETANQUE ABBEVILLOISE","classif":"Promotion","pts":1}],"vet":[{"nom":"LECONTE","prenom":"Isabelle","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Honneur","pts":23},{"nom":"OLEN","prenom":"Marcel","club":"PETANQUE ABBEVILLOISE","sexe":"M","classif":"Honneur","pts":15},{"nom":"FOUILLARD","prenom":"Thierry","club":"ASPTT AMIENS","sexe":"M","classif":"Elite","pts":10},{"nom":"MORICE","prenom":"Alain","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Honneur","pts":8},{"nom":"BOSCHER","prenom":"Pascal","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Elite","pts":6},{"nom":"SELINGUE","prenom":"Bernard","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":6},{"nom":"COLSON","prenom":"Daniele","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":5},{"nom":"TARTARE","prenom":"Didier","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":5},{"nom":"CHARLEY","prenom":"Therese","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":5},{"nom":"CHARPENTIER","prenom":"Bruno","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":5},{"nom":"COOREVITS","prenom":"Franck","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":5},{"nom":"LELIEVRE","prenom":"Chantal","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":4},{"nom":"MAISAN","prenom":"Philippe","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":4},{"nom":"GODARD","prenom":"Claudine","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":4},{"nom":"EVENOU","prenom":"Eric","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Promotion","pts":4},{"nom":"MIGNOT","prenom":"Monique","club":"PETANQUE ABBEVILLOISE","sexe":"F","classif":"Non Classé","pts":4},{"nom":"CASSELEUX","prenom":"Joel","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Promotion","pts":4},{"nom":"ANDREANI","prenom":"Gilles","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Non Classé","pts":4},{"nom":"TORCHY","prenom":"Pascal","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":4},{"nom":"BOUTIN","prenom":"Yannick","club":"CORBIE PETANQUE","sexe":"M","classif":"Non Classé","pts":3},{"nom":"CAILLET","prenom":"Pascal","club":"CORBIE PETANQUE","sexe":"M","classif":"Promotion","pts":3},{"nom":"ALEXANDRE","prenom":"Alain","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":3},{"nom":"LACOUR","prenom":"Patricia","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":3},{"nom":"HEBERT","prenom":"Pascale","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":3},{"nom":"TRENCART","prenom":"Claudine","club":"ASPTT AMIENS","sexe":"F","classif":"Promotion","pts":3},{"nom":"NAYET","prenom":"Claudine","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":3},{"nom":"JOLIBOIS","prenom":"Jim","club":"PETANQUE AULTOISE","sexe":"M","classif":"Non Classé","pts":3},{"nom":"LEPHAY","prenom":"Fredy","club":"PETANQUE AULTOISE","sexe":"M","classif":"Non Classé","pts":3},{"nom":"HENOCQUE","prenom":"Eric","club":"PETANQUE AULTOISE","sexe":"M","classif":"Non Classé","pts":3},{"nom":"BAUDELOT","prenom":"Antoine","club":"POIX SPORT PETANQUE","sexe":"M","classif":"Non Classé","pts":3},{"nom":"DOUAY","prenom":"Jacky","club":"ALBERT PETANQUE","sexe":"M","classif":"Promotion","pts":3},{"nom":"BRIAULT","prenom":"Jean-Philippe","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":3},{"nom":"DUQUENNE","prenom":"Stephane","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":3},{"nom":"SMAGGHE","prenom":"Philippe","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Non Classé","pts":3},{"nom":"LECAT","prenom":"Laurent","club":"ASSOCIATION DES BOULISTES DARGNIESIENS","sexe":"M","classif":"Non Classé","pts":3},{"nom":"NOEL","prenom":"Bruno","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":2},{"nom":"DUROT","prenom":"Pascal","club":"UNION B BETHENCOURTOISE","sexe":"M","classif":"Promotion","pts":2},{"nom":"ROBILLARD","prenom":"Patrick","club":"UNION B BETHENCOURTOISE","sexe":"M","classif":"Non Classé","pts":2},{"nom":"COQUART","prenom":"Philippe","club":"ASPTT AMIENS","sexe":"M","classif":"Non Classé","pts":2},{"nom":"GAEREMYNCK","prenom":"Nicole","club":"ASPTT AMIENS","sexe":"F","classif":"Non Classé","pts":2},{"nom":"GODARD","prenom":"Alain","club":"ASPTT AMIENS","sexe":"M","classif":"Promotion","pts":2},{"nom":"MOMMAIRE","prenom":"Maryline","club":"PETANQUE MONTDIDIER","sexe":"F","classif":"Non Classé","pts":2},{"nom":"POLROT","prenom":"Franck","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":2},{"nom":"LEVASSEUR","prenom":"Bruno","club":"U. B. FEUQUIEROISE","sexe":"M","classif":"Non Classé","pts":2},{"nom":"MILES","prenom":"Agnès","club":"U. B. FEUQUIEROISE","sexe":"F","classif":"Non Classé","pts":2},{"nom":"CURILLON","prenom":"Jean-Jacques","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":2},{"nom":"ANCELLE","prenom":"Denis","club":"PETANQUE BOVES","sexe":"M","classif":"Promotion","pts":2},{"nom":"DOUCHE","prenom":"Jean-Marc","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":2},{"nom":"BLANCART","prenom":"Bernard","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":2},{"nom":"CAGNIART","prenom":"Gilberte","club":"LA BOULE PERONNAISE","sexe":"F","classif":"Promotion","pts":2},{"nom":"HAGARD","prenom":"Eddie","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Promotion","pts":2},{"nom":"BOULY-DE-LESDAIN","prenom":"Arnaud","club":"ROYE PETANQUE","sexe":"M","classif":"Non Classé","pts":2},{"nom":"PAUMIER","prenom":"Jean-Marie","club":"PERNOIS PETANQUE","sexe":"M","classif":"Non Classé","pts":2},{"nom":"FABLE","prenom":"Didier","club":"AS PETANQUE GAMACHOISE","sexe":"M","classif":"Non Classé","pts":1},{"nom":"FABLE","prenom":"Yolande","club":"AS PETANQUE GAMACHOISE","sexe":"F","classif":"Non Classé","pts":1},{"nom":"SORET","prenom":"Philippe","club":"B CLUB MERS LES BAINS","sexe":"M","classif":"Non Classé","pts":1},{"nom":"VITU","prenom":"Gilles","club":"UNION B BETHENCOURTOISE","sexe":"M","classif":"Non Classé","pts":1},{"nom":"BINET","prenom":"Daniel","club":"ESC  LONGUEAU PETANQUE","sexe":"M","classif":"Promotion","pts":1},{"nom":"CHAMBELLAND","prenom":"PHILIPPE","club":"ESC  LONGUEAU PETANQUE","sexe":"M","classif":"Promotion","pts":1},{"nom":"DEGARDIN","prenom":"Christophe","club":"ESC  LONGUEAU PETANQUE","sexe":"M","classif":"Non Classé","pts":1},{"nom":"LECLERC","prenom":"Huguette","club":"PETANQUE ABBEVILLOISE","sexe":"F","classif":"Promotion","pts":1},{"nom":"SELLIER","prenom":"Bruno","club":"OISEMONT ABC","sexe":"M","classif":"Non Classé","pts":1},{"nom":"AZENKOUT","prenom":"Gilbert","club":"LA PETANQUE NESLOISE","sexe":"M","classif":"Promotion","pts":1},{"nom":"MARQUANT","prenom":"Philippe","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":1},{"nom":"LEGRIS","prenom":"Daniel","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":1},{"nom":"DEPESTEL","prenom":"Jean-claude","club":"PETANQUE BOVES","sexe":"M","classif":"Non Classé","pts":1},{"nom":"MARECHAL","prenom":"Christophe","club":"LA BOULE PERONNAISE","sexe":"M","classif":"Non Classé","pts":1}],"jeunes":[{"nom":"MALHERBE","prenom":"Kentin","club":"PETANQUE ABBEVILLOISE","sexe":"M","cat":"Junior","classif":"Promotion","pts":9,"concours":17},{"nom":"LOZANO","prenom":"Mathis","club":"PETANQUE BOVES","sexe":"M","cat":"Junior","classif":"Non Classé","pts":2,"concours":4},{"nom":"BARRE","prenom":"Thomas","club":"PETANQUE BOURDONNAISE","sexe":"M","cat":"Cadet","classif":"Non Classé","pts":4,"concours":8}],"clubs":[{"club":"U. B. FEUQUIEROISE","pts":660},{"club":"ASPTT AMIENS","pts":526},{"club":"PETANQUE ABBEVILLOISE","pts":201},{"club":"LA PETANQUE NESLOISE","pts":104},{"club":"LA BOULE PERONNAISE","pts":79},{"club":"B CLUB MERS LES BAINS","pts":77},{"club":"PETANQUE BOURDONNAISE","pts":52},{"club":"PETANQUE BOVES","pts":47},{"club":"AS PETANQUE GAMACHOISE","pts":40},{"club":"PETANQUE MONTDIDIER","pts":30},{"club":"PERNOIS PETANQUE","pts":29},{"club":"OISEMONT ABC","pts":23},{"club":"ROYE PETANQUE","pts":21},{"club":"PETANQUE HAMOISE","pts":16},{"club":"CORBIE PETANQUE","pts":11},{"club":"ALBERT PETANQUE","pts":9},{"club":"PETANQUE AULTOISE","pts":9},{"club":"ASSOCIATION DES BOULISTES DARGNIESIENS","pts":8},{"club":"CP FIENVILLERS DOULLENS","pts":8},{"club":"PETANQUE FLIXECOURTOISE","pts":8},{"club":"PET CLUB LONGPRE LES CORPS STS","pts":7},{"club":"UNION B BETHENCOURTOISE","pts":7},{"club":"ESC  LONGUEAU PETANQUE","pts":3},{"club":"POIX SPORT PETANQUE","pts":3}]};
 
-/* LOAD EXCEL */
-function loadExcel(file, id) {
-    fetch(file)
-    .then(r => r.arrayBuffer())
-    .then(data => {
-        let wb = XLSX.read(data);
-        let sheet = wb.Sheets[wb.SheetNames[0]];
-        let json = XLSX.utils.sheet_to_json(sheet);
+let activeTab = 'senior';
 
-        renderTable(json, id);
-    });
+function setTab(tab, btn) {
+  activeTab = tab;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('search-input').value = '';
+  document.getElementById('filter-classif').value = '';
+  if (document.getElementById('filter-sexe')) document.getElementById('filter-sexe').value = '';
+
+  // Afficher/masquer filtres selon onglet
+  const isClubs = tab === 'clubs';
+  const isSenior = tab === 'senior';
+  document.getElementById('controls-players').style.display = isClubs ? 'none' : 'flex';
+  const sexeFilter = document.getElementById('filter-sexe');
+  if (sexeFilter) sexeFilter.style.display = isSenior ? '' : 'none';
+
+  renderTable();
 }
 
-/* RENDER */
-function renderTable(data, id) {
-    let table = document.getElementById(id);
-    if (!data.length) return;
-
-    let headers = Object.keys(data[0]);
-
-    let html = "<thead><tr>";
-    headers.forEach(h => {
-        html += `<th onclick="sort('${id}','${h}')">${h}</th>`;
-    });
-    html += "</tr></thead><tbody>";
-
-    data.forEach(row => {
-        html += "<tr>";
-        headers.forEach(h => {
-            html += `<td>${row[h] || ""}</td>`;
-        });
-        html += "</tr>";
-    });
-
-    html += "</tbody>";
-    table.innerHTML = html;
+function getBadgeClass(classif) {
+  if (!classif) return 'badge-Non-Class';
+  const c = classif.trim();
+  if (c === 'Elite') return 'badge-Elite';
+  if (c === 'Honneur') return 'badge-Honneur';
+  if (c === 'Promotion') return 'badge-Promotion';
+  return 'badge-Non-Class';
 }
 
-/* SEARCH */
-function filter(id, value) {
-    let rows = document.querySelectorAll(`#${id} tbody tr`);
-    value = value.toLowerCase();
-
-    rows.forEach(r => {
-        r.style.display = r.innerText.toLowerCase().includes(value) ? "" : "none";
-    });
+function rankIcon(rank) {
+  if (rank === 1) return '<span class="rank-cell top1">🥇</span>';
+  if (rank === 2) return '<span class="rank-cell top2">🥈</span>';
+  if (rank === 3) return '<span class="rank-cell top3">🥉</span>';
+  return `<span class="rank-cell">${rank}</span>`;
 }
 
-/* SORT */
-function sort(id, col) {
-    let table = document.getElementById(id);
-    let rows = Array.from(table.querySelectorAll("tbody tr"));
-    let index = Array.from(table.querySelectorAll("th")).findIndex(th => th.innerText === col);
+function renderTable() {
+  const container = document.getElementById('table-container');
+  const countEl = document.getElementById('result-count');
+  const q = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+  const classifFilter = document.getElementById('filter-classif')?.value || '';
+  const sexeFilter = document.getElementById('filter-sexe')?.value || '';
 
-    rows.sort((a,b) => {
-        let A = a.children[index].innerText;
-        let B = b.children[index].innerText;
-        return isNaN(A) ? A.localeCompare(B) : B - A;
+  if (activeTab === 'clubs') {
+    let rows = DATA.clubs;
+    const maxPts = rows[0].pts;
+    let html = '<table><thead><tr><th style="width:50px">#</th><th>Club</th><th class="right" style="width:120px">Points</th></tr></thead><tbody>';
+    rows.forEach((r, i) => {
+      const pct = Math.round((r.pts / maxPts) * 100);
+      html += `<tr>
+        <td>${rankIcon(i+1)}</td>
+        <td>
+          <div style="font-weight:600;margin-bottom:4px">${r.club}</div>
+          <div class="club-rank-bar">
+            <div class="bar-fill" style="width:${pct}%"></div>
+          </div>
+        </td>
+        <td class="right">${r.pts} pts</td>
+      </tr>`;
     });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+    countEl.textContent = rows.length + ' clubs';
+    return;
+  }
 
-    let tbody = table.querySelector("tbody");
-    tbody.innerHTML = "";
-    rows.forEach(r => tbody.appendChild(r));
+  let rows = DATA[activeTab] || [];
+
+  // Filtres
+  if (q) {
+    rows = rows.filter(r => {
+      const s = ((r.nom||'') + ' ' + (r.prenom||'') + ' ' + (r.club||'')).toLowerCase();
+      return s.includes(q);
+    });
+  }
+  if (classifFilter) {
+    rows = rows.filter(r => (r.classif || '') === classifFilter);
+  }
+  if (sexeFilter && activeTab === 'senior') {
+    rows = rows.filter(r => r.sexe === sexeFilter);
+  }
+
+  countEl.textContent = rows.length + ' joueur' + (rows.length > 1 ? 's' : '') + ' affiché' + (rows.length > 1 ? 's' : '');
+
+  if (rows.length === 0) {
+    container.innerHTML = '<div class="no-result">Aucun résultat pour cette recherche.</div>';
+    return;
+  }
+
+  const hasCategory = activeTab === 'jeunes';
+  const hasSexe = activeTab === 'senior';
+  const hasConcours = activeTab === 'senior' || activeTab === 'jeunes';
+
+  let html = '<table><thead><tr>';
+  html += '<th style="width:50px;text-align:center">#</th>';
+  html += '<th>Joueur</th>';
+  html += '<th>Club</th>';
+  if (hasCategory) html += '<th>Catégorie</th>';
+  html += '<th>Classification</th>';
+  if (hasConcours) html += '<th class="right">Concours</th>';
+  html += '<th class="right">Points</th>';
+  html += '</tr></thead><tbody>';
+
+  rows.forEach((r, i) => {
+    const badgeClass = getBadgeClass(r.classif);
+    const classifLabel = r.classif === 'Non Classé' ? 'Non Classé' : r.classif;
+    html += `<tr>
+      <td style="text-align:center">${rankIcon(i+1)}</td>
+      <td>
+        <div style="font-weight:600">${r.nom} <span style="font-weight:400;color:#555">${r.prenom}</span></div>
+        ${hasSexe ? `<div style="font-size:.72rem;margin-top:2px" class="sexe-${r.sexe}">${r.sexe === 'M' ? '♂ Homme' : '♀ Femme'}</div>` : ''}
+      </td>
+      <td style="color:#666;font-size:.85rem">${r.club}</td>
+      ${hasCategory ? `<td><span style="font-size:.82rem;color:#555">${r.cat||''}</span></td>` : ''}
+      <td><span class="badge ${badgeClass}">${classifLabel}</span></td>
+      ${hasConcours ? `<td class="right" style="color:#888;font-weight:400">${r.concours ?? '—'}</td>` : ''}
+      <td class="right">${r.pts} pts</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
 }
 
-/* TES FICHIERS */
-loadExcel("point-senior-21042026.xlsx", "senior");
-loadExcel("point-clubs-21042026.xlsx", "clubs");
-loadExcel("point-vet-21042026.xlsx", "vet");
-loadExcel("point-fem-21042026.xlsx", "fem");
-loadExcel("point-jeunes-19032026.xlsx", "jeunes");
+// Init
+document.getElementById('navbar').style.boxShadow = 'none';
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,.4)' : 'none';
+});
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
 
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+reveals.forEach(r => obs.observe(r));
+
+// Afficher le classement senior par défaut
+renderTable();
 </script>
-
 </body>
 </html>
