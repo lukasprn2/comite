@@ -143,6 +143,33 @@
     .cal-cell.has-events::after { content: '●'; color: var(--or); font-size: .55rem; position: absolute; bottom: 3px; right: 3px; }
     .cal-month-label { font-size: 1.1rem; min-width: 150px; }
   }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  /* Base mobile */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    padding: 16px;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  /* Tablette */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px;
+      margin: auto;
+    }
+  }
+
+  /* Desktop */
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 960px;
+    }
+  }
 </style>
 </head>
 <body>
