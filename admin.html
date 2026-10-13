@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Administration — Comité de la Somme</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bleu:#0a2342;--or:#c9a84c;--fond:#f4f5f8;--gris:#dfe2e8;--ok:#1a7a3c;--ko:#b3261e}
+*{box-sizing:border-box}body{margin:0;font-family:'DM Sans',sans-serif;background:var(--fond);color:#1a1a2e}
+button{font:inherit;cursor:pointer}[hidden]{display:none!important}
+.btn{border:0;border-radius:8px;padding:.65rem 1.1rem;font-weight:700;min-height:44px}
+.b-or{background:var(--or);color:var(--bleu)}.b-bl{background:var(--bleu);color:#fff}.b-ln{background:#fff;border:1.5px solid var(--gris);color:var(--bleu)}.b-ko{background:#fff;border:1.5px solid var(--ko);color:var(--ko)}
+input,select,textarea{width:100%;font:inherit;font-size:1rem;padding:.7rem .8rem;border:1.5px solid var(--gris);border-radius:8px;background:#fff;min-height:44px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--or);outline-offset:1px}
+label{display:block;font-size:.85rem;font-weight:700;color:var(--bleu);margin:0 0 .3rem}.f{margin-bottom:1rem}
+#login{min-height:100vh;display:grid;place-items:center;padding:1rem;background:var(--bleu)}
+.box{background:#fff;border-radius:14px;padding:2rem;width:100%;max-width:380px}.box h1{margin:0 0 .3rem;color:var(--bleu);font-size:1.5rem}
+.box p{color:#667;margin:0 0 1.2rem}
+header{background:var(--bleu);color:#fff;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;position:sticky;top:0;z-index:5}
+header b{font-size:1.05rem}header a{color:var(--or)}
+nav{display:flex;gap:.4rem;overflow-x:auto;padding:.8rem 1rem;background:#fff;border-bottom:1px solid var(--gris)}
+nav button{flex-shrink:0;border:1.5px solid var(--gris);background:#fff;border-radius:22px;padding:.5rem 1.1rem;min-height:44px;font-weight:700;color:#556}
+nav button.on{background:var(--bleu);color:var(--or);border-color:var(--bleu)}
+main{max-width:900px;margin:0 auto;padding:1rem}
+.bar{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap}.bar input{flex:1;min-width:180px}
+.row{background:#fff;border:1px solid var(--gris);border-radius:10px;padding:.8rem 1rem;margin-bottom:.5rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between}
+.row div{min-width:0}.row strong{display:block;overflow-wrap:anywhere}.row small{color:#778;overflow-wrap:anywhere}
+.row .act{display:flex;gap:.4rem;flex-shrink:0}.row .btn{padding:.4rem .8rem;min-height:40px}
+.card{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.2rem;margin-bottom:1rem}.card h2{margin:0 0 .5rem;font-size:1.1rem;color:var(--bleu)}.card p{color:#556;margin:.3rem 0 1rem}
+.grid{display:grid;grid-template-columns:1fr;gap:0 1rem}@media(min-width:600px){.grid{grid-template-columns:1fr 1fr}}
+dialog{border:0;border-radius:14px;padding:0;width:min(560px,94vw);max-height:90vh}dialog::backdrop{background:rgba(0,0,0,.55)}
+dialog form{padding:1.4rem}dialog h2{margin:0 0 1rem;color:var(--bleu)}.mact{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem}
+#toast{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--bleu);color:#fff;padding:.8rem 1.3rem;border-radius:10px;z-index:99;max-width:92vw}
+#toast.err{background:var(--ko)}.empty{text-align:center;color:#778;padding:2rem}
+</style>
+</head>
+<body>
+
+<section id="login" hidden>
+  <form class="box" id="loginForm">
+    <h1>Espace administrateur</h1><p>Comité de la Somme — FFPJP</p>
+    <div class="f"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <button class="btn b-or" style="width:100%">Se connecter</button>
+    <p style="margin:1rem 0 0;text-align:center"><a href="#" id="forgot">Mot de passe oublié ?</a></p>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header><b>⚙️ Administration du site</b><span><a href="index.html" target="_blank">Voir le site</a> &nbsp; <button class="btn b-ln" id="out" style="min-height:36px;padding:.3rem .8rem">Déconnexion</button></span></header>
+  <nav id="tabs"></nav>
+  <main id="main"></main>
+</div>
+
+<dialog id="dlg"><form method="dialog" id="dform"></form></dialog>
+<div id="toast" hidden></div>
+
+<script type="module">
+import { db, auth } from './firebase-config.js';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, doc, getDocs, getDoc, setDoc, addDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const toast = (m, err) => { const t = $('#toast'); t.textContent = m; t.className = err ? 'err' : ''; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 3500); };
+
+/* ───── Description de ce qui est modifiable : [clé, libellé, type, options] ───── */
+const TYPES = [['champ', '🏆 Championnat'], ['concours', '🎯 Concours'], ['gp', '⭐ Grand Prix'], ['cdc', '🏅 Championnat des clubs'], ['jeunes', '👦 Jeunes'], ['veterans', '🎖️ Vétérans'], ['regional', '🗺️ Régional / France'], ['propagande', '☀️ Propagande']];
+const SCHEMA = {
+  events: { tab: '📅 Calendrier', add: 'Ajouter une compétition', sort: (a, b) => (a.date || '').localeCompare(b.date || ''),
+    title: e => `${e.date} — ${e.titre}`, sub: e => [e.lieu, e.heure, e.formation].filter(Boolean).join(' · '),
+    f: [['date', 'Date', 'date'], ['titre', 'Titre', 'text'], ['type', 'Catégorie', 'select', TYPES], ['lieu', 'Lieu'], ['heure', 'Heure (ex : 14h00)'], ['formation', 'Formation (ex : Doublette)'], ['obs', 'Remarques', 'textarea']] },
+  clubs: { tab: '🏠 Clubs', add: 'Ajouter un club', sort: (a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'),
+    title: c => `${c.ville} — ${c.assoc}`, sub: c => `${c.num} · ${c.secteur} · ${c.president || ''}`,
+    f: [['num', 'N° du club (ex : 0009)'], ['ville', 'Ville (en majuscules)'], ['assoc', 'Nom de l\'association'], ['secteur', 'Secteur', 'select', [['centre', 'Centre'], ['maritime', 'Maritime'], ['santerre', 'Santerre']]], ['prLabel', 'Fonction', 'select', [['Président', 'Président'], ['Présidente', 'Présidente']]], ['president', 'Nom du/de la responsable'], ['adresse', 'Adresse'], ['tel', 'Téléphone'], ['email', 'Email'], ['terrain', 'Terrain de jeu']] },
+  membres: { tab: '👥 Le Comité', add: 'Ajouter un membre', sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99),
+    title: m => `${m.nom} — ${m.role}`, sub: m => [m.tel, m.email].filter(Boolean).join(' · '),
+    f: [['groupe', 'Rang dans l\'organigramme', 'select', [['president', 'Président'], ['vice', 'Vice-président(e)'], ['admin', 'Secrétaire / Trésorier'], ['membre', 'Membre']]], ['role', 'Intitulé du poste (ex : Trésorier Général)'], ['nom', 'Nom et prénom'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse (facultatif)'], ['ordre', 'Position (1 = en premier)', 'number']] }
+};
+const SETTINGS = [['heroDesc', 'Texte de présentation (page d\'accueil)', 'textarea'],
+  ['stat1v', 'Chiffre 1'], ['stat1l', 'Légende 1'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
+  ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web']];
+
+/* ───── Connexion ───── */
+onAuthStateChanged(auth, u => { $('#login').hidden = !!u; $('#app').hidden = !u; if (u) start(); });
+$('#loginForm').onsubmit = async e => { e.preventDefault(); try { await signInWithEmailAndPassword(auth, $('#em').value, $('#pw').value); } catch { toast('Email ou mot de passe incorrect.', 1); } };
+$('#forgot').onclick = async e => { e.preventDefault(); if (!$('#em').value) return toast('Saisis ton email puis clique à nouveau.', 1); try { await sendPasswordResetEmail(auth, $('#em').value); toast('Email de réinitialisation envoyé.'); } catch { toast('Envoi impossible.', 1); } };
+$('#out').onclick = () => signOut(auth);
+
+/* ───── Navigation ───── */
+let tab = 'settings', cache = {};
+function start() {
+  const names = { settings: '🏛️ Infos du site', ...Object.fromEntries(Object.entries(SCHEMA).map(([k, v]) => [k, v.tab])), import: '📥 Import' };
+  $('#tabs').innerHTML = Object.entries(names).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}">${v}</button>`).join('');
+  $('#tabs').onclick = e => { const t = e.target.dataset.t; if (t) { tab = t; start(); } };
+  show();
+}
+async function show() {
+  const m = $('#main'); m.innerHTML = '<p class="empty">Chargement…</p>';
+  try { tab === 'settings' ? await viewSettings() : tab === 'import' ? viewImport() : await viewList(tab); }
+  catch (e) { m.innerHTML = '<p class="empty">Erreur : ' + esc(e.message) + '<br>Vérifie les règles Firestore et ton email admin.</p>'; }
+}
+
+/* ───── Formulaire générique ───── */
+const field = (f, v) => { const [k, l, t = 'text', o] = f, val = v ?? '';
+  return `<div class="f"><label for="x_${k}">${l}</label>` + (t === 'textarea' ? `<textarea id="x_${k}" name="${k}" rows="3">${esc(val)}</textarea>`
+    : t === 'select' ? `<select id="x_${k}" name="${k}">${o.map(([a, b]) => `<option value="${a}" ${a === val ? 'selected' : ''}>${b}</option>`).join('')}</select>`
+    : `<input id="x_${k}" name="${k}" type="${t}" value="${esc(val)}">`) + '</div>'; };
+const read = (fs, root) => Object.fromEntries(fs.map(f => { const el = root.querySelector(`[name=${f[0]}]`); return [f[0], f[2] === 'number' ? Number(el.value) || 0 : el.value.trim()]; }));
+
+async function viewSettings() {
+  const d = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
+  $('#main').innerHTML = `<div class="card"><h2>Informations générales</h2><p>Ces informations apparaissent sur la page d'accueil et en bas de chaque page.</p><form id="sf"><div class="grid">${SETTINGS.map(f => field(f, d[f[0]])).join('')}</div><button class="btn b-or">Enregistrer</button></form></div>`;
+  $('#sf').onsubmit = async e => { e.preventDefault(); await setDoc(doc(db, 'settings', 'general'), read(SETTINGS, e.target)); toast('Enregistré ✔'); };
+}
+
+async function viewList(col) {
+  const S = SCHEMA[col];
+  cache[col] = (await getDocs(collection(db, col))).docs.map(d => ({ ...d.data(), _id: d.id })).sort(S.sort);
+  $('#main').innerHTML = `<div class="bar"><input id="q" type="search" placeholder="🔍 Rechercher…"><button class="btn b-or" id="add">+ ${S.add}</button></div><div id="list"></div>`;
+  const draw = () => { const q = $('#q').value.toLowerCase(); const l = cache[col].filter(x => !q || JSON.stringify(x).toLowerCase().includes(q));
+    $('#list').innerHTML = l.length ? l.map(x => `<div class="row"><div><strong>${esc(S.title(x))}</strong><small>${esc(S.sub(x))}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">Modifier</button><button class="btn b-ko" data-d="${x._id}" aria-label="Supprimer">🗑</button></div></div>`).join('') : '<p class="empty">Rien à afficher. Utilise le bouton « Ajouter ».</p>'; };
+  draw(); $('#q').oninput = draw; $('#add').onclick = () => edit(col, {});
+  $('#list').onclick = async e => { const id = e.target.dataset.e || e.target.dataset.d; if (!id) return; const x = cache[col].find(i => i._id === id);
+    if (e.target.dataset.e) edit(col, x); else if (confirm(`Supprimer « ${S.title(x)} » ? Cette action est définitive.`)) { await deleteDoc(doc(db, col, id)); toast('Supprimé'); show(); } };
+}
+function edit(col, x) {
+  const S = SCHEMA[col], f = $('#dform');
+  f.innerHTML = `<h2>${x._id ? 'Modifier' : S.add}</h2>${S.f.map(fl => field(fl, x[fl[0]])).join('')}<div class="mact"><button type="button" class="btn b-ln" id="no">Annuler</button><button type="button" class="btn b-or" id="yes">Enregistrer</button></div>`;
+  $('#dlg').showModal(); $('#no').onclick = () => $('#dlg').close();
+  $('#yes').onclick = async () => { const d = read(S.f, f);
+    try { x._id ? await setDoc(doc(db, col, x._id), d) : await addDoc(collection(db, col), d); $('#dlg').close(); toast('Enregistré ✔'); show(); } catch (e) { toast('Échec : ' + e.message, 1); } };
+}
+
+/* ───── Import du contenu actuel du site (une seule fois, pour démarrer) ───── */
+function viewImport() {
+  $('#main').innerHTML = `<div class="card"><h2>Importer le contenu actuel du site</h2><p>Première utilisation : copie dans Firebase ce qui est écrit aujourd'hui dans tes pages (calendrier, clubs, comité, infos générales). Tu pourras ensuite tout modifier ici. Si une section contient déjà des données, elles seront remplacées.</p>
+  ${[['settings', 'Infos générales'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}" style="margin:0 .5rem .5rem 0">Importer : ${l}</button>`).join('')}
+  <p id="imsg"></p></div>`;
+  $('#main').onclick = async e => { const k = e.target.dataset.i; if (!k) return;
+    if (!confirm('Importer cette section ? Les données existantes seront remplacées.')) return;
+    try { $('#imsg').textContent = 'Import en cours…'; const n = await IMPORT[k](); $('#imsg').textContent = `✔ Terminé (${n} élément${n > 1 ? 's' : ''}).`; } catch (er) { $('#imsg').textContent = 'Erreur : ' + er.message; } };
+}
+const page = async u => new DOMParser().parseFromString(await (await fetch(u + '?' + Date.now())).text(), 'text/html');
+async function replaceAll(col, items) {
+  const old = (await getDocs(collection(db, col))).docs;
+  for (let i = 0; i < old.length; i += 400) { const b = writeBatch(db); old.slice(i, i + 400).forEach(d => b.delete(d.ref)); await b.commit(); }
+  for (let i = 0; i < items.length; i += 400) { const b = writeBatch(db); items.slice(i, i + 400).forEach(it => b.set(doc(collection(db, col)), it)); await b.commit(); }
+  return items.length;
+}
+const IMPORT = {
+  async settings() {
+    const d = await page('index.html'), t = s => d.querySelector(s)?.textContent.trim() || '', s = { heroDesc: t('.hero-desc') };
+    [...d.querySelectorAll('.stat-item')].forEach((el, i) => { s[`stat${i + 1}v`] = el.querySelector('strong').textContent; s[`stat${i + 1}l`] = el.querySelector('span').textContent; });
+    const c = [...d.querySelectorAll('.contact-detail-text')];
+    s.adresse = c[0].querySelector('span').innerHTML.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').trim();
+    s.tel = c[1].querySelector('a').textContent; s.email = c[2].querySelector('a').textContent; s.emailDev = c[3].querySelector('a').textContent;
+    await setDoc(doc(db, 'settings', 'general'), s); return 1;
+  },
+  async membres() {
+    const d = await page('comite.html'), g = ['president', 'vice', 'admin', 'membre'];
+    return replaceAll('membres', [...d.querySelectorAll('.org-card')].map((el, i) => { const tels = el.querySelectorAll('.org-tel');
+      return { groupe: g.find(k => el.classList.contains(k)) || 'membre', role: el.querySelector('.org-role').textContent.trim(), nom: el.querySelector('.org-name').textContent.trim(),
+        tel: tels[0]?.textContent.trim() || '', email: el.querySelector('.org-email')?.textContent.trim() || '', adresse: tels.length > 1 ? tels[tels.length - 1].textContent.trim() : '', ordre: i + 1 }; }));
+  },
+  async clubs() {
+    const d = await page('clubs.html'), map = { 'Président': 'president', 'Présidente': 'president', 'Adresse': 'adresse', 'Téléphone': 'tel', 'Email': 'email', 'Terrain': 'terrain' };
+    return replaceAll('clubs', [...d.querySelectorAll('.club-card')].map(el => { const c = { num: el.querySelector('.club-num').textContent, secteur: el.dataset.secteur, assoc: el.querySelector('.club-nom-assoc').textContent, ville: el.querySelector('h3').firstChild.textContent, prLabel: 'Président', tel: '', email: '', adresse: '', terrain: '', president: '' };
+      el.querySelectorAll('.club-info-row div').forEach(r => { const l = r.querySelector('.club-info-label').textContent; if (l.startsWith('Présid')) c.prLabel = l; if (map[l]) c[map[l]] = r.textContent.slice(l.length).trim(); }); return c; }));
+  },
+  async events() {
+    const txt = await (await fetch('calendrier.html?' + Date.now())).text(), m = txt.match(/const EVENTS = (\[[\s\S]*?\n\s*\]);/);
+    if (!m) throw new Error('Calendrier introuvable dans calendrier.html');
+    const ev = new Function('return ' + m[1])().map(e => ({ date: e.date, titre: e.titre, type: e.type, lieu: e.lieu || '', heure: e.heure || '', formation: e.formation || '', obs: e.obs || '' }));
+    return replaceAll('events', ev);
+  }
+};
+</script>
+</body>
+</html>
