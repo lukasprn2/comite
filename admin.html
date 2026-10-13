@@ -1,56 +1,96 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<link rel="icon" type="image/png" href="logocomite.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a2342">
 <title>Administration — Comité de la Somme</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-:root{--bleu:#0a2342;--or:#c9a84c;--fond:#f4f5f8;--gris:#dfe2e8;--ok:#1a7a3c;--ko:#b3261e}
-*{box-sizing:border-box}body{margin:0;font-family:'DM Sans',sans-serif;background:var(--fond);color:#1a1a2e}
-button{font:inherit;cursor:pointer}[hidden]{display:none!important}
-.btn{border:0;border-radius:8px;padding:.65rem 1.1rem;font-weight:700;min-height:44px}
-.b-or{background:var(--or);color:var(--bleu)}.b-bl{background:var(--bleu);color:#fff}.b-ln{background:#fff;border:1.5px solid var(--gris);color:var(--bleu)}.b-ko{background:#fff;border:1.5px solid var(--ko);color:var(--ko)}
-input,select,textarea{width:100%;font:inherit;font-size:1rem;padding:.7rem .8rem;border:1.5px solid var(--gris);border-radius:8px;background:#fff;min-height:44px}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--or);outline-offset:1px}
-label{display:block;font-size:.85rem;font-weight:700;color:var(--bleu);margin:0 0 .3rem}.f{margin-bottom:1rem}
-#login{min-height:100vh;display:grid;place-items:center;padding:1rem;background:var(--bleu)}
-.box{background:#fff;border-radius:14px;padding:2rem;width:100%;max-width:380px}.box h1{margin:0 0 .3rem;color:var(--bleu);font-size:1.5rem}
-.box p{color:#667;margin:0 0 1.2rem}
-header{background:var(--bleu);color:#fff;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;position:sticky;top:0;z-index:5}
-header b{font-size:1.05rem}header a{color:var(--or)}
-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.8rem 1rem;background:#fff;border-bottom:1px solid var(--gris)}
-nav button{flex-shrink:0;border:1.5px solid var(--gris);background:#fff;border-radius:22px;padding:.5rem 1.1rem;min-height:44px;font-weight:700;color:#556}
-nav button.on{background:var(--bleu);color:var(--or);border-color:var(--bleu)}
-main{max-width:900px;margin:0 auto;padding:1rem}
-.bar{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap}.bar input{flex:1;min-width:180px}
-.row{background:#fff;border:1px solid var(--gris);border-radius:10px;padding:.8rem 1rem;margin-bottom:.5rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between}
-.row div{min-width:0}.row strong{display:block;overflow-wrap:anywhere}.row small{color:#778;overflow-wrap:anywhere}
-.row .act{display:flex;gap:.4rem;flex-shrink:0}.row .btn{padding:.4rem .8rem;min-height:40px}
-.card{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.2rem;margin-bottom:1rem}.card h2{margin:0 0 .5rem;font-size:1.1rem;color:var(--bleu)}.card p{color:#556;margin:.3rem 0 1rem}
+:root{--bleu:#0a2342;--bleu2:#0d3060;--or:#c9a84c;--orl:#e2c87a;--fond:#f5f4f0;--gris:#e3e0d8;--ko:#b3261e}
+*{box-sizing:border-box}body{margin:0;font-family:'DM Sans',sans-serif;background:var(--fond);color:#1a1a2e;line-height:1.5}
+button{font:inherit;cursor:pointer}[hidden]{display:none!important}a{color:var(--bleu)}
+.btn{border:0;border-radius:6px;padding:.7rem 1.2rem;font-weight:700;min-height:46px;letter-spacing:.3px;transition:background .2s}
+.b-or{background:var(--or);color:var(--bleu)}.b-or:hover{background:var(--orl)}
+.b-bl{background:var(--bleu);color:#fff}.b-bl:hover{background:var(--bleu2)}
+.b-ln{background:#fff;border:1.5px solid var(--gris);color:var(--bleu)}.b-ln:hover{border-color:var(--or)}
+.b-ko{background:#fff;border:1.5px solid #e6b8b4;color:var(--ko)}.b-ko:hover{background:#fdeceb}
+input,select,textarea{width:100%;font:inherit;font-size:1rem;padding:.7rem .85rem;border:1.5px solid var(--gris);border-radius:6px;background:#fff;min-height:46px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--or);outline-offset:1px;border-color:var(--or)}
+label{display:block;font-size:.8rem;font-weight:700;color:var(--bleu);margin:0 0 .3rem}.f{margin-bottom:1rem}
+/* Connexion */
+#login{min-height:100vh;display:grid;place-items:center;padding:1rem;background:linear-gradient(160deg,var(--bleu),var(--bleu2) 55%,#1a5276)}
+.box{background:#fff;border-radius:14px;padding:2rem;width:100%;max-width:400px;text-align:center;border-top:4px solid var(--or)}
+.box img{width:90px;margin-bottom:.5rem}.box h1{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:2rem;margin:0;color:var(--bleu)}
+.box p{color:#667;margin:.2rem 0 1.4rem;font-size:.9rem}.box .f{text-align:left}
+/* Bandeau */
+header{background:var(--bleu);border-bottom:3px solid var(--or);color:#fff;padding:.6rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.brand{display:flex;align-items:center;gap:.7rem;min-width:0}.brand img{height:42px}
+.brand b{font-family:'Bebas Neue';font-weight:400;font-size:1.35rem;letter-spacing:1.5px;display:block;line-height:1}.brand small{color:var(--orl);font-size:.72rem;letter-spacing:1px}
+.hr{display:flex;gap:.5rem;align-items:center}.hr a{color:var(--orl);font-weight:700;font-size:.85rem;text-decoration:none;padding:.5rem}
+.hr .btn{min-height:38px;padding:.3rem .9rem;font-size:.85rem}
+nav{background:#fff;border-bottom:1px solid var(--gris);display:flex;overflow-x:auto;position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(10,35,66,.06)}
+nav button{flex:1 0 auto;min-width:92px;background:none;border:0;border-bottom:4px solid transparent;padding:.7rem .6rem .5rem;color:#667;font-weight:700;font-size:.82rem;display:flex;flex-direction:column;align-items:center;gap:.15rem}
+nav button span{font-size:1.5rem;line-height:1}nav button:hover{color:var(--bleu);background:#faf8f2}
+nav button.on{color:var(--bleu);border-bottom-color:var(--or);background:#faf6e8}
+main{max-width:960px;margin:0 auto;padding:1.4rem 1rem 4rem}
+.ph{margin-bottom:1.2rem}.ph h1{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:2.2rem;color:var(--bleu);margin:0;line-height:1.1;border-bottom:3px solid var(--or);display:inline-block;padding-bottom:.15rem}
+.ph p{color:#667;margin:.5rem 0 0;max-width:60ch}
+/* Accueil */
+.hello{background:linear-gradient(160deg,var(--bleu),var(--bleu2));color:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;border-left:5px solid var(--or)}
+.hello h1{font-family:'DM Serif Display';font-weight:400;font-size:1.6rem;margin:0 0 .3rem}.hello p{margin:0;color:rgba(255,255,255,.75)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.tile{background:#fff;border:1px solid var(--gris);border-radius:10px;padding:1.2rem;display:flex;flex-direction:column;gap:.3rem;text-align:left;border-top:4px solid var(--or);transition:transform .2s,box-shadow .2s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(10,35,66,.12)}
+.tile .i{font-size:1.8rem}.tile .n{font-family:'Bebas Neue';font-size:2.4rem;color:var(--bleu);line-height:1}.tile b{color:var(--bleu)}.tile small{color:#778}
+/* Listes */
+.bar{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}.bar input{flex:2;min-width:180px}.bar select{flex:1;min-width:140px}
+.gh{font-family:'Bebas Neue';letter-spacing:2px;font-size:1.3rem;color:var(--bleu);margin:1.4rem 0 .6rem;padding-bottom:.2rem;border-bottom:2px solid var(--or);display:inline-block}
+.row{background:#fff;border:1px solid var(--gris);border-radius:10px;padding:.7rem .9rem;margin-bottom:.5rem;display:flex;gap:.9rem;align-items:center}
+.row.past{opacity:.6}.row .m{flex:1;min-width:0}.row strong{display:block;color:var(--bleu);overflow-wrap:anywhere}.row small{color:#778;overflow-wrap:anywhere;display:block}
+.dt{background:var(--bleu);color:var(--or);border-radius:8px;width:54px;flex-shrink:0;text-align:center;padding:.3rem 0;font-family:'Bebas Neue';line-height:1}.dt b{display:block;font-size:1.6rem;font-weight:400;color:var(--or)}.dt span{font-size:.8rem;letter-spacing:1px;color:#fff}
+.bd{background:var(--or);color:var(--bleu);border-radius:5px;font-family:'Bebas Neue';letter-spacing:1px;padding:.3rem .6rem;flex-shrink:0;min-width:54px;text-align:center}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;padding:1px 8px;border-radius:10px;margin-right:.3rem}
+.champ{background:#e8f0fe;color:#1a3a8a}.concours{background:#e8f9ee;color:#1a6a35}.gp{background:#fff8e0;color:#7a5500}.cdc{background:#ffe0f0;color:#8a0050}.jeunes{background:#e0f8ff;color:#005a8a}.veterans{background:#f0ede8;color:#5a3a1a}.regional{background:#f3e8ff;color:#5a1a8a}.propagande{background:#fff0e0;color:#8a4a00}
+.act{display:flex;gap:.4rem;flex-shrink:0}.act .btn{padding:.3rem .8rem;min-height:42px}
+.card{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.3rem;margin-bottom:1rem}
 .grid{display:grid;grid-template-columns:1fr;gap:0 1rem}@media(min-width:600px){.grid{grid-template-columns:1fr 1fr}}
-dialog{border:0;border-radius:14px;padding:0;width:min(560px,94vw);max-height:90vh}dialog::backdrop{background:rgba(0,0,0,.55)}
-dialog form{padding:1.4rem}dialog h2{margin:0 0 1rem;color:var(--bleu)}.mact{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem}
-#toast{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--bleu);color:#fff;padding:.8rem 1.3rem;border-radius:10px;z-index:99;max-width:92vw}
-#toast.err{background:var(--ko)}.empty{text-align:center;color:#778;padding:2rem}
+.sec{grid-column:1/-1;font-family:'DM Serif Display';font-weight:400;color:var(--bleu);font-size:1.2rem;margin:.8rem 0 .6rem;padding-bottom:.2rem;border-bottom:1px solid var(--gris)}
+.sec:first-child{margin-top:0}.hint{grid-column:1/-1;color:#778;font-size:.85rem;margin:-.3rem 0 .8rem}
+.savebar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--fond) 30%);padding:1rem 0 .2rem}
+dialog{border:0;border-radius:14px;padding:0;width:min(620px,94vw);max-height:92vh;border-top:5px solid var(--or)}dialog::backdrop{background:rgba(10,35,66,.6)}
+dialog form{padding:1.4rem}dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:1.8rem;color:var(--bleu);margin:0 0 1rem}
+.mact{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem;position:sticky;bottom:0;background:#fff;padding-top:.6rem}
+#toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:var(--bleu);color:#fff;padding:.9rem 1.4rem;border-radius:10px;z-index:99;max-width:92vw;border-left:5px solid var(--or);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+#toast.err{background:var(--ko)}.empty{text-align:center;color:#778;padding:2.5rem 1rem;background:#fff;border-radius:10px;border:1px dashed var(--gris)}
+@media(max-width:520px){.row{flex-wrap:wrap}.act{width:100%}.act .btn{flex:1}.brand small{display:none}}
+.tw{overflow-x:auto;border:1px solid var(--gris);border-radius:8px}.tbl{border-collapse:collapse;min-width:100%}.tbl th,.tbl td{padding:3px;background:#fff}
+.tbl input{min-height:38px;padding:.4rem .5rem;font-size:.9rem;min-width:110px}.tbl .th{font-weight:700;background:#faf6e8;border-color:var(--or)}
+.rn{color:#889;font-size:.8rem;text-align:center;padding:0 .5rem!important}.x{background:none;border:0;color:var(--ko);font-size:1rem;min-width:38px;min-height:38px;border-radius:6px}.x:hover{background:#fdeceb}
+.hint2{color:#778;font-size:.85rem;margin:.2rem 0 .6rem}
 </style>
 </head>
 <body>
 
 <section id="login" hidden>
   <form class="box" id="loginForm">
+    <img src="logocomite.png" alt="">
     <h1>Espace administrateur</h1><p>Comité de la Somme — FFPJP</p>
-    <div class="f"><label for="em">Email</label><input id="em" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="em">Adresse email</label><input id="em" type="email" autocomplete="username" required></div>
     <div class="f"><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password" required></div>
     <button class="btn b-or" style="width:100%">Se connecter</button>
-    <p style="margin:1rem 0 0;text-align:center"><a href="#" id="forgot">Mot de passe oublié ?</a></p>
+    <p style="margin:1rem 0 0"><a href="#" id="forgot">Mot de passe oublié ?</a></p>
   </form>
 </section>
 
 <div id="app" hidden>
-  <header><b>⚙️ Administration du site</b><span><a href="index.html" target="_blank">Voir le site</a> &nbsp; <button class="btn b-ln" id="out" style="min-height:36px;padding:.3rem .8rem">Déconnexion</button></span></header>
-  <nav id="tabs"></nav>
+  <header>
+    <div class="brand"><img src="logocomite.png" alt=""><div><b>Administration</b><small>COMITÉ DE LA SOMME — FFPJP</small></div></div>
+    <div class="hr"><a href="index.html" target="_blank">Voir le site ↗</a><button class="btn b-ln" id="out">Déconnexion</button></div>
+  </header>
+  <nav id="tabs" aria-label="Sections"></nav>
   <main id="main"></main>
 </div>
 
@@ -64,83 +104,171 @@ import { collection, doc, getDocs, getDoc, setDoc, addDoc, deleteDoc, writeBatch
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const toast = (m, err) => { const t = $('#toast'); t.textContent = m; t.className = err ? 'err' : ''; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 3500); };
+const toast = (m, err) => { const t = $('#toast'); t.textContent = m; t.className = err ? 'err' : ''; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 3800); };
+const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const CAT = { champ: ['🏆', 'Championnat'], concours: ['🎯', 'Concours officiel'], gp: ['⭐', 'Grand Prix'], cdc: ['🏅', 'Championnat des clubs'], jeunes: ['👦', 'Jeunes'], veterans: ['🎖️', 'Vétérans'], regional: ['🗺️', 'Régional / France'], propagande: ['☀️', 'Propagande'] };
+const CATOPT = Object.entries(CAT).map(([k, v]) => [k, `${v[0]} ${v[1]}`]);
+const SECT = { centre: '🏙️ Secteur Centre', maritime: '⚓ Secteur Maritime', santerre: '🌾 Secteur Santerre' };
+const GRP = { president: '⭐ Président', vice: 'Vice-présidents', admin: 'Secrétaires et trésoriers', membre: 'Membres du comité directeur' };
+const today = new Date().toISOString().slice(0, 10);
 
-/* ───── Description de ce qui est modifiable : [clé, libellé, type, options] ───── */
-const TYPES = [['champ', '🏆 Championnat'], ['concours', '🎯 Concours'], ['gp', '⭐ Grand Prix'], ['cdc', '🏅 Championnat des clubs'], ['jeunes', '👦 Jeunes'], ['veterans', '🎖️ Vétérans'], ['regional', '🗺️ Régional / France'], ['propagande', '☀️ Propagande']];
+/* [clé, libellé, type, options, aide] — type "h" = titre de section */
 const SCHEMA = {
-  events: { tab: '📅 Calendrier', add: 'Ajouter une compétition', sort: (a, b) => (a.date || '').localeCompare(b.date || ''),
-    title: e => `${e.date} — ${e.titre}`, sub: e => [e.lieu, e.heure, e.formation].filter(Boolean).join(' · '),
-    f: [['date', 'Date', 'date'], ['titre', 'Titre', 'text'], ['type', 'Catégorie', 'select', TYPES], ['lieu', 'Lieu'], ['heure', 'Heure (ex : 14h00)'], ['formation', 'Formation (ex : Doublette)'], ['obs', 'Remarques', 'textarea']] },
-  clubs: { tab: '🏠 Clubs', add: 'Ajouter un club', sort: (a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'),
-    title: c => `${c.ville} — ${c.assoc}`, sub: c => `${c.num} · ${c.secteur} · ${c.president || ''}`,
-    f: [['num', 'N° du club (ex : 0009)'], ['ville', 'Ville (en majuscules)'], ['assoc', 'Nom de l\'association'], ['secteur', 'Secteur', 'select', [['centre', 'Centre'], ['maritime', 'Maritime'], ['santerre', 'Santerre']]], ['prLabel', 'Fonction', 'select', [['Président', 'Président'], ['Présidente', 'Présidente']]], ['president', 'Nom du/de la responsable'], ['adresse', 'Adresse'], ['tel', 'Téléphone'], ['email', 'Email'], ['terrain', 'Terrain de jeu']] },
-  membres: { tab: '👥 Le Comité', add: 'Ajouter un membre', sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99),
-    title: m => `${m.nom} — ${m.role}`, sub: m => [m.tel, m.email].filter(Boolean).join(' · '),
-    f: [['groupe', 'Rang dans l\'organigramme', 'select', [['president', 'Président'], ['vice', 'Vice-président(e)'], ['admin', 'Secrétaire / Trésorier'], ['membre', 'Membre']]], ['role', 'Intitulé du poste (ex : Trésorier Général)'], ['nom', 'Nom et prénom'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse (facultatif)'], ['ordre', 'Position (1 = en premier)', 'number']] }
+  events: { icon: '📅', tab: 'Calendrier', page: 'calendrier.html', desc: 'Toutes les compétitions affichées dans le calendrier du site. Tu peux joindre jusqu\'à 2 liens à chaque compétition (règlement, inscription, résultats…).',
+    add: 'Ajouter une compétition', req: ['date', 'titre'], sort: (a, b) => (a.date || '').localeCompare(b.date || '') || (a.heure || '').localeCompare(b.heure || ''),
+    group: e => e.date.slice(0, 7), glabel: k => `${MOIS[+k.slice(5) - 1]} ${k.slice(0, 4)}`,
+    left: e => `<div class="dt"><b>${e.date.slice(8)}</b><span>${MOIS[+e.date.slice(5, 7) - 1].slice(0, 3).toUpperCase()}</span></div>`,
+    title: e => e.titre, sub: e => `<span class="pill ${e.type}">${(CAT[e.type] || ['', e.type]).join(' ')}</span>${[e.lieu && '📍 ' + e.lieu, e.heure && '⏰ ' + e.heure, e.formation, (e.lien || e.lien2) && '🔗 lien'].filter(Boolean).map(esc).join(' · ')}`,
+    f: [['h', 'La compétition'], ['date', 'Date', 'date'], ['type', 'Catégorie', 'select', CATOPT], ['titre', 'Titre (ex : Concours Roye)'], ['formation', 'Formation (ex : Doublette)'], ['lieu', 'Lieu'], ['heure', 'Heure (ex : 14h00)'], ['obs', 'Remarques (ex : Limité à 48 éq.)', 'textarea'],
+      ['h', 'Liens (facultatif)'], ['lienTexte', 'Texte du 1er bouton (ex : Règlement)'], ['lien', 'Adresse du 1er lien (https://…)', 'url'], ['lien2Texte', 'Texte du 2e bouton (ex : Inscription)'], ['lien2', 'Adresse du 2e lien (https://…)', 'url']] },
+  clubs: { icon: '🏠', tab: 'Clubs', page: 'clubs.html', desc: 'Les clubs affiliés, classés par secteur.', add: 'Ajouter un club', req: ['ville'],
+    sort: (a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'), group: c => c.secteur, glabel: k => SECT[k] || k,
+    left: c => `<div class="bd">${esc(c.num)}</div>`, title: c => `${c.ville} — ${c.assoc || ''}`, sub: c => [c.president && '👤 ' + c.president, c.tel && '📞 ' + c.tel].filter(Boolean).map(esc).join(' · '),
+    f: [['h', 'Le club'], ['num', 'N° du club (ex : 0009)'], ['secteur', 'Secteur', 'select', Object.entries(SECT)], ['ville', 'Ville (en majuscules)'], ['assoc', 'Nom de l\'association'],
+      ['h', 'Contact'], ['prLabel', 'Fonction', 'select', [['Président', 'Président'], ['Présidente', 'Présidente']]], ['president', 'Nom du responsable'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse'], ['terrain', 'Terrain de jeu']] },
+  membres: { icon: '👥', tab: 'Le Comité', page: 'comite.html', desc: 'L\'organigramme du comité directeur. Le numéro de position règle l\'ordre d\'affichage dans chaque rang.', add: 'Ajouter un membre', req: ['nom'],
+    sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: m => m.groupe, glabel: k => GRP[k] || k, gorder: Object.keys(GRP),
+    left: m => `<div class="bd">${esc(m.ordre ?? '')}</div>`, title: m => m.nom, sub: m => [m.role, m.tel, m.email].filter(Boolean).map(esc).join(' · '),
+    f: [['h', 'Le membre'], ['groupe', 'Rang dans l\'organigramme', 'select', Object.entries(GRP)], ['role', 'Intitulé du poste (ex : Trésorier Général)'], ['nom', 'Nom et prénom'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse (facultatif)']] }
 };
-const SETTINGS = [['heroDesc', 'Texte de présentation (page d\'accueil)', 'textarea'],
-  ['stat1v', 'Chiffre 1'], ['stat1l', 'Légende 1'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
-  ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web']];
+const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
+  ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
+  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],
+  ['h', 'Calendrier PDF'], ['pdfLabel', 'Texte du bouton (ex : Version 3 (PDF))'], ['pdfUrl', 'Adresse du PDF (https://…)', 'url']];
 
-/* ───── Connexion ───── */
+/* Connexion */
 onAuthStateChanged(auth, u => { $('#login').hidden = !!u; $('#app').hidden = !u; if (u) start(); });
 $('#loginForm').onsubmit = async e => { e.preventDefault(); try { await signInWithEmailAndPassword(auth, $('#em').value, $('#pw').value); } catch { toast('Email ou mot de passe incorrect.', 1); } };
-$('#forgot').onclick = async e => { e.preventDefault(); if (!$('#em').value) return toast('Saisis ton email puis clique à nouveau.', 1); try { await sendPasswordResetEmail(auth, $('#em').value); toast('Email de réinitialisation envoyé.'); } catch { toast('Envoi impossible.', 1); } };
+$('#forgot').onclick = async e => { e.preventDefault(); if (!$('#em').value) return toast('Écris ton email ci-dessus, puis clique à nouveau.', 1); try { await sendPasswordResetEmail(auth, $('#em').value); toast('Email de réinitialisation envoyé.'); } catch { toast('Envoi impossible.', 1); } };
 $('#out').onclick = () => signOut(auth);
 
-/* ───── Navigation ───── */
-let tab = 'settings', cache = {};
+/* Navigation */
+let tab = 'home', cache = {};
+const NAMES = { home: ['🏠', 'Accueil'], settings: ['🏛️', 'Infos du site'], membres: ['👥', 'Le Comité'], clubs: ['🏠', 'Clubs'], events: ['📅', 'Calendrier'], classements: ['🏆', 'Classements'], import: ['📥', 'Import'] };
+NAMES.clubs[0] = '🎯';
 function start() {
-  const names = { settings: '🏛️ Infos du site', ...Object.fromEntries(Object.entries(SCHEMA).map(([k, v]) => [k, v.tab])), import: '📥 Import' };
-  $('#tabs').innerHTML = Object.entries(names).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}">${v}</button>`).join('');
-  $('#tabs').onclick = e => { const t = e.target.dataset.t; if (t) { tab = t; start(); } };
+  $('#tabs').innerHTML = Object.entries(NAMES).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}"><span>${v[0]}</span>${v[1]}</button>`).join('');
+  $('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
   show();
 }
+const head = (t, d) => `<div class="ph"><h1>${t}</h1><p>${d}</p></div>`;
 async function show() {
   const m = $('#main'); m.innerHTML = '<p class="empty">Chargement…</p>';
-  try { tab === 'settings' ? await viewSettings() : tab === 'import' ? viewImport() : await viewList(tab); }
-  catch (e) { m.innerHTML = '<p class="empty">Erreur : ' + esc(e.message) + '<br>Vérifie les règles Firestore et ton email admin.</p>'; }
+  try { tab === 'home' ? await viewHome() : tab === 'settings' ? await viewSettings() : tab === 'import' ? viewImport() : tab === 'classements' ? await viewClass() : await viewList(tab); }
+  catch (e) { m.innerHTML = `<p class="empty">Une erreur est survenue : ${esc(e.message)}<br>Vérifie ta connexion, les règles Firestore et ton email admin.</p>`; }
 }
 
-/* ───── Formulaire générique ───── */
+async function viewHome() {
+  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
+  const next = n.events.filter(e => e.date >= today).length;
+  const T = (k, ic, num, lab, sub) => `<button class="tile" data-go="${k}"><span class="i">${ic}</span><span class="n">${num}</span><b>${lab}</b><small>${sub}</small></button>`;
+  $('#main').innerHTML = `<div class="hello"><h1>Bienvenue dans l'administration</h1><p>Choisis ce que tu veux modifier. Chaque changement apparaît sur le site dès l'enregistrement.</p></div>
+  <div class="tiles">${T('events', '📅', n.events.length, 'Compétitions', `${next} à venir — ajouter, modifier, joindre des liens`)}${T('clubs', '🎯', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', '👥', n.membres.length, 'Membres du comité', 'Organigramme et contacts')}${T('classements', '🏆', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', '🏛️', '✎', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
+  ${n.events.length + n.clubs.length ? '' : '<p class="empty" style="margin-top:1rem">Base vide : ouvre l\'onglet <b>📥 Import</b> pour reprendre le contenu actuel du site.</p>'}`;
+  $('#main').onclick = e => { const b = e.target.closest('[data-go]'); if (b) { tab = b.dataset.go; start(); } };
+}
+
+/* Formulaires */
 const field = (f, v) => { const [k, l, t = 'text', o] = f, val = v ?? '';
+  if (k === 'h') return `<h3 class="sec">${l}</h3>`;
   return `<div class="f"><label for="x_${k}">${l}</label>` + (t === 'textarea' ? `<textarea id="x_${k}" name="${k}" rows="3">${esc(val)}</textarea>`
     : t === 'select' ? `<select id="x_${k}" name="${k}">${o.map(([a, b]) => `<option value="${a}" ${a === val ? 'selected' : ''}>${b}</option>`).join('')}</select>`
-    : `<input id="x_${k}" name="${k}" type="${t}" value="${esc(val)}">`) + '</div>'; };
-const read = (fs, root) => Object.fromEntries(fs.map(f => { const el = root.querySelector(`[name=${f[0]}]`); return [f[0], f[2] === 'number' ? Number(el.value) || 0 : el.value.trim()]; }));
+    : `<input id="x_${k}" name="${k}" type="${t === 'url' ? 'text' : t}" ${t === 'url' ? 'inputmode="url" placeholder="https://…"' : ''} value="${esc(val)}">`) + '</div>'; };
+const read = (fs, root) => Object.fromEntries(fs.filter(f => f[0] !== 'h').map(f => { const el = root.querySelector(`[name=${f[0]}]`); let v = el.value.trim();
+  if (f[2] === 'number') v = Number(v) || 0; if (f[2] === 'url' && v && !/^(https?:|mailto:)/i.test(v)) v = 'https://' + v; return [f[0], v]; }));
 
 async function viewSettings() {
   const d = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
-  $('#main').innerHTML = `<div class="card"><h2>Informations générales</h2><p>Ces informations apparaissent sur la page d'accueil et en bas de chaque page.</p><form id="sf"><div class="grid">${SETTINGS.map(f => field(f, d[f[0]])).join('')}</div><button class="btn b-or">Enregistrer</button></form></div>`;
-  $('#sf').onsubmit = async e => { e.preventDefault(); await setDoc(doc(db, 'settings', 'general'), read(SETTINGS, e.target)); toast('Enregistré ✔'); };
+  $('#main').innerHTML = head('Infos du site', 'Textes et coordonnées affichés sur la page d\'accueil et en bas de chaque page.') + `<form id="sf" class="card"><div class="grid">${SETTINGS.map(f => field(f, d[f[0]])).join('')}</div><div class="savebar"><button class="btn b-or">💾 Enregistrer les modifications</button></div></form>`;
+  $('#sf').onsubmit = async e => { e.preventDefault(); await setDoc(doc(db, 'settings', 'general'), read(SETTINGS, e.target)); toast('Enregistré ✔ — visible sur le site'); };
 }
 
 async function viewList(col) {
   const S = SCHEMA[col];
   cache[col] = (await getDocs(collection(db, col))).docs.map(d => ({ ...d.data(), _id: d.id })).sort(S.sort);
-  $('#main').innerHTML = `<div class="bar"><input id="q" type="search" placeholder="🔍 Rechercher…"><button class="btn b-or" id="add">+ ${S.add}</button></div><div id="list"></div>`;
-  const draw = () => { const q = $('#q').value.toLowerCase(); const l = cache[col].filter(x => !q || JSON.stringify(x).toLowerCase().includes(q));
-    $('#list').innerHTML = l.length ? l.map(x => `<div class="row"><div><strong>${esc(S.title(x))}</strong><small>${esc(S.sub(x))}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">Modifier</button><button class="btn b-ko" data-d="${x._id}" aria-label="Supprimer">🗑</button></div></div>`).join('') : '<p class="empty">Rien à afficher. Utilise le bouton « Ajouter ».</p>'; };
-  draw(); $('#q').oninput = draw; $('#add').onclick = () => edit(col, {});
-  $('#list').onclick = async e => { const id = e.target.dataset.e || e.target.dataset.d; if (!id) return; const x = cache[col].find(i => i._id === id);
-    if (e.target.dataset.e) edit(col, x); else if (confirm(`Supprimer « ${S.title(x)} » ? Cette action est définitive.`)) { await deleteDoc(doc(db, col, id)); toast('Supprimé'); show(); } };
+  const months = col === 'events' ? [...new Set(cache[col].map(S.group))] : [];
+  $('#main').innerHTML = head(`${S.icon} ${S.tab}`, S.desc) + `<div class="bar"><input id="q" type="search" placeholder="🔍 Rechercher…" aria-label="Rechercher">
+    ${col === 'events' ? `<select id="mo" aria-label="Mois"><option value="">Tous les mois</option>${months.map(k => `<option value="${k}">${S.glabel(k)}</option>`).join('')}</select><select id="ty" aria-label="Catégorie"><option value="">Toutes catégories</option>${CATOPT.map(([a, b]) => `<option value="${a}">${b}</option>`).join('')}</select>` : ''}
+    <button class="btn b-or" id="add">+ ${S.add}</button></div><div id="list"></div>`;
+  const draw = () => { const q = $('#q').value.toLowerCase(), mo = $('#mo')?.value, ty = $('#ty')?.value;
+    const l = cache[col].filter(x => (!q || JSON.stringify(x).toLowerCase().includes(q)) && (!mo || S.group(x) === mo) && (!ty || x.type === ty));
+    if (!l.length) return $('#list').innerHTML = '<p class="empty">Aucun résultat. Utilise le bouton « + » pour en ajouter.</p>';
+    const g = {}; l.forEach(x => (g[S.group(x)] ||= []).push(x));
+    const keys = S.gorder ? S.gorder.filter(k => g[k]).concat(Object.keys(g).filter(k => !S.gorder.includes(k))) : Object.keys(g);
+    $('#list').innerHTML = keys.map(k => `<div class="gh">${S.glabel(k)} (${g[k].length})</div>` + g[k].map(x => `<div class="row ${x.date && x.date < today ? 'past' : ''}">${S.left(x)}<div class="m"><strong>${esc(S.title(x))}</strong><small>${S.sub(x)}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">✏️ Modifier</button><button class="btn b-ko" data-d="${x._id}" aria-label="Supprimer">🗑</button></div></div>`).join('')).join(''); };
+  draw(); ['#q', '#mo', '#ty'].forEach(s => $(s) && ($(s).oninput = draw)); $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : { groupe: 'membre', ordre: cache[col].length + 1 });
+  $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, x = cache[col].find(i => i._id === id);
+    if (b.dataset.e) edit(col, x); else if (confirm(`Supprimer « ${S.title(x)} » ?\nCette action est définitive.`)) { await deleteDoc(doc(db, col, id)); toast('Supprimé'); show(); } };
 }
 function edit(col, x) {
   const S = SCHEMA[col], f = $('#dform');
-  f.innerHTML = `<h2>${x._id ? 'Modifier' : S.add}</h2>${S.f.map(fl => field(fl, x[fl[0]])).join('')}<div class="mact"><button type="button" class="btn b-ln" id="no">Annuler</button><button type="button" class="btn b-or" id="yes">Enregistrer</button></div>`;
+  f.innerHTML = `<h2>${x._id ? 'Modifier' : S.add}</h2><div class="grid">${S.f.map(fl => field(fl, x[fl[0]])).join('')}</div><div class="mact"><button type="button" class="btn b-ln" id="no">Annuler</button><button type="button" class="btn b-or" id="yes">💾 Enregistrer</button></div>`;
   $('#dlg').showModal(); $('#no').onclick = () => $('#dlg').close();
-  $('#yes').onclick = async () => { const d = read(S.f, f);
-    try { x._id ? await setDoc(doc(db, col, x._id), d) : await addDoc(collection(db, col), d); $('#dlg').close(); toast('Enregistré ✔'); show(); } catch (e) { toast('Échec : ' + e.message, 1); } };
+  $('#yes').onclick = async () => { const d = read(S.f, f); const miss = S.req.find(k => !d[k]); if (miss) return toast('Complète le champ « ' + S.f.find(z => z[0] === miss)[1] + ' ».', 1);
+    try { x._id ? await setDoc(doc(db, col, x._id), d) : await addDoc(collection(db, col), d); $('#dlg').close(); toast('Enregistré ✔ — visible sur le site'); show(); } catch (e) { toast('Échec : ' + e.message, 1); } };
 }
 
-/* ───── Import du contenu actuel du site (une seule fois, pour démarrer) ───── */
+/* Classements : un tableau par classement (colonnes et lignes libres) */
+let cur;
+const loadXLSX = () => window.XLSX ? Promise.resolve() : new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = () => ko(new Error('Lecteur Excel indisponible (connexion ?)')); document.head.append(s); });
+async function viewClass() {
+  const l = (await getDocs(collection(db, 'classements'))).docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+  $('#main').innerHTML = head('🏆 Classements', 'Un tableau par classement (Seniors, Féminines, Jeunes, Vétérans, Clubs…). Saisis-le à la main, colle des cellules copiées depuis Excel, ou importe directement un fichier Excel.') +
+    `<div class="bar"><button class="btn b-or" id="nw">+ Nouveau classement</button><button class="btn b-bl" id="xl">📥 Importer un fichier Excel</button><input type="file" id="xf" accept=".xlsx,.xls,.csv" hidden></div>` +
+    (l.length ? l.map(c => `<div class="row"><div class="bd">${esc(c.ordre ?? '')}</div><div class="m"><strong>${esc(c.nom)}</strong><small>${esc(c.majLe || '')}${c.majLe ? ' · ' : ''}${(c.lignes || []).length} lignes · ${(c.colonnes || []).length} colonnes</small></div><div class="act"><button class="btn b-ln" data-e="${c._id}">✏️ Modifier</button><button class="btn b-ko" data-d="${c._id}" aria-label="Supprimer">🗑</button></div></div>`).join('') : '<p class="empty">Aucun classement pour le moment. Clique sur « + Nouveau classement » ou importe un fichier Excel.</p>');
+  $('#nw').onclick = () => openEd({ ordre: l.length + 1 });
+  $('#xl').onclick = () => $('#xf').click();
+  $('#xf').onchange = async e => { const f = e.target.files[0]; if (!f) return;
+    try { await loadXLSX(); const ws = XLSX.read(await f.arrayBuffer()).Sheets; const sh = ws[Object.keys(ws)[0]];
+      const rows = XLSX.utils.sheet_to_json(sh, { header: 1, defval: '', raw: false }).map(r => r.map(x => String(x).trim())).filter(r => r.some(x => x));
+      if (rows.length < 2) return toast('Fichier vide ou illisible.', 1);
+      const w = Math.max(...rows.map(r => r.length)), fix = r => Array.from({ length: w }, (_, i) => r[i] ?? '');
+      openEd({ nom: f.name.replace(/\.\w+$/, ''), ordre: l.length + 1, colonnes: fix(rows[0]), lignes: rows.slice(1).map(r => ({ v: fix(r) })) });
+      toast('Fichier lu ✔ — vérifie le tableau puis enregistre.'); } catch (er) { toast('Import impossible : ' + er.message, 1); } };
+  $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, c = l.find(i => i._id === id);
+    if (b.dataset.e) openEd(c); else if (confirm(`Supprimer le classement « ${c.nom} » ?\nCette action est définitive.`)) { await deleteDoc(doc(db, 'classements', id)); toast('Supprimé'); show(); } };
+}
+function openEd(c) { cur = { nom: '', majLe: '', ordre: 1, colonnes: ['Rang', 'Nom', 'Club', 'Points'], lignes: [], ...c }; drawEd(); window.scrollTo(0, 0); }
+function sync() { if (!$('#cn')) return; cur.nom = $('#cn').value; cur.majLe = $('#cm').value; cur.ordre = Number($('#co').value) || 1;
+  cur.colonnes = [...document.querySelectorAll('.th')].map(i => i.value); cur.lignes = [...document.querySelectorAll('#tb tr')].map(tr => ({ v: [...tr.querySelectorAll('.td')].map(i => i.value) })); }
+function drawEd() {
+  $('#main').innerHTML = head(cur._id ? 'Modifier le classement' : 'Nouveau classement', 'Renseigne le titre, puis remplis le tableau. Tu peux renommer les colonnes (Rang, Nom, Club, Points…).') +
+  `<div class="card"><div class="grid"><div class="f"><label for="cn">Nom du classement</label><input id="cn" value="${esc(cur.nom)}" placeholder="Ex : Seniors masculins"></div>
+   <div class="f"><label for="cm">Mention de mise à jour</label><input id="cm" value="${esc(cur.majLe)}" placeholder="Ex : Mis à jour le 21/04/2026"></div>
+   <div class="f"><label for="co">Position dans les onglets (1 = premier)</label><input id="co" type="number" value="${esc(cur.ordre)}"></div></div></div>
+  <div class="card"><b>📋 Coller depuis Excel</b><p class="hint2">Dans Excel, sélectionne les cellules, copie (Ctrl+C), puis colle ici (Ctrl+V) et choisis une option.</p><textarea id="pa" rows="3" placeholder="Colle ici…"></textarea>
+   <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap"><button class="btn b-bl" id="prep">Remplacer les lignes</button><button class="btn b-ln" id="padd">Ajouter à la suite</button></div></div>
+  <div class="card"><div class="tw"><table class="tbl"><thead><tr><th></th>${cur.colonnes.map((c, i) => `<th><input class="th" value="${esc(c)}" aria-label="Nom de la colonne ${i + 1}"><button class="x" data-xc="${i}" title="Supprimer la colonne">✕</button></th>`).join('')}<th></th></tr></thead>
+   <tbody id="tb">${cur.lignes.map((r, i) => `<tr><td class="rn">${i + 1}</td>${cur.colonnes.map((_, j) => `<td><input class="td" value="${esc(r.v[j] ?? '')}"></td>`).join('')}<td><button class="x" data-xr="${i}" title="Supprimer la ligne">🗑</button></td></tr>`).join('')}</tbody></table></div>
+   <div style="display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap"><button class="btn b-ln" id="ar">+ Ajouter une ligne</button><button class="btn b-ln" id="ac">+ Ajouter une colonne</button></div></div>
+  <div class="savebar" style="display:flex;gap:.6rem;flex-wrap:wrap"><button class="btn b-or" id="sv">💾 Enregistrer le classement</button><button class="btn b-ln" id="cx">Annuler</button></div>`;
+  $('#main').onclick = e => { const b = e.target.closest('button'); if (!b) return;
+    if (b.id === 'ar') { sync(); cur.lignes.push({ v: Array(cur.colonnes.length).fill('') }); drawEd(); }
+    else if (b.id === 'ac') { sync(); cur.colonnes.push('Colonne ' + (cur.colonnes.length + 1)); cur.lignes.forEach(r => r.v.push('')); drawEd(); }
+    else if (b.dataset.xr) { sync(); cur.lignes.splice(+b.dataset.xr, 1); drawEd(); }
+    else if (b.dataset.xc) { if (cur.colonnes.length < 2) return toast('Il faut au moins une colonne.', 1); sync(); const i = +b.dataset.xc; cur.colonnes.splice(i, 1); cur.lignes.forEach(r => r.v.splice(i, 1)); drawEd(); }
+    else if (b.id === 'prep' || b.id === 'padd') paste(b.id === 'prep');
+    else if (b.id === 'sv') saveCl(); else if (b.id === 'cx') show(); };
+}
+function paste(replace) {
+  sync(); const rows = $('#pa').value.split(/\r?\n/).filter(x => x.trim()).map(x => x.split('\t').map(y => y.trim()));
+  if (!rows.length) return toast('Colle d\'abord des cellules copiées depuis Excel.', 1);
+  const w = Math.max(...rows.map(r => r.length));
+  while (cur.colonnes.length < w) { cur.colonnes.push('Colonne ' + (cur.colonnes.length + 1)); cur.lignes.forEach(r => r.v.push('')); }
+  const add = rows.map(r => ({ v: Array.from({ length: cur.colonnes.length }, (_, i) => r[i] ?? '') }));
+  cur.lignes = replace ? add : cur.lignes.concat(add); drawEd(); toast(`${add.length} lignes ${replace ? 'chargées' : 'ajoutées'}.`);
+}
+async function saveCl() {
+  sync(); if (!cur.nom.trim()) return toast('Donne un nom au classement.', 1);
+  const d = { nom: cur.nom.trim(), majLe: cur.majLe.trim(), ordre: cur.ordre, colonnes: cur.colonnes.map(c => c.trim()), lignes: cur.lignes.filter(r => r.v.some(x => x.trim())).map(r => ({ v: r.v.map(x => x.trim()) })) };
+  try { cur._id ? await setDoc(doc(db, 'classements', cur._id), d) : await addDoc(collection(db, 'classements'), d); toast('Enregistré ✔ — visible sur le site'); show(); } catch (e) { toast('Échec : ' + e.message, 1); }
+}
+
+/* Import du contenu actuel */
 function viewImport() {
-  $('#main').innerHTML = `<div class="card"><h2>Importer le contenu actuel du site</h2><p>Première utilisation : copie dans Firebase ce qui est écrit aujourd'hui dans tes pages (calendrier, clubs, comité, infos générales). Tu pourras ensuite tout modifier ici. Si une section contient déjà des données, elles seront remplacées.</p>
-  ${[['settings', 'Infos générales'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}" style="margin:0 .5rem .5rem 0">Importer : ${l}</button>`).join('')}
-  <p id="imsg"></p></div>`;
-  $('#main').onclick = async e => { const k = e.target.dataset.i; if (!k) return;
-    if (!confirm('Importer cette section ? Les données existantes seront remplacées.')) return;
+  $('#main').innerHTML = head('📥 Import', 'À faire une seule fois au départ : copie dans Firebase ce qui est écrit aujourd\'hui dans tes pages. Attention : les données déjà présentes dans la section choisie sont remplacées.') +
+  `<div class="card">${[['settings', 'Infos du site'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}" style="margin:0 .5rem .5rem 0">Importer : ${l}</button>`).join('')}<p id="imsg" style="font-weight:700"></p></div>`;
+  $('#main').onclick = async e => { const k = e.target.dataset.i; if (!k || !confirm('Importer cette section ? Les données existantes seront remplacées.')) return;
     try { $('#imsg').textContent = 'Import en cours…'; const n = await IMPORT[k](); $('#imsg').textContent = `✔ Terminé (${n} élément${n > 1 ? 's' : ''}).`; } catch (er) { $('#imsg').textContent = 'Erreur : ' + er.message; } };
 }
 const page = async u => new DOMParser().parseFromString(await (await fetch(u + '?' + Date.now())).text(), 'text/html');
@@ -157,6 +285,7 @@ const IMPORT = {
     const c = [...d.querySelectorAll('.contact-detail-text')];
     s.adresse = c[0].querySelector('span').innerHTML.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').trim();
     s.tel = c[1].querySelector('a').textContent; s.email = c[2].querySelector('a').textContent; s.emailDev = c[3].querySelector('a').textContent;
+    const pdf = (await page('calendrier.html')).querySelector('.dl-btn'); if (pdf) { s.pdfUrl = pdf.getAttribute('href'); s.pdfLabel = pdf.textContent.replace('⬇', '').trim(); }
     await setDoc(doc(db, 'settings', 'general'), s); return 1;
   },
   async membres() {
@@ -173,8 +302,7 @@ const IMPORT = {
   async events() {
     const txt = await (await fetch('calendrier.html?' + Date.now())).text(), m = txt.match(/const EVENTS = (\[[\s\S]*?\n\s*\]);/);
     if (!m) throw new Error('Calendrier introuvable dans calendrier.html');
-    const ev = new Function('return ' + m[1])().map(e => ({ date: e.date, titre: e.titre, type: e.type, lieu: e.lieu || '', heure: e.heure || '', formation: e.formation || '', obs: e.obs || '' }));
-    return replaceAll('events', ev);
+    return replaceAll('events', new Function('return ' + m[1])().map(e => ({ date: e.date, titre: e.titre, type: e.type, lieu: e.lieu || '', heure: e.heure || '', formation: e.formation || '', obs: e.obs || '', lien: '', lienTexte: '', lien2: '', lien2Texte: '' })));
   }
 };
 </script>
