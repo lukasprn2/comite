@@ -7,185 +7,56 @@
 <title>Les Clubs — Comité de la Somme FFPJP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a2342">
+<link rel="stylesheet" href="base.css">
 <style>
-  :root {
-    --bleu: #0a2342; --bleu-mid: #163a6b; --or: #c9a84c; --or-light: #e8c97a;
-    --blanc: #f8f6f1; --gris: #e8e4dc; --texte: #1a1a2e;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--blanc); color: var(--texte); overflow-x: hidden; }
-
-  /* ── NAVBAR (identique) ── */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,35,66,0.97); backdrop-filter: blur(12px); border-bottom: 2px solid var(--or); display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem; height: 68px; }
-  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-  .nav-brand img { height: 46px; width: auto; filter: drop-shadow(0 2px 6px rgba(201,168,76,0.5)); }
-  .nav-brand-text { line-height: 1.1; }
-  .nav-brand-text span { display: block; font-family: 'Bebas Neue', sans-serif; color: var(--or); font-size: 1.25rem; letter-spacing: 1.5px; }
-  .nav-brand-text small { color: rgba(255,255,255,0.55); font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; }
-  .nav-links { display: flex; align-items: center; gap: 0; list-style: none; }
-  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; padding: 0.5rem 1rem; position: relative; transition: color 0.2s; }
-  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%; height: 2px; background: var(--or); transition: left 0.25s, right 0.25s; }
-  .nav-links a:hover { color: var(--or-light); }
-  .nav-links a:hover::after { left: 0.5rem; right: 0.5rem; }
-  .nav-links a.active { color: var(--or); }
-  .nav-links a.active::after { left: 0.5rem; right: 0.5rem; }
-  .nav-links li { position: relative; }
-  .dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--bleu); border: 1px solid var(--or); border-radius: 6px; min-width: 200px; padding: 0.5rem 0; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-  .nav-links li:hover .dropdown { display: block; }
-  .dropdown a { display: block; padding: 0.5rem 1.2rem; font-size: 0.8rem; text-transform: none; letter-spacing: 0; }
-  .dropdown a::after { display: none; }
-  .nav-cta { background: var(--or); color: var(--bleu) !important; font-weight: 600 !important; padding: 0.45rem 1.2rem !important; border-radius: 4px; transition: background 0.2s !important; }
-  .nav-cta:hover { background: var(--or-light) !important; color: var(--bleu) !important; }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-  .hamburger span { display: block; width: 26px; height: 2px; background: var(--or); border-radius: 2px; transition: 0.3s; }
-
-  /* ── PAGE HEADER ── */
-  .page-header {
-    background: linear-gradient(160deg, var(--bleu) 0%, #0d3060 60%, #163a6b 100%);
-    padding: 120px 2rem 4rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .page-header::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 50% at 50% 120%, rgba(201,168,76,0.1) 0%, transparent 70%);
-  }
-  .page-header-badge {
-    display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4);
-    color: var(--or-light); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
-    padding: 0.35rem 1.2rem; border-radius: 40px; margin-bottom: 1.2rem;
-    animation: fadeUp 0.7s ease both;
-  }
-  .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem,6vw,5rem); color: #fff; letter-spacing: 3px; animation: fadeUp 0.8s ease both 0.1s; }
-  .page-header h1 em { color: var(--or); font-style: normal; }
-  .page-header p { color: rgba(255,255,255,0.65); font-size: 1rem; margin-top: 0.8rem; animation: fadeUp 0.9s ease both 0.2s; }
-  .breadcrumb { position: absolute; top: 80px; left: 2.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: rgba(255,255,255,0.45); }
-  .breadcrumb a { color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
-  .breadcrumb a:hover { color: var(--or); }
-  .breadcrumb span { color: rgba(255,255,255,0.25); }
-
-  /* ── CONTENU ── */
-  .page-content { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; }
-
   /* ── BARRE RECHERCHE ── */
-  .clubs-search-bar {
-    position: relative; margin-bottom: 1.5rem;
-    background: #fff; border: 2px solid var(--gris); border-radius: 10px;
-    display: flex; align-items: center; gap: 0.8rem;
-    padding: 0.7rem 1.2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    transition: border-color 0.2s;
-  }
+  .clubs-search-bar { position: relative; margin-bottom: 1.25rem; background: #fff; border: 2px solid var(--gris); border-radius: 10px; display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: border-color 0.2s; }
   .clubs-search-bar:focus-within { border-color: var(--or); }
   .clubs-search-icon { font-size: 1.1rem; }
-  .clubs-search-bar input { flex: 1; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--texte); background: transparent; }
+  .clubs-search-bar input { flex: 1; min-width: 0; min-height: 32px; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--texte); background: transparent; }
   .clubs-search-bar input::placeholder { color: #aaa; }
 
-  /* ── ONGLETS SECTEUR ── */
-  .secteur-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
-  .secteur-tab {
-    border: 1.5px solid var(--gris); background: #fff; color: #555;
-    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.3px;
-    padding: 0.45rem 1.1rem; border-radius: 25px; cursor: pointer;
-    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-  }
+  /* ── ONGLETS SECTEUR : une ligne défilable sur mobile ── */
+  .secteur-tabs { display: flex; gap: 0.4rem; flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(var(--pad-x) * -1) 1rem; padding: 0 var(--pad-x) 0.35rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .secteur-tabs::-webkit-scrollbar { display: none; }
+  .secteur-tab { flex-shrink: 0; white-space: nowrap; min-height: 42px; border: 1.5px solid var(--gris); background: #fff; color: #555; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.3px; padding: 0.45rem 1.1rem; border-radius: 25px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
   .secteur-tab.active, .secteur-tab:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
-  .clubs-count { font-size: 0.8rem; color: #999; margin-bottom: 2rem; }
+  .clubs-count { font-size: 0.8rem; color: #999; margin-bottom: 1.5rem; }
 
   /* ── BLOC SECTEUR ── */
-  .secteur-block { margin-bottom: 3rem; }
-  .secteur-title {
-    font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--bleu);
-    letter-spacing: 2px; margin-bottom: 1.2rem; padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--or); display: inline-block;
-  }
+  .secteur-block { margin-bottom: 2rem; }
+  .secteur-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--bleu); letter-spacing: 2px; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--or); display: inline-block; }
 
-  /* ── GRILLE CLUBS ── */
-  .clubs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
-
-  .club-card {
-    background: #fff; border-radius: 10px; overflow: hidden;
-    border: 1px solid var(--gris); box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    transition: transform 0.25s, box-shadow 0.25s;
-  }
-  .club-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(10,35,66,0.12); }
-  .club-card-header {
-    background: var(--bleu); padding: 1rem 1.2rem;
-    display: flex; align-items: flex-start; gap: 0.8rem;
-  }
-  .club-num {
-    background: var(--or); color: var(--bleu); font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.85rem; letter-spacing: 1px; padding: 0.2rem 0.6rem;
-    border-radius: 4px; flex-shrink: 0; margin-top: 2px;
-  }
-  .club-card-header h3 { color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.2; }
+  /* ── GRILLE CLUBS : 1 colonne sur mobile ── */
+  .clubs-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .club-card { background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid var(--gris); box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: transform 0.25s, box-shadow 0.25s; }
+  .club-card-header { background: var(--bleu); padding: 0.9rem 1rem; display: flex; align-items: flex-start; gap: 0.8rem; }
+  .club-num { background: var(--or); color: var(--bleu); font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+  .club-card-header h3 { color: #fff; font-size: 1rem; font-weight: 700; line-height: 1.2; min-width: 0; }
   .club-nom-assoc { display: block; color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 400; margin-top: 0.1rem; }
-  .club-card-body { padding: 1rem 1.2rem; }
-  .club-info-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.84rem; color: #555; }
+  .club-card-body { padding: 0.9rem 1rem; }
+  .club-info-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.88rem; color: #555; overflow-wrap: anywhere; }
   .club-info-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
   .club-info-label { display: block; font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; color: var(--bleu); font-weight: 700; margin-bottom: 0.1rem; }
   .club-email { word-break: break-all; color: var(--bleu); }
 
-  /* ── FOOTER ── */
-  footer { background: #070f1e; border-top: 2px solid var(--or); color: rgba(255,255,255,0.6); padding: 3rem 2rem 1.5rem; }
-  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
-  .footer-brand img { height: 56px; margin-bottom: 1rem; filter: brightness(0.9); }
-  .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
-  footer h5 { color: var(--or); font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1rem; font-weight: 600; }
-  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--or); }
-  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 0.5rem; }
-  .footer-bottom a { color: var(--or); text-decoration: none; }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* ── MOBILE ── */
-  @media (max-width: 900px) {
-    .nav-links { display: none; }
-    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 68px; left: 0; right: 0; background: var(--bleu); padding: 1.5rem; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid var(--or); }
-    .nav-links.open li a { padding: 0.7rem 0.5rem; }
-    .hamburger { display: flex; }
-    .dropdown { position: static; border: none; background: rgba(255,255,255,0.04); margin-top: 0.2rem; border-radius: 4px; }
-    .nav-links li:hover .dropdown { display: none; }
-    .nav-links li.open-sub .dropdown { display: block; }
-    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
-    .breadcrumb { display: none; }
+  @media (min-width: 600px) {
+    .clubs-search-bar { padding: 0.7rem 1.2rem; margin-bottom: 1.5rem; }
+    .secteur-block { margin-bottom: 3rem; }
+    .clubs-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+    .club-card-header { padding: 1rem 1.2rem; }
+    .club-card-body { padding: 1rem 1.2rem; }
   }
-  @media (max-width: 600px) {
-    .clubs-grid { grid-template-columns: 1fr; }
-    .secteur-tabs { gap: 0.3rem; }
-  }
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  /* Base mobile */
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    padding: 16px;
-  }
-
-  .container {
-    width: 100%;
-  }
-
-  /* Tablette */
   @media (min-width: 768px) {
-    .container {
-      max-width: 720px;
-      margin: auto;
-    }
+    .secteur-tabs { flex-wrap: wrap; overflow: visible; margin: 0 0 1rem; padding: 0; gap: 0.5rem; }
+    .secteur-tab { min-height: 0; font-size: 0.82rem; }
+    .clubs-count { margin-bottom: 2rem; }
+    .secteur-title { font-size: 1.6rem; margin-bottom: 1.2rem; }
+    .clubs-search-bar input { font-size: 0.95rem; }
   }
-
-  /* Desktop */
-  @media (min-width: 1024px) {
-    .container {
-      max-width: 960px;
-    }
+  @media (hover: hover) {
+    .club-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(10,35,66,0.12); }
   }
 </style>
 </head>
@@ -202,21 +73,14 @@
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="index.html">Accueil</a></li>
-    <li>
-      <a href="#" onclick="return false;">Compétitions ▾</a>
-      <div class="dropdown">
-        <a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/" target="_blank">Classements</a>
-        
-      </div>
-    </li>
+    <li><a href="comite.html">Le Comité</a></li>
     <li><a href="clubs.html" class="active">Les Clubs</a></li>
     <li><a href="calendrier.html">Calendrier</a></li>
-    <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank">Annuaire</a></li>
+    <li><a href="classement.html">Classements</a></li>
+    <li><a href="https://comite-de-la-somme-3.e-monsite.com/annuaire/" target="_blank" rel="noopener">Annuaire</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ── PAGE HEADER ── -->
@@ -665,9 +529,6 @@
 </footer>
 
 <script>
-  const ham = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  ham.addEventListener('click', () => navLinks.classList.toggle('open'));
 
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
@@ -711,5 +572,6 @@
     });
   }
 </script>
+<script src="nav.js"></script>
 </body>
 </html>
