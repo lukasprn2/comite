@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/png" href="logocomite.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annuaire — Comité de la Somme FFPJP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a2342">
+<link rel="stylesheet" href="base.css">
+<style>
+  .annuaire-top { display: flex; flex-direction: column; align-items: stretch; gap: 0.9rem; margin-bottom: 1.5rem; }
+  .annuaire-count { font-size: 0.85rem; color: #999; }
+  .propose-btn { display: flex; align-items: center; justify-content: center; min-height: 46px; background: var(--bleu); color: var(--or); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; padding: 0.7rem 1.4rem; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+  .propose-btn:hover { background: var(--bleu-mid); }
+
+  .annuaire-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .site-card { display: flex; flex-direction: column; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid var(--gris); box-shadow: 0 2px 12px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: transform 0.25s, box-shadow 0.25s; }
+  .site-card-header { background: var(--bleu); padding: 1rem 1.1rem; display: flex; align-items: center; gap: 0.8rem; }
+  .site-num { background: var(--or); color: var(--bleu); font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 1px; padding: 0.2rem 0.7rem; border-radius: 4px; flex-shrink: 0; }
+  .site-card-header h3 { color: #fff; font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+  .site-card-body { padding: 1rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .site-card-body p { font-size: 0.92rem; color: #555; }
+  .site-domain { font-size: 0.78rem; color: #999; overflow-wrap: anywhere; }
+  .site-visit { margin-top: auto; padding-top: 0.6rem; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--bleu); }
+  .site-visit::after { content: ' \2192'; color: var(--or); }
+
+  @media (min-width: 600px) {
+    .annuaire-top { flex-direction: row; align-items: center; justify-content: space-between; }
+    .propose-btn { display: inline-flex; min-height: 44px; }
+    .annuaire-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+  }
+  @media (hover: hover) {
+    .site-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(10,35,66,0.12); border-color: var(--or); }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-brand" href="index.html">
+    <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="comite.html">Le Comité</a></li>
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html">Calendrier</a></li>
+    <li><a href="annuaire.html" class="active">Annuaire</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html">Accueil</a>
+    <span>›</span>
+    <span style="color:rgba(255,255,255,.7)">Annuaire</span>
+  </div>
+  <div class="page-header-badge">Comités voisins</div>
+  <h1>Annuaire <em>des sites</em></h1>
+  <p>Les sites des comités de pétanque des départements voisins de la Somme</p>
+</div>
+
+<!-- CONTENU -->
+<div class="page-content">
+
+  <div class="annuaire-top reveal">
+    <p class="annuaire-count" id="annuaire-count">4 sites</p>
+    <a class="propose-btn" href="mailto:CD80@petanque.fr?subject=Annuaire%20%E2%80%94%20Proposer%20un%20site">+ Proposer un site</a>
+  </div>
+
+  <div class="annuaire-grid">
+
+    <a class="site-card reveal" href="https://ffpjp-comite-oise-petanque.e-monsite.com">
+      <div class="site-card-header">
+        <span class="site-num">60</span>
+        <h3>Comité de l'Oise</h3>
+      </div>
+      <div class="site-card-body">
+        <p>Site du comité de l'Oise</p>
+        <span class="site-domain">ffpjp-comite-oise-petanque.e-monsite.com</span>
+        <span class="site-visit">Visiter le site</span>
+      </div>
+    </a>
+
+    <a class="site-card reveal" href="https://ffpjp-nord.org/">
+      <div class="site-card-header">
+        <span class="site-num">59</span>
+        <h3>Comité du Nord</h3>
+      </div>
+      <div class="site-card-body">
+        <p>Site du comité du Nord</p>
+        <span class="site-domain">ffpjp-nord.org</span>
+        <span class="site-visit">Visiter le site</span>
+      </div>
+    </a>
+
+    <a class="site-card reveal" href="https://www.ffpjp62.fr/">
+      <div class="site-card-header">
+        <span class="site-num">62</span>
+        <h3>Comité du Pas-de-Calais</h3>
+      </div>
+      <div class="site-card-body">
+        <p>Site du comité du Pas-de-Calais</p>
+        <span class="site-domain">ffpjp62.fr</span>
+        <span class="site-visit">Visiter le site</span>
+      </div>
+    </a>
+
+    <a class="site-card reveal" href="https://www.ffpjp-comite-aisne-petanque.com/">
+      <div class="site-card-header">
+        <span class="site-num">02</span>
+        <h3>Comité de l'Aisne</h3>
+      </div>
+      <div class="site-card-body">
+        <p>Site du comité de l'Aisne</p>
+        <span class="site-domain">ffpjp-comite-aisne-petanque.com</span>
+        <span class="site-visit">Visiter le site</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logocomite.png" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal.</p>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <ul class="footer-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="comite.html">Le Comité</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/">Championnats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/classement/">Classements</a></li>
+        <li><a href="annuaire.html">Annuaire</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => obs.observe(r));
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+  });
+</script>
+<script src="nav.js"></script>
+</body>
+</html>
