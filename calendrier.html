@@ -715,7 +715,7 @@ const EVENTS = [
         this.classList.add('active'); activeFilter=this.dataset.filter; renderCalendar();
       });
     });
-    renderCalendar();
+      renderCalendar(); window.CMS_CAL = { EVENTS, renderCalendar };
   })();
 </script>
 <script src="nav.js"></script>
