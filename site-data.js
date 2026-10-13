@@ -21,6 +21,8 @@ function applySettings(s) {
     if (s.email) { const a = $('a', c[2]); a.textContent = s.email; a.href = 'mailto:' + s.email; }
     if (s.emailDev) { const a = $('a', c[3]); a.textContent = s.emailDev; a.href = 'mailto:' + s.emailDev; }
   }
+  const pdf = $('.dl-btn');
+  if (pdf && s.pdfUrl) { pdf.href = s.pdfUrl; if (s.pdfLabel) pdf.textContent = '⬇ ' + s.pdfLabel; }
   if (s.email) $$('.footer-bottom a').forEach(a => { a.textContent = s.email; a.href = 'mailto:' + s.email; });
 }
 
@@ -56,8 +58,42 @@ function applyComite(ms) {
   $('.membres-grid').innerHTML = g('membre').map(m => card(m, 'membre')).join('');
 }
 
+// Liens des compétitions : ajoutés automatiquement dans la fenêtre qui s'ouvre au clic sur un jour
+function watchModal() {
+  const box = $('#cal-modal-content'); if (!box) return;
+  const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  const safe = u => /^(https?:|mailto:)/i.test(u) ? u : '#';
+  const fill = () => {
+    const [d, m, y] = $('#cal-modal-date').textContent.trim().split(' ');
+    const ds = `${y}-${String(MOIS.indexOf(m.toLowerCase()) + 1).padStart(2, '0')}-${d.padStart(2, '0')}`;
+    $$('.cal-modal-event', box).forEach(el => {
+      if ($('.cms-links', el)) return;
+      const t = $('.cal-modal-event-title', el).textContent.trim();
+      const e = window.CMS_CAL.EVENTS.find(x => x.date === ds && x.titre === t);
+      const links = e ? [[e.lien, e.lienTexte], [e.lien2, e.lien2Texte]].filter(l => l[0]) : [];
+      if (!links.length) return;
+      el.insertAdjacentHTML('beforeend', `<div class="cms-links" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem">${links.map(l => `<a href="${esc(safe(l[0]))}" target="_blank" rel="noopener" style="background:#c9a84c;color:#0a2342;font-weight:700;font-size:.8rem;text-decoration:none;padding:.5rem .9rem;border-radius:6px">🔗 ${esc(l[1] || 'Plus d\'infos')}</a>`).join('')}</div>`);
+    });
+  };
+  new MutationObserver(fill).observe(box, { childList: true });
+}
+
+// Classements : affichage en onglets (un tableau par classement) avec recherche
+function applyClassements(list) {
+  list.sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+  let host = $('#cms-classements') || $('.page-content');
+  if (!host) { $('footer')?.insertAdjacentHTML('beforebegin', '<div class="page-content" id="cms-classements"></div>'); host = $('#cms-classements'); }
+  const css = `<style>.cms-t{display:flex;gap:.5rem;overflow-x:auto;margin-bottom:1rem;padding-bottom:.3rem}.cms-t button{flex-shrink:0;min-height:42px;border:1.5px solid #e3e0d8;background:#fff;color:#555;font:600 .85rem 'DM Sans',sans-serif;padding:.45rem 1.1rem;border-radius:25px;cursor:pointer}.cms-t button.on,.cms-t button:hover{background:#0a2342;color:#c9a84c;border-color:#0a2342}.cms-m{color:#888;font-size:.85rem;margin:0 0 .8rem}.cms-q{width:100%;max-width:420px;min-height:44px;padding:.6rem 1rem;border:2px solid #e3e0d8;border-radius:10px;font:1rem 'DM Sans',sans-serif;margin-bottom:1rem}.cms-q:focus{outline:none;border-color:#c9a84c}.cms-w{overflow-x:auto;border:1px solid #e3e0d8;border-radius:10px;background:#fff}.cms-w table{border-collapse:collapse;width:100%;font-size:.9rem}.cms-w th{background:#0a2342;color:#c9a84c;text-align:left;padding:.7rem .8rem;white-space:nowrap}.cms-w td{padding:.55rem .8rem;border-top:1px solid #eee}.cms-w tr:nth-child(even) td{background:#faf9f5}</style>`;
+  host.innerHTML = css + `<div class="cms-t" role="tablist">${list.map((c, i) => `<button role="tab" class="${i ? '' : 'on'}" data-k="${i}">${esc(c.nom)}</button>`).join('')}</div>` +
+    list.map((c, i) => `<section class="cms-p" data-k="${i}" ${i ? 'hidden' : ''}>${c.majLe ? `<p class="cms-m">${esc(c.majLe)}</p>` : ''}<input class="cms-q" type="search" placeholder="🔍 Rechercher un joueur ou un club…" aria-label="Rechercher"><div class="cms-w"><table><thead><tr>${(c.colonnes || []).map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${(c.lignes || []).map(r => `<tr>${r.v.map(x => `<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`).join('');
+  $$('.cms-t button', host).forEach(b => b.onclick = () => { $$('.cms-t button', host).forEach(x => x.classList.toggle('on', x === b)); $$('.cms-p', host).forEach(p => p.hidden = p.dataset.k !== b.dataset.k); });
+  $$('.cms-q', host).forEach(q => q.oninput = () => { const v = q.value.toLowerCase(); $$('tbody tr', q.parentElement).forEach(tr => tr.hidden = v && !tr.textContent.toLowerCase().includes(v)); });
+}
+
 (async () => {
   try {
+    watchModal();
+    if (location.pathname.split('/').pop() === 'classement.html' || $('#cms-classements')) { const c = await list('classements'); if (c.length) applyClassements(c); }
     const s = (await getDoc(doc(db, 'settings', 'general'))).data();
     if (s) applySettings(s);
     if ($('#bloc-centre')) { const c = await list('clubs'); if (c.length) applyClubs(c); }
