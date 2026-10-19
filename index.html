@@ -109,6 +109,22 @@
     .contact-form { padding: 2.5rem; }
     .form-group input, .form-group textarea, .form-group select { font-size: 0.9rem; }
   }
+  /* ── ACTUALITÉS ── */
+  #actus { background: var(--blanc); }
+  .actus-list { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+  .actu { background: #fff; border: 1px solid #e4e7ec; border-left: 4px solid var(--or); border-radius: 10px; padding: 1.2rem 1.25rem; box-shadow: 0 1px 2px rgba(10,35,66,.05); }
+  .actu time { display: block; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: #667085; font-weight: 600; margin-bottom: 0.3rem; }
+  .actu h3 { font-family: 'DM Serif Display', serif; font-weight: 400; color: var(--bleu); font-size: 1.25rem; margin-bottom: 0.5rem; }
+  .actu p { color: #555; line-height: 1.7; font-size: 0.95rem; white-space: pre-line; overflow-wrap: anywhere; }
+  .actu a { display: inline-block; margin-top: 0.8rem; color: var(--bleu); font-weight: 700; font-size: 0.9rem; text-underline-offset: 3px; }
+  .actu a:hover { color: var(--or); }
+  @media (min-width: 768px) { .actus-list { grid-template-columns: 1fr 1fr; } }
+  /* ── FORMULAIRE : état d'envoi ── */
+  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form-status { margin: 0 0 1rem; padding: 0.7rem 0.9rem; border-radius: 6px; font-size: 0.9rem; line-height: 1.5; }
+  .form-status.ok { background: rgba(24,121,78,.18); color: #b8f0d4; border: 1px solid rgba(24,121,78,.5); }
+  .form-status.err { background: rgba(179,38,30,.2); color: #ffd3cf; border: 1px solid rgba(179,38,30,.5); }
+  .form-submit:disabled { opacity: .6; cursor: wait; }
   @media (hover: hover) {
     .nr-card:hover { transform: translateY(-2px); }
   }
@@ -164,6 +180,18 @@
   <div class="stat-item"><strong>FFPJP</strong><span>Fédération</span></div>
   <div class="stat-item"><strong>Amiens</strong><span>Siège du comité</span></div>
 </div>
+
+<!-- ── ACTUALITÉS ── -->
+<section id="actus" hidden>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">À la une</p>
+      <h2 class="section-title">Dernières <em>actualités</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="actus-list" id="actusList"></div>
+  </div>
+</section>
 
 <!-- ── NAVIGATION RAPIDE ── -->
 <section id="nav-rapide">
@@ -258,17 +286,19 @@
         </div>
       </div>
       <div class="reveal">
-        <div class="contact-form">
+        <form class="contact-form" id="contactForm" novalidate>
           <h3>Nous écrire</h3>
-          <div class="form-group"><label>Votre nom</label><input type="text" placeholder="Dupont Jean"></div>
-          <div class="form-group"><label>Email</label><input type="email" placeholder="email@exemple.fr"></div>
+          <div class="form-status" id="formStatus" role="status" aria-live="polite" hidden></div>
+          <div class="form-group"><label for="cf-nom">Votre nom</label><input id="cf-nom" name="nom" type="text" placeholder="Dupont Jean" autocomplete="name" maxlength="100" required></div>
+          <div class="form-group"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" placeholder="email@exemple.fr" autocomplete="email" maxlength="150" required></div>
           <div class="form-group">
-            <label>Sujet</label>
-            <select><option value="">Choisir un sujet…</option><option>Informations générales</option><option>Résultats / Calendrier</option><option>Affiliation club</option><option>Problème technique</option><option>Autre</option></select>
+            <label for="cf-sujet">Sujet</label>
+            <select id="cf-sujet" name="sujet" required><option value="">Choisir un sujet…</option><option>Informations générales</option><option>Résultats / Calendrier</option><option>Affiliation club</option><option>Problème technique</option><option>Autre</option></select>
           </div>
-          <div class="form-group"><label>Message</label><textarea placeholder="Votre message…"></textarea></div>
-          <button class="form-submit" onclick="alert('Pour envoyer un message, contactez directement : CD80@petanque.fr')">Envoyer le message</button>
-        </div>
+          <div class="form-group"><label for="cf-message">Message</label><textarea id="cf-message" name="message" placeholder="Votre message…" maxlength="3000" required></textarea></div>
+          <div class="hp-field" aria-hidden="true"><label for="cf-site">Ne pas remplir</label><input id="cf-site" name="site" type="text" tabindex="-1" autocomplete="off"></div>
+          <button class="form-submit" id="formBtn" type="submit">Envoyer le message</button>
+        </form>
       </div>
     </div>
   </div>
@@ -326,6 +356,54 @@
 </script>
   <!-- À la fin du <body>, avant </body> -->
 
+<script type="module">
+import { db } from './firebase-config.js';
+import { collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ── Actualités publiées ── */
+const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+(async () => {
+  try {
+    const snap = await getDocs(query(collection(db, 'actualites'), where('statut', '==', 'publie')));
+    const items = snap.docs.map(d => d.data()).sort((a, b) => (b.publieLe || '').localeCompare(a.publieLe || '')).slice(0, 4);
+    if (!items.length) return;
+    const list = document.getElementById('actusList');
+    items.forEach(a => {
+      const box = document.createElement('article'); box.className = 'actu';
+      if (a.publieLe) { const t = document.createElement('time'); t.dateTime = a.publieLe; const [y, m, d] = a.publieLe.split('-'); t.textContent = `${+d} ${MOIS[+m - 1] || ''} ${y}`; box.append(t); }
+      const h = document.createElement('h3'); h.textContent = a.titre || ''; box.append(h);
+      const p = document.createElement('p'); p.textContent = a.texte || ''; box.append(p);
+      if (a.lien && /^https?:\/\//i.test(a.lien)) { const l = document.createElement('a'); l.href = a.lien; l.target = '_blank'; l.rel = 'noopener'; l.textContent = a.lienTexte || 'En savoir plus'; box.append(l); }
+      list.append(box);
+    });
+    document.getElementById('actus').hidden = false;
+  } catch (e) { console.warn('Actualités indisponibles', e); }
+})();
+
+/* ── Formulaire de contact ── */
+const form = document.getElementById('contactForm'), status = document.getElementById('formStatus'), btn = document.getElementById('formBtn');
+const say = (msg, ok) => { status.textContent = msg; status.className = 'form-status ' + (ok ? 'ok' : 'err'); status.hidden = false; };
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const v = Object.fromEntries(new FormData(form).entries());
+  if (v.site) return;                                         // robot : champ piège rempli
+  if (!v.nom.trim() || !v.email.trim() || !v.sujet || !v.message.trim()) return say('Merci de remplir tous les champs.', false);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email.trim())) return say('L\'adresse email n\'est pas valide.', false);
+  const last = +localStorage.getItem('lastMsg') || 0;
+  if (Date.now() - last < 30000) return say('Merci de patienter quelques secondes avant un nouvel envoi.', false);
+  btn.disabled = true; btn.textContent = 'Envoi en cours…';
+  try {
+    await addDoc(collection(db, 'messages'), {
+      nom: v.nom.trim().slice(0, 100), email: v.email.trim().slice(0, 150), sujet: v.sujet.slice(0, 100),
+      message: v.message.trim().slice(0, 3000), lu: false, traite: false, creeLe: Date.now() });
+    localStorage.setItem('lastMsg', String(Date.now()));
+    form.reset(); say('Message envoyé. Merci, nous vous répondrons dès que possible.', true);
+  } catch (err) {
+    say('Envoi impossible. Écrivez-nous directement à CD80@petanque.fr.', false);
+  } finally { btn.disabled = false; btn.textContent = 'Envoyer le message'; }
+});
+</script>
+<script type="module" src="track.js"></script>
 <script src="nav.js"></script>
 </body>
 </html>
