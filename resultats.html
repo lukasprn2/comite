@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/png" href="logocomite.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Résultats 2026 — Comité de la Somme FFPJP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a2342">
+<link rel="stylesheet" href="base.css">
+<style>
+/* ══ Résultats — styles propres à la page (mobile-first) ══ */
+
+/* Bandeau info */
+.maj-bar { background: var(--bleu); border-radius: 8px; padding: 0.9rem 1rem; display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1.25rem; }
+.maj-bar p { color: rgba(255,255,255,0.75); font-size: 0.85rem; line-height: 1.6; }
+.maj-bar strong { color: var(--or); }
+
+/* Onglets : une ligne défilable au doigt */
+.cat-tabs { display: flex; gap: 0.4rem; flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(var(--pad-x) * -1) 1.25rem; padding: 0 var(--pad-x) 0.35rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab { flex-shrink: 0; white-space: nowrap; min-height: 44px; border: 2px solid var(--gris); background: #fff; color: #555; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.3px; padding: 0.45rem 1rem; border-radius: 25px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.cat-tab.active, .cat-tab:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
+
+/* Sections */
+.res-section { margin-bottom: 1.75rem; }
+.res-section.hidden { display: none; }
+
+/* Cartes : une colonne sur mobile */
+.res-cards { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1rem; }
+.res-card { background: #fff; border: 1px solid var(--gris); border-radius: 10px; padding: 1rem; box-shadow: 0 2px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 0.8rem; }
+.res-card.highlight { border-color: var(--or); background: linear-gradient(180deg, #fffdf6, #fff); }
+.res-top { display: flex; align-items: flex-start; gap: 0.8rem; }
+.res-icon { width: 40px; height: 40px; background: var(--bleu); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.res-icon svg { stroke: var(--or); }
+.res-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--bleu); line-height: 1.35; padding-top: 2px; }
+.res-desc { font-size: 0.8rem; color: #777; line-height: 1.5; }
+
+/* Boutons de fichiers : pleine largeur sur mobile (cible tactile ≥ 44px) */
+.res-links { display: flex; flex-direction: column; gap: 0.5rem; }
+.file-link { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; min-height: 46px; text-decoration: none; font-size: 0.88rem; font-weight: 600; color: var(--bleu); background: #f3efe5; border: 1px solid #e6dcc0; border-radius: 8px; padding: 0.5rem 0.9rem; transition: background 0.2s, border-color 0.2s, color 0.2s; -webkit-tap-highlight-color: transparent; }
+.file-link:active { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
+.file-link.latest { background: var(--or); border-color: var(--or); }
+.file-link.latest:active { background: var(--or-light); color: var(--bleu); border-color: var(--or-light); }
+
+.ext { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 4px; background: #fff; color: #666; text-transform: uppercase; flex-shrink: 0; }
+.ext.pdf { background: #fde8e8; color: #9b1c1c; }
+.ext.docx { background: #e8f0fe; color: #1a3a8a; }
+.ext.web { background: #e8f9ee; color: #1a6a35; }
+
+.tag { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; background: #fff8e0; color: #7a5500; white-space: nowrap; vertical-align: middle; }
+
+.source-note { margin-top: 1.5rem; font-size: 0.8rem; color: #888; line-height: 1.6; }
+.source-note a { color: var(--bleu); font-weight: 600; padding: 0.2rem 0; }
+
+/* ≥ 600px : boutons en ligne */
+@media (min-width: 600px) {
+  .res-links { flex-direction: row; flex-wrap: wrap; }
+  .file-link { display: inline-flex; justify-content: flex-start; min-height: 42px; font-size: 0.82rem; padding: 0.4rem 0.9rem; }
+}
+
+/* ≥ 768px : deux colonnes + onglets sur plusieurs lignes */
+@media (min-width: 768px) {
+  .maj-bar { align-items: center; padding: 1rem 1.5rem; margin-bottom: 2rem; }
+  .cat-tabs { flex-wrap: wrap; overflow: visible; margin: 0 0 2rem; padding: 0; gap: 0.5rem; }
+  .cat-tab { font-size: 0.85rem; padding: 0.55rem 1.3rem; min-height: 42px; }
+  .res-section { margin-bottom: 2.25rem; }
+  .res-cards { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .res-card.wide { grid-column: 1 / -1; }
+}
+
+@media (hover: hover) {
+  .file-link:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
+  .file-link.latest:hover { background: var(--or-light); color: var(--bleu); border-color: var(--or-light); }
+  .res-card:hover { border-color: var(--or); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a class="nav-brand" href="index.html">
+    <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="comite.html">Le Comité</a></li>
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html">Calendrier</a></li>
+    <li><a href="resultats.html" class="active">Résultats</a></li>
+    <li><a href="annuaire.html">Annuaire</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html">Accueil</a>
+    <span>›</span>
+    <span style="color:rgba(255,255,255,.7)">Résultats</span>
+  </div>
+  <div class="page-header-badge">Saison 2026</div>
+  <h1>Résultats <em>2026</em></h1>
+  <p>Championnats départementaux, qualifiés pour la Ligue, championnats régionaux et de France — tous les documents officiels du Comité de la Somme.</p>
+</div>
+
+<!-- CONTENT -->
+<div class="page-content">
+
+  <div class="maj-bar reveal">
+    <span style="font-size:1.3rem">📄</span>
+    <p>Dernière mise à jour de la liste des qualifiés pour la Ligue : <strong>13/05/2026</strong> (version définitive). Les documents s'ouvrent dans un nouvel onglet.</p>
+  </div>
+
+  <!-- ONGLETS -->
+  <div class="cat-tabs reveal" role="tablist" aria-label="Catégories de résultats">
+    <button class="cat-tab active" data-cat="all" role="tab" aria-selected="true">🏆 Tout</button>
+    <button class="cat-tab" data-cat="dep" role="tab" aria-selected="false">📍 Départementaux</button>
+    <button class="cat-tab" data-cat="qual" role="tab" aria-selected="false">🎯 Qualifiés Ligue</button>
+    <button class="cat-tab" data-cat="reg" role="tab" aria-selected="false">🥇 Régionaux</button>
+    <button class="cat-tab" data-cat="fra" role="tab" aria-selected="false">🇫🇷 France</button>
+    <button class="cat-tab" data-cat="autre" role="tab" aria-selected="false">📋 Autres</button>
+  </div>
+
+  <!-- DÉPARTEMENTAUX -->
+  <section class="res-section reveal" data-cat="dep">
+    <p class="section-label">Étape 1</p>
+    <h2 class="section-title">Championnats <em style="color:var(--or);font-style:normal">départementaux</em></h2>
+    <div class="divider"></div>
+    <div class="res-cards">
+      <div class="res-card highlight">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <h3>Résultats définitifs des championnats départementaux</h3>
+        </div>
+        <div class="res-links">
+          <a class="file-link latest" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/resultats-des-championnats-departementaux-11052026.docx" target="_blank" rel="noopener">Ouvrir le document <span class="ext docx">docx</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALIFIÉS LIGUE -->
+  <section class="res-section reveal" data-cat="qual">
+    <p class="section-label">Étape 2</p>
+    <h2 class="section-title">Équipes qualifiées <em style="color:var(--or);font-style:normal">Ligue</em></h2>
+    <div class="divider"></div>
+    <div class="res-cards">
+      <div class="res-card highlight wide">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3>Qualifiés pour le championnat régional <span class="tag">Dernière : 13/05</span></h3>
+        </div>
+        <p class="res-desc">Plusieurs mises à jour ont été publiées : la version définitive du 13/05/2026 fait foi.</p>
+        <div class="res-links">
+          <a class="file-link latest" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/equipes-qualifiees-pour-le-championnat-regional-13052026-definitif.pdf" target="_blank" rel="noopener">13/05 · Définitif <span class="ext pdf">pdf</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/equipes-qualifiees-pour-le-championnat-regional-11052026-definitif.pdf" target="_blank" rel="noopener">11/05 · Définitif <span class="ext pdf">pdf</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/equipes-qualifiees-pour-le-championnat-regional-2026-au-04052026.pdf" target="_blank" rel="noopener">Au 04/05 <span class="ext pdf">pdf</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/equipes-qualifiees-pour-le-championnat-regional-30042026.docx" target="_blank" rel="noopener">30/04 <span class="ext docx">docx</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/equipes-qualifiees-pour-le-championnat-regional-bis-2026.docx" target="_blank" rel="noopener">Liste bis <span class="ext docx">docx</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RÉGIONAUX -->
+  <section class="res-section reveal" data-cat="reg">
+    <p class="section-label">Étape 3</p>
+    <h2 class="section-title">Championnats <em style="color:var(--or);font-style:normal">régionaux</em></h2>
+    <div class="divider"></div>
+    <div class="res-cards">
+      <div class="res-card highlight wide">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+          <h3>Résultats des championnats régionaux</h3>
+        </div>
+        <div class="res-links">
+          <a class="file-link latest" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/resultats-des-championnats-regionaux-2026-definitif.pdf" target="_blank" rel="noopener">Résultats définitifs <span class="ext pdf">pdf</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/2-resultats-des-championnats-regionaux-26052026.pdf" target="_blank" rel="noopener">26/05 <span class="ext pdf">pdf</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/resultats-des-championnats-regionaux-24052026.pdf" target="_blank" rel="noopener">24/05 <span class="ext pdf">pdf</span></a>
+        </div>
+      </div>
+      <div class="res-card">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <h3>Joueurs suspendus pour les championnats 2027</h3>
+        </div>
+        <div class="res-links">
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/joueurs-suspendus-pour-un-championnat-en-2027.pdf" target="_blank" rel="noopener">Ouvrir le document <span class="ext pdf">pdf</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRANCE -->
+  <section class="res-section reveal" data-cat="fra">
+    <p class="section-label">Étape 4</p>
+    <h2 class="section-title">Championnats de <em style="color:var(--or);font-style:normal">France</em></h2>
+    <div class="divider"></div>
+    <div class="res-cards">
+      <div class="res-card">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h3>Championnats de France Triplette</h3>
+        </div>
+        <p class="res-desc">Résultats publiés sur le site officiel de la FFPJP.</p>
+        <div class="res-links">
+          <a class="file-link" href="https://www.championnats-ffpjp.com/index.php?option=com_content&amp;view=category&amp;layout=blog&amp;id=11&amp;Itemid=122" target="_blank" rel="noopener">Féminin <span class="ext web">web</span></a>
+          <a class="file-link" href="https://www.championnats-ffpjp.com/index.php?option=com_content&amp;view=category&amp;layout=blog&amp;id=18&amp;Itemid=130" target="_blank" rel="noopener">Masculin <span class="ext web">web</span></a>
+        </div>
+      </div>
+      <div class="res-card">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>
+          <h3>Résultats des champions aux France</h3>
+        </div>
+        <p class="res-desc">Performances des champions de la Somme au niveau national.</p>
+        <div class="res-links">
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/resultats-2026-des-champions-departementaux-aux-france.pdf" target="_blank" rel="noopener">Départementaux <span class="ext pdf">pdf</span></a>
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/resultats-2026-des-champions-regionaux-aux-france.pdf" target="_blank" rel="noopener">Régionaux <span class="ext pdf">pdf</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTRES -->
+  <section class="res-section reveal" data-cat="autre">
+    <p class="section-label">Jeunes</p>
+    <h2 class="section-title">Détections &amp; <em style="color:var(--or);font-style:normal">sélection</em></h2>
+    <div class="divider"></div>
+    <div class="res-cards">
+      <div class="res-card">
+        <div class="res-top">
+          <div class="res-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <h3>Jeunes retenus pour la sélection régionale <span class="tag">19/06/2026</span></h3>
+        </div>
+        <div class="res-links">
+          <a class="file-link" href="https://comite-de-la-somme-3.e-monsite.com/medias/files/detections-cd80-19062026.docx" target="_blank" rel="noopener">Ouvrir le document <span class="ext docx">docx</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="source-note reveal">Source : <a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/" target="_blank" rel="noopener">page Résultats du site du Comité de la Somme</a>. Les résultats des saisons 2023 à 2025 y sont également disponibles.</p>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logocomite.png" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal.</p>
+    </div>
+    <div>
+      <h5>Navigation</h5>
+      <ul class="footer-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
+        <li><a href="classement.html">Classements</a></li>
+        <li><a href="resultats.html">Résultats</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/">Championnats</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/">Résultats (site officiel)</a></li>
+        <li><a href="annuaire.html">Annuaire</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
+
+<script>
+// Ombre de la navbar au scroll
+document.getElementById('navbar').style.boxShadow = 'none';
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow = window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,.4)' : 'none';
+});
+
+// Filtres par onglet
+document.querySelectorAll('.cat-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    const cat = tab.dataset.cat;
+    document.querySelectorAll('.res-section').forEach(s => {
+      s.classList.toggle('hidden', cat !== 'all' && s.dataset.cat !== cat);
+    });
+  });
+});
+
+// Apparition progressive
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+reveals.forEach(r => obs.observe(r));
+</script>
+<script src="nav.js"></script>
+</body>
+</html>
