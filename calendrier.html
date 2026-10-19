@@ -68,6 +68,37 @@
   .cal-modal-event-meta { font-size: 0.78rem; color: #777; display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
   .cal-modal-event-meta span { background: var(--gris); padding: 2px 7px; border-radius: 10px; }
 
+
+  /* ── AFFICHAGE LISTE + OUTILS ── */
+  .cat-propagande { background: #fff0e0; color: #8a4a00; }
+  .cal-tools { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+  .cal-view-btns { display: flex; gap: 0.4rem; }
+  .cal-view-btn { min-height: 40px; border: 1.5px solid var(--gris); background: #fff; color: var(--bleu); font: 600 0.8rem 'DM Sans', sans-serif; padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .cal-view-btn.active, .cal-view-btn:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
+  .cal-search-wrap { margin-bottom: 1.2rem; }
+  #cal-search { width: 100%; max-width: 460px; min-height: 44px; padding: 0.6rem 1rem; border: 2px solid var(--gris); border-radius: 10px; font: 1rem 'DM Sans', sans-serif; background: #fff; }
+  #cal-search:focus { outline: none; border-color: var(--or); }
+  .cal-list { display: flex; flex-direction: column; gap: 1rem; }
+  .cal-month-sep { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: var(--bleu); border-bottom: 2px solid var(--or); padding-bottom: 0.1rem; margin: 0.8rem 0 0; align-self: flex-start; }
+  .cal-day { display: grid; grid-template-columns: 62px 1fr; gap: 0.8rem; align-items: start; }
+  .cal-day-date { background: var(--bleu); color: #fff; border-radius: 10px; text-align: center; padding: 0.5rem 0 0.45rem; line-height: 1.1; }
+  .cal-day-date b { display: block; font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 1.9rem; color: var(--or); }
+  .cal-day-date span { font-size: 0.66rem; letter-spacing: 1px; text-transform: uppercase; display: block; }
+  .cal-day.is-today .cal-day-date { background: var(--or); }
+  .cal-day.is-today .cal-day-date b, .cal-day.is-today .cal-day-date span { color: var(--bleu); }
+  .cal-day.past { opacity: 0.55; }
+  .cal-ev { background: #fff; border: 1px solid var(--gris); border-left: 4px solid var(--or); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.6rem; box-shadow: 0 1px 2px rgba(10,35,66,.05); }
+  .cal-ev:last-child { margin-bottom: 0; }
+  .cal-ev-title { font-weight: 700; color: var(--bleu); font-size: 1rem; line-height: 1.35; }
+  .cal-ev-meta { font-size: 0.8rem; color: #666; display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .cal-ev-meta span { background: var(--gris); padding: 2px 8px; border-radius: 10px; }
+  .cal-next-badge { background: var(--or); color: var(--bleu); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 10px; margin-left: 0.4rem; vertical-align: middle; text-transform: uppercase; }
+  .cal-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.7rem; }
+  .cal-links a { background: var(--or); color: var(--bleu); font-weight: 700; font-size: 0.8rem; text-decoration: none; padding: 0.5rem 0.9rem; border-radius: 6px; min-height: 36px; display: inline-flex; align-items: center; }
+  .cal-links a:hover { background: var(--or-light); }
+  .cal-empty { background: #fff; border: 1px dashed var(--gris); border-radius: 10px; padding: 2rem 1rem; text-align: center; color: #777; }
+  @media (min-width: 600px) { .cal-day { grid-template-columns: 78px 1fr; gap: 1.1rem; } .cal-day-date b { font-size: 2.3rem; } .cal-ev { padding: 1rem 1.2rem; } }
+
   /* Légende (les pastilles restent visibles à toutes les tailles) */
   .cal-legende { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
   .cal-legende .cal-event-dot { display: inline-block; }
@@ -148,7 +179,7 @@
   <div class="dl-bar reveal">
     <p>📄 Téléchargez les calendriers officiels PDF. Les mises à jour sont publiées régulièrement.</p>
     <div class="dl-btns">
-      <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" class="dl-btn dl-btn-white">
+      <a href="https://comite-de-la-somme-3.e-monsite.com/medias/files/calendrier-somme-2026-2eme-version-01022026b.pdf" class="dl-btn dl-btn-white" target="_blank" rel="noopener">
         ⬇ Version 2 (PDF)
       </a>
     </div>
@@ -165,22 +196,32 @@
       <button class="cal-filter-btn" data-filter="jeunes">👦 Jeunes</button>
       <button class="cal-filter-btn" data-filter="veterans">🎖️ Vétérans</button>
       <button class="cal-filter-btn" data-filter="regional">🗺️ Régional/France</button>
+      <button class="cal-filter-btn" data-filter="propagande">📣 Propagande</button>
     </div>
 
-    <!-- Navigation mois -->
+    <!-- Navigation mois + affichage -->
     <div class="cal-toolbar reveal">
       <div class="cal-nav">
-        <button id="cal-prev">&#8592;</button>
+        <button id="cal-prev" aria-label="Mois précédent">&#8592;</button>
         <div class="cal-month-label" id="cal-month-label"></div>
-        <button id="cal-next">&#8594;</button>
+        <button id="cal-next" aria-label="Mois suivant">&#8594;</button>
       </div>
-      <select id="cal-year-jump" style="border:1.5px solid var(--gris);border-radius:6px;padding:.35rem .7rem;font-family:'DM Sans',sans-serif;color:var(--bleu);cursor:pointer;background:#fff">
-        <option value="2026">2026</option>
-      </select>
+      <div class="cal-tools">
+        <select id="cal-year-jump" aria-label="Année" style="border:1.5px solid var(--gris);border-radius:6px;padding:.35rem .7rem;font-family:'DM Sans',sans-serif;color:var(--bleu);cursor:pointer;background:#fff"></select>
+        <button type="button" id="cal-today" class="cal-view-btn">Aujourd'hui</button>
+        <div class="cal-view-btns" role="group" aria-label="Mode d'affichage">
+          <button type="button" class="cal-view-btn" data-view="list">☰ Liste</button>
+          <button type="button" class="cal-view-btn" data-view="grid">📅 Mois</button>
+        </div>
+      </div>
+    </div>
+    <div class="cal-search-wrap reveal">
+      <input id="cal-search" type="search" placeholder="🔍 Rechercher un lieu, un club, une formation…" aria-label="Rechercher une compétition">
     </div>
 
     <!-- Grille -->
     <div class="cal-grid reveal" id="cal-grid"></div>
+    <div class="cal-list" id="cal-list" style="display:none"></div>
 
     <!-- Légende -->
     <div class="cal-legende reveal">
@@ -191,6 +232,7 @@
       <span class="cal-event-dot cat-jeunes" style="font-size:.72rem;padding:3px 8px">👦 Jeunes</span>
       <span class="cal-event-dot cat-veterans" style="font-size:.72rem;padding:3px 8px">🎖️ Vétérans</span>
       <span class="cal-event-dot cat-regional" style="font-size:.72rem;padding:3px 8px">🗺️ Régional/France</span>
+      <span class="cal-event-dot cat-propagande" style="font-size:.72rem;padding:3px 8px">📣 Propagande</span>
     </div>
   </div>
 
@@ -653,16 +695,72 @@ const EVENTS = [
 
     const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     const JOURS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-    const TYPE_CLASS = {champ:'cat-champ',concours:'cat-concours',gp:'cat-gp',cdc:'cat-cdc',jeunes:'cat-jeunes',veterans:'cat-veterans',regional:'cat-regional'};
-    const TYPE_LABEL = {champ:'🏆 Championnat',concours:'🎯 Concours',gp:'⭐ Grand Prix',cdc:'🏅 Champ. Clubs',jeunes:'👦 Jeunes',veterans:'🎖️ Vétérans',regional:'🗺️ Régional/France'};
+    const TYPE_CLASS = {champ:'cat-champ',concours:'cat-concours',gp:'cat-gp',cdc:'cat-cdc',jeunes:'cat-jeunes',veterans:'cat-veterans',regional:'cat-regional',propagande:'cat-propagande'};
+    const TYPE_LABEL = {champ:'🏆 Championnat',concours:'🎯 Concours',gp:'⭐ Grand Prix',cdc:'🏅 Champ. Clubs',jeunes:'👦 Jeunes',veterans:'🎖️ Vétérans',regional:'🗺️ Régional/France',propagande:'📣 Propagande'};
 
-    let year=2026, month=4, activeFilter='all';
     const today = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const todayStr = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+    let year=today.getFullYear(), month=today.getMonth(), activeFilter='all', query='';
+    let view = window.matchMedia('(min-width:768px)').matches ? 'grid' : 'list';
+    const JOURS_LONGS = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    const safeUrl = u => /^(https?:|mailto:)/i.test(u||'') ? u : '#';
+    const norm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
-    function eventsFor(dateStr){ return EVENTS.filter(e=>e.date===dateStr&&(activeFilter==='all'||e.type===activeFilter)); }
+    function matches(e){
+      if(activeFilter!=='all'&&e.type!==activeFilter) return false;
+      return !query || norm([e.titre,e.lieu,e.formation,e.obs].join(' ')).includes(query);
+    }
+    function eventsFor(dateStr){ return EVENTS.filter(e=>e.date===dateStr&&matches(e)); }
+
+    function linksHtml(e){
+      const l=[[e.lien,e.lienTexte],[e.lien2,e.lien2Texte]].filter(x=>x[0]);
+      if(!l.length) return '';
+      return `<div class="cms-links cal-links">${l.map(x=>`<a href="${esc(safeUrl(x[0]))}" target="_blank" rel="noopener">🔗 ${esc(x[1]||'Plus d\'infos')}</a>`).join('')}</div>`;
+    }
+    function eventCard(e,cls,next){
+      const t=TYPE_CLASS[e.type]||'cat-concours';
+      return `<div class="${cls}"><div class="${cls}-title">${esc(e.titre)}${next?' <span class="cal-next-badge">Prochaine</span>':''}</div>
+        <div class="${cls}-meta">
+          ${e.lieu?`<span>📍 ${esc(e.lieu)}</span>`:''}
+          ${e.heure?`<span>⏰ ${esc(e.heure)}</span>`:''}
+          ${e.formation?`<span>👥 ${esc(e.formation)}</span>`:''}
+          <span class="${t}" style="padding:2px 8px;border-radius:10px">${esc(TYPE_LABEL[e.type]||e.type)}</span>
+          ${e.obs?`<span style="font-style:italic">ℹ️ ${esc(e.obs)}</span>`:''}
+        </div>${linksHtml(e)}</div>`;
+    }
+
+    function renderList(){
+      const box=document.getElementById('cal-list');
+      const prefix=`${year}-${pad(month+1)}`;
+      const evs=EVENTS.filter(e=>matches(e)&&(query||(e.date||'').slice(0,7)===prefix)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+      if(!evs.length){ box.innerHTML=`<div class="cal-empty">${query?'Aucune compétition ne correspond à votre recherche.':'Aucune compétition ce mois-ci avec ce filtre.'}</div>`; return; }
+      const next=evs.find(e=>e.date>=todayStr);
+      const days={}; evs.forEach(e=>(days[e.date]=days[e.date]||[]).push(e));
+      let html='', lastMonth='';
+      Object.keys(days).forEach(ds=>{
+        const [y,m,d]=ds.split('-');
+        if(query && m+y!==lastMonth){ lastMonth=m+y; html+=`<div class="cal-month-sep">${MOIS[+m-1]} ${y}</div>`; }
+        const dt=new Date(+y,+m-1,+d);
+        html+=`<div class="cal-day${ds<todayStr?' past':''}${ds===todayStr?' is-today':''}">
+          <div class="cal-day-date"><span>${JOURS_LONGS[dt.getDay()].slice(0,3)}</span><b>${+d}</b><span>${MOIS[+m-1].slice(0,4)}</span></div>
+          <div class="cal-day-evs">${days[ds].map(e=>eventCard(e,'cal-ev',e===next)).join('')}</div></div>`;
+      });
+      box.innerHTML=html;
+    }
 
     function renderCalendar(){
-      document.getElementById('cal-month-label').textContent = MOIS[month]+' '+year;
+      const ys=[...new Set(EVENTS.map(e=>(e.date||'').slice(0,4)).concat([String(today.getFullYear()),String(year)]))].filter(Boolean).sort();
+      document.getElementById('cal-year-jump').innerHTML=ys.map(y=>`<option value="${y}"${+y===year?' selected':''}>${y}</option>`).join('');
+      document.getElementById('cal-month-label').textContent = (query&&view==='list') ? 'Résultats de la recherche' : MOIS[month]+' '+year;
+      document.querySelectorAll('.cal-view-btn[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+      document.getElementById('cal-grid').style.display = view==='grid' ? '' : 'none';
+      document.getElementById('cal-list').style.display = view==='list' ? '' : 'none';
+      if(view==='grid') renderGrid(); else renderList();
+    }
+
+    function renderGrid(){
       const grid = document.getElementById('cal-grid');
       grid.innerHTML = '';
       JOURS.forEach(j=>{ const h=document.createElement('div'); h.className='cal-day-header'; h.textContent=j; grid.appendChild(h); });
@@ -678,7 +776,7 @@ const EVENTS = [
         const c=document.createElement('div');
         c.className='cal-cell'+(isToday?' today':'')+(evs.length?' has-events':'');
         let html=`<span class="cal-cell-num">${d}</span>`;
-        evs.slice(0,2).forEach(e=>{ html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">${e.titre}</span>`; });
+        evs.slice(0,2).forEach(e=>{ html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">${esc(e.titre)}</span>`; });
         if(evs.length>2) html+=`<span class="cal-more">+${evs.length-2} autres</span>`;
         c.innerHTML=html;
         if(evs.length) c.addEventListener('click',()=>openModal(ds,evs));
@@ -691,17 +789,7 @@ const EVENTS = [
     function openModal(ds,evs){
       const [y,m,d]=ds.split('-');
       document.getElementById('cal-modal-date').textContent=parseInt(d)+' '+MOIS[parseInt(m)-1]+' '+y;
-      document.getElementById('cal-modal-content').innerHTML=evs.map(e=>`
-        <div class="cal-modal-event">
-          <div class="cal-modal-event-title">${e.titre}</div>
-          <div class="cal-modal-event-meta">
-            ${e.lieu?`<span>📍 ${e.lieu}</span>`:''}
-            ${e.heure?`<span>⏰ ${e.heure}</span>`:''}
-            ${e.formation?`<span>👥 ${e.formation}</span>`:''}
-            <span class="${TYPE_CLASS[e.type]||'cat-concours'}" style="padding:2px 7px;border-radius:10px">${TYPE_LABEL[e.type]||e.type}</span>
-            ${e.obs?`<span style="font-style:italic">ℹ️ ${e.obs}</span>`:''}
-          </div>
-        </div>`).join('');
+      document.getElementById('cal-modal-content').innerHTML=evs.map(e=>eventCard(e,'cal-modal-event')).join('');
       document.getElementById('cal-modal-overlay').classList.add('open');
     }
 
@@ -715,6 +803,10 @@ const EVENTS = [
         this.classList.add('active'); activeFilter=this.dataset.filter; renderCalendar();
       });
     });
+      document.querySelectorAll('.cal-view-btn[data-view]').forEach(b=>b.addEventListener('click',()=>{ view=b.dataset.view; renderCalendar(); }));
+      document.getElementById('cal-today').addEventListener('click',()=>{ year=today.getFullYear(); month=today.getMonth(); renderCalendar(); });
+      document.getElementById('cal-year-jump').addEventListener('change',e=>{ year=+e.target.value; renderCalendar(); });
+      document.getElementById('cal-search').addEventListener('input',e=>{ query=norm(e.target.value.trim()); renderCalendar(); });
       renderCalendar(); window.CMS_CAL = { EVENTS, renderCalendar };
   })();
 </script>
