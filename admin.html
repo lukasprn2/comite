@@ -160,6 +160,12 @@ dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:
 .hint2{color:var(--mut);font-size:.88rem;margin:.3rem 0 .7rem}
 .flex{display:flex;gap:.5rem;flex-wrap:wrap}
 
+#tabs button{position:relative}
+.nb{position:absolute;top:.3rem;right:calc(50% - 1.9rem);background:var(--ko);color:#fff;border-radius:99px;font-size:.7rem;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+.card.unread{border-left:5px solid var(--or)}
+.sb{display:grid;grid-template-columns:8rem 1fr 3.5rem;gap:.6rem;align-items:center;margin:.35rem 0;font-size:.9rem}
+.sb i{display:block;height:14px;background:var(--bleu);border-radius:3px;min-width:2px}
+.sb b{text-align:right;color:var(--bleu)}
 @media(max-width:520px){.row{flex-wrap:wrap}.act{width:100%}.act .btn:not(.b-ic){flex:1}.brand small{display:none}.hr a span{display:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -231,7 +237,11 @@ const ICON = {
   eyeoff: '<path d="M17.9 17.9A10.9 10.9 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M1 1l22 22"/>',
   clip: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
   x: '<path d="M18 6L6 18M6 6l12 12"/>',
-  inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/>'
+  inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/>',
+  mail: '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',
+  news: '<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M19 8h2v10a2 2 0 0 1-2 2M8 8h7M8 12h7M8 16h4"/>',
+  stats: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+  undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 
@@ -259,6 +269,12 @@ const SCHEMA = {
     title: e => e.titre, sub: e => `<span class="pill ${esc(e.type)}">${esc(CAT[e.type] || e.type || '')}</span>${[e.lieu, e.heure, e.formation, (e.lien || e.lien2) && 'avec lien'].filter(Boolean).map(esc).join(' · ')}`,
     f: [['h', 'La compétition'], ['date', 'Date', 'date'], ['type', 'Catégorie', 'select', CATOPT], ['titre', 'Titre (ex : Concours Roye)'], ['formation', 'Formation (ex : Doublette)'], ['lieu', 'Lieu'], ['heure', 'Heure (ex : 14h00)'], ['obs', 'Remarques (ex : Limité à 48 éq.)', 'textarea'],
       ['h', 'Liens (facultatif)'], ['lienTexte', 'Texte du 1er bouton (ex : Règlement)'], ['lien', 'Adresse du 1er lien (https://…)', 'url'], ['lien2Texte', 'Texte du 2e bouton (ex : Inscription)'], ['lien2', 'Adresse du 2e lien (https://…)', 'url']] },
+  actualites: { tab: 'Actualités', desc: 'Les informations affichées sur la page d\'accueil. Un brouillon n\'est pas visible sur le site.',
+    add: 'Ajouter une actualité', req: ['titre', 'texte'], sort: (a, b) => (b.publieLe || '').localeCompare(a.publieLe || ''),
+    group: a => a.statut || 'brouillon', glabel: k => k === 'publie' ? 'Publiées' : 'Brouillons', gorder: ['publie', 'brouillon'],
+    left: a => `<div class="dt"><b>${esc((a.publieLe || '').slice(8))}</b><span>${esc((MOIS[+(a.publieLe || '').slice(5, 7) - 1] || '').slice(0, 3).toUpperCase())}</span></div>`,
+    title: a => a.titre, sub: a => esc((a.texte || '').slice(0, 110)) + ((a.texte || '').length > 110 ? '…' : ''),
+    f: [['h', 'L\'actualité'], ['statut', 'Statut', 'select', [['publie', 'Publiée sur le site'], ['brouillon', 'Brouillon (non visible)']]], ['publieLe', 'Date', 'date'], ['titre', 'Titre'], ['texte', 'Texte', 'textarea'], ['h', 'Lien (facultatif)'], ['lienTexte', 'Texte du bouton (ex : Lire le règlement)'], ['lien', 'Adresse du lien (https://…)', 'url']] },
   clubs: { tab: 'Clubs', desc: 'Les clubs affiliés, classés par secteur.', add: 'Ajouter un club', req: ['ville'],
     sort: (a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'), group: c => c.secteur, glabel: k => SECT[k] || k,
     left: c => `<div class="bd">${esc(c.num)}</div>`, title: c => `${c.ville}${c.assoc ? ' — ' + c.assoc : ''}`, sub: c => [c.president, c.tel].filter(Boolean).map(esc).join(' · '),
@@ -288,17 +304,18 @@ $('#out').onclick = () => signOut(auth);
 
 /* Navigation */
 let tab = 'home', cache = {};
-const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], classements: ['chart', 'Classements'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
 function start() {
   $('#tabs').innerHTML = Object.entries(NAMES).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}" ${k === tab ? 'aria-current="page"' : ''}>${ic(v[0], 22)}${v[1]}</button>`).join('');
   $('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
-  show();
+  show(); badge();
 }
 const head = (t, d) => `<div class="ph"><h1>${t}</h1><p>${d}</p></div>`;
 const empty = (m, i = 'inbox') => `<div class="empty">${ic(i, 32)}${m}</div>`;
 async function show() {
   const m = $('#main'); m.innerHTML = empty('Chargement…', 'clip');
-  try { tab === 'home' ? await viewHome() : tab === 'settings' ? await viewSettings() : tab === 'import' ? viewImport() : tab === 'classements' ? await viewClass() : await viewList(tab); }
+  try { tab === 'home' ? await viewHome() : tab === 'settings' ? await viewSettings() : tab === 'import' ? viewImport() : tab === 'classements' ? await viewClass()
+    : tab === 'messages' ? await viewMessages() : tab === 'stats' ? await viewStats() : tab === 'corbeille' ? await viewTrash() : await viewList(tab); }
   catch (e) { m.innerHTML = empty(`Une erreur est survenue : ${esc(e.message)}<br>Vérifie ta connexion, les règles Firestore et ton email admin.`, 'alert'); }
 }
 
@@ -342,9 +359,9 @@ async function viewList(col) {
     const g = {}; l.forEach(x => (g[S.group(x)] ||= []).push(x));
     const keys = S.gorder ? S.gorder.filter(k => g[k]).concat(Object.keys(g).filter(k => !S.gorder.includes(k))) : Object.keys(g);
     $('#list').innerHTML = keys.map(k => `<div class="gh">${esc(S.glabel(k))} <span>(${g[k].length})</span></div>` + g[k].map(x => `<div class="row ${x.date && x.date < today ? 'past' : ''}">${S.left(x)}<div class="m"><strong>${esc(S.title(x))}</strong><small>${S.sub(x)}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">${ic('edit', 16)}Modifier</button><button class="btn b-ko b-ic" data-d="${x._id}" aria-label="Supprimer" title="Supprimer">${ic('trash', 16)}</button></div></div>`).join('')).join(''); };
-  draw(); ['#q', '#mo', '#ty'].forEach(s => $(s) && ($(s).oninput = draw)); $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : { groupe: 'membre', ordre: cache[col].length + 1 });
+  draw(); ['#q', '#mo', '#ty'].forEach(s => $(s) && ($(s).oninput = draw)); $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'actualites' ? { statut: 'brouillon', publieLe: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : { groupe: 'membre', ordre: cache[col].length + 1 });
   $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, x = cache[col].find(i => i._id === id);
-    if (b.dataset.e) edit(col, x); else if (await ask('Supprimer cet élément ?', `« ${S.title(x)} » sera supprimé définitivement.`)) { try { await deleteDoc(doc(db, col, id)); toast('Supprimé'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
+    if (b.dataset.e) edit(col, x); else if (await ask('Mettre à la corbeille ?', `« ${S.title(x)} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash(col, id, x); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
 }
 function edit(col, x) {
   const S = SCHEMA[col], f = $('#dform');
@@ -372,7 +389,7 @@ async function viewClass() {
       openEd({ nom: f.name.replace(/\.\w+$/, ''), ordre: l.length + 1, colonnes: fix(rows[0]), lignes: rows.slice(1).map(r => ({ v: fix(r) })) });
       toast('Fichier lu — vérifie le tableau puis enregistre.'); } catch (er) { toast('Import impossible : ' + er.message, 1); } };
   $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, c = l.find(i => i._id === id);
-    if (b.dataset.e) openEd(c); else if (await ask('Supprimer ce classement ?', `« ${c.nom} » sera supprimé définitivement.`)) { try { await deleteDoc(doc(db, 'classements', id)); toast('Supprimé'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
+    if (b.dataset.e) openEd(c); else if (await ask('Mettre à la corbeille ?', `« ${c.nom} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash('classements', id, c); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
 }
 function openEd(c) { cur = { nom: '', majLe: '', ordre: 1, colonnes: ['Rang', 'Nom', 'Club', 'Points'], lignes: [], ...c }; drawEd(); window.scrollTo(0, 0); }
 function sync() { if (!$('#cn')) return; cur.nom = $('#cn').value; cur.majLe = $('#cm').value; cur.ordre = Number($('#co').value) || 1;
@@ -408,6 +425,74 @@ async function saveCl() {
   sync(); if (!cur.nom.trim()) return toast('Donne un nom au classement.', 1);
   const d = { nom: cur.nom.trim(), majLe: cur.majLe.trim(), ordre: cur.ordre, colonnes: cur.colonnes.map(c => c.trim()), lignes: cur.lignes.filter(r => r.v.some(x => x.trim())).map(r => ({ v: r.v.map(x => x.trim()) })) };
   try { cur._id ? await setDoc(doc(db, 'classements', cur._id), d) : await addDoc(collection(db, 'classements'), d); toast('Enregistré — visible sur le site'); show(); } catch (e) { toast('Échec : ' + e.message, 1); }
+}
+
+/* ===== Messages, Corbeille, Statistiques ===== */
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
+const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
+
+async function trash(col, id, x) {
+  const { _id, ...data } = x, b = writeBatch(db);
+  b.set(doc(collection(db, 'corbeille')), { col, origId: id, data, label: KIND[col][1](data) || 'Sans titre', supprimeLe: Date.now() });
+  b.delete(doc(db, col, id)); await b.commit();
+}
+async function badge() {
+  try { document.querySelectorAll('.nb').forEach(n => n.remove());
+    const n = (await getDocs(collection(db, 'messages'))).docs.filter(d => !d.data().lu).length, b = document.querySelector('#tabs [data-t=messages]');
+    if (b && n) b.insertAdjacentHTML('beforeend', `<span class="nb" aria-label="${n} non lus">${n}</span>`); } catch {}
+}
+
+async function viewMessages() {
+  const l = (await getDocs(collection(db, 'messages'))).docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (b.creeLe || 0) - (a.creeLe || 0));
+  $('#main').innerHTML = head('Messages', 'Les messages envoyés depuis le formulaire de contact du site.') +
+    `<div class="bar"><select id="mf" aria-label="Filtrer les messages"><option value="">Tous les messages</option><option value="nl">Non lus</option><option value="nt">Non traités</option></select></div><div id="list"></div>`;
+  const draw = () => { const f = $('#mf').value, v = l.filter(m => f === 'nl' ? !m.lu : f === 'nt' ? !m.traite : true);
+    $('#list').innerHTML = v.length ? v.map(m => `<div class="card ${m.lu ? '' : 'unread'}"><strong>${esc(m.sujet || 'Sans sujet')}</strong> ${m.lu ? '' : '<span class="pill champ">Nouveau</span>'}${m.traite ? '<span class="pill concours">Traité</span>' : ''}
+      <small style="display:block;color:var(--mut)">${esc(m.nom)} · ${esc(m.email)} · ${fdate(m.creeLe)}</small>
+      <p style="white-space:pre-wrap;margin:.7rem 0">${esc(m.message)}</p>
+      <div class="flex"><a class="btn b-bl" data-a="re" data-id="${m._id}" href="mailto:${esc(m.email)}?subject=${encodeURIComponent('Re: ' + (m.sujet || ''))}">${ic('mail', 16)}Répondre</a>
+      <button class="btn b-ln" data-a="lu" data-id="${m._id}">${m.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
+      <button class="btn b-ln" data-a="tr" data-id="${m._id}">${m.traite ? 'Rouvrir' : 'Marquer traité'}</button>
+      <button class="btn b-ko b-ic" data-a="del" data-id="${m._id}" aria-label="Mettre à la corbeille" title="Mettre à la corbeille">${ic('trash', 16)}</button></div></div>`).join('')
+      : empty('Aucun message pour le moment.', 'mail'); };
+  const save = async (m, p) => { Object.assign(m, p); await setDoc(doc(db, 'messages', m._id), p, { merge: true }); badge(); draw(); };
+  draw(); $('#mf').oninput = draw;
+  $('#main').onclick = async e => { const b = e.target.closest('[data-a]'); if (!b) return; const m = l.find(i => i._id === b.dataset.id), a = b.dataset.a;
+    try { if (a === 'lu') await save(m, { lu: !m.lu }); else if (a === 'tr') await save(m, { traite: !m.traite }); else if (a === 're') { if (!m.lu) save(m, { lu: true }); }
+      else if (a === 'del' && await ask('Mettre à la corbeille ?', 'Ce message pourra être restauré pendant 30 jours.', 'Mettre à la corbeille')) { await trash('messages', m._id, m); l.splice(l.indexOf(m), 1); badge(); draw(); toast('Placé dans la corbeille'); }
+    } catch (er) { toast('Échec : ' + er.message, 1); } };
+}
+
+async function viewTrash() {
+  let l = (await getDocs(collection(db, 'corbeille'))).docs.map(d => ({ ...d.data(), _id: d.id }));
+  const old = l.filter(x => Date.now() - x.supprimeLe > 30 * 864e5);
+  for (let i = 0; i < old.length; i += 400) { const b = writeBatch(db); old.slice(i, i + 400).forEach(x => b.delete(doc(db, 'corbeille', x._id))); await b.commit(); }
+  l = l.filter(x => !old.includes(x)).sort((a, b) => b.supprimeLe - a.supprimeLe);
+  $('#main').innerHTML = head('Corbeille', 'Les éléments supprimés sont conservés 30 jours, puis effacés automatiquement.') +
+    (l.length ? `<div class="bar"><button class="btn b-ko" id="emp">${ic('trash', 16)}Vider la corbeille</button></div>` : '') +
+    (l.length ? l.map(x => `<div class="row"><div class="m"><strong>${esc(x.label)}</strong><small>${esc(KIND[x.col]?.[0] || x.col)} · supprimé le ${fdate(x.supprimeLe)} · encore ${Math.max(1, 30 - Math.floor((Date.now() - x.supprimeLe) / 864e5))} j</small></div>
+      <div class="act"><button class="btn b-ln" data-r="${x._id}">${ic('undo', 16)}Restaurer</button><button class="btn b-ko b-ic" data-x="${x._id}" aria-label="Supprimer définitivement" title="Supprimer définitivement">${ic('x', 16)}</button></div></div>`).join('')
+      : empty('La corbeille est vide.', 'trash'));
+  $('#main').onclick = async e => { const b = e.target.closest('[data-r],[data-x],#emp'); if (!b) return;
+    try { if (b.id === 'emp') { if (!await ask('Vider la corbeille ?', 'Tout sera supprimé définitivement.', 'Tout supprimer')) return;
+        for (let i = 0; i < l.length; i += 400) { const w = writeBatch(db); l.slice(i, i + 400).forEach(x => w.delete(doc(db, 'corbeille', x._id))); await w.commit(); } toast('Corbeille vidée'); }
+      else { const x = l.find(i => i._id === (b.dataset.r || b.dataset.x));
+        if (b.dataset.r) { const w = writeBatch(db); w.set(doc(db, x.col, x.origId), x.data); w.delete(doc(db, 'corbeille', x._id)); await w.commit(); toast('Restauré'); }
+        else { if (!await ask('Supprimer définitivement ?', `« ${x.label} » ne pourra plus être récupéré.`)) return; await deleteDoc(doc(db, 'corbeille', x._id)); toast('Supprimé'); } }
+      badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
+}
+
+const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les Clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements' };
+async function viewStats() {
+  const rows = (await getDocs(collection(db, 'stats_vues'))).docs.map(d => ({ day: d.id, ...d.data() })).sort((a, b) => b.day.localeCompare(a.day)).slice(0, 30);
+  const pages = {}, days = rows.map(r => { let s = 0; for (const [k, v] of Object.entries(r)) if (k !== 'day' && typeof v === 'number') { pages[k] = (pages[k] || 0) + v; s += v; } return [r.day, s]; });
+  const total = days.reduce((a, [, n]) => a + n, 0), H = head('Statistiques', 'Pages vues des 30 derniers jours avec données. Une page est comptée une fois par visiteur et par session, sans cookie ni donnée personnelle.');
+  if (!total) { $('#main').innerHTML = H + empty('Pas encore de données. Ajoute le fichier track.js aux pages du site.', 'stats'); return; }
+  const bars = (t, e) => { const mx = Math.max(...e.map(x => x[1]), 1); return `<div class="card"><b>${t}</b><div style="margin-top:.7rem">${e.map(([k, n]) => `<div class="sb"><span>${esc(k)}</span><i style="width:${n / mx * 100}%"></i><b>${n}</b></div>`).join('')}</div></div>`; };
+  const tile = (n, a, b) => `<div class="tile"><span class="i">${ic('stats', 24)}</span><span class="n">${n}</span><b>${a}</b><small>${b}</small></div>`;
+  $('#main').innerHTML = H + `<div class="tiles" style="margin-bottom:1rem">${tile(total, 'Pages vues', `sur ${days.length} jours`)}${tile(Math.round(total / days.length), 'Par jour', 'en moyenne')}</div>` +
+    bars('Pages les plus vues', Object.entries(pages).sort((a, b) => b[1] - a[1]).map(([k, n]) => [PAGES[k] || k, n])) +
+    bars('Vues par jour', days.slice(0, 14).map(([d, n]) => [d.slice(8) + '/' + d.slice(5, 7), n]));
 }
 
 /* Import du contenu actuel */
