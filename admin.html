@@ -292,7 +292,7 @@ const SCHEMA = {
     group: e => (e.date || '').slice(0, 7), glabel: k => k ? `${MOIS[+k.slice(5) - 1]} ${k.slice(0, 4)}` : 'Sans date',
     left: e => `<div class="dt"><b>${esc((e.date || '').slice(8))}</b><span>${esc((MOIS[+(e.date || '').slice(5, 7) - 1] || '').slice(0, 3).toUpperCase())}</span></div>`,
     title: e => e.titre, sub: e => `<span class="pill ${esc(e.type)}">${esc(CAT[e.type] || e.type || '')}</span>${[e.lieu, e.heure, e.formation, (e.lien || e.lien2) && 'avec lien'].filter(Boolean).map(esc).join(' · ')}`,
-    f: [['h', 'La compétition'], ['date', 'Date', 'date'], ['type', 'Catégorie', 'select', CATOPT], ['titre', 'Titre (ex : Concours Roye)'], ['formation', 'Formation (ex : Doublette)'], ['lieu', 'Lieu'], ['heure', 'Heure (ex : 14h00)'], ['obs', 'Remarques (ex : Limité à 48 éq.)', 'textarea'],
+    f: [['h', 'La compétition'], ['date', 'Date', 'date'], ['type', 'Catégorie', 'select', CATOPT], ['titre', 'Titre (ex : Concours Roye)'], ['formation', 'Formation (ex : Doublette)'], ['club', 'Club organisateur (le lieu se remplit tout seul)', 'clubselect'], ['lieu', 'Lieu (modifiable)'], ['heure', 'Heure (ex : 14h00)'], ['obs', 'Remarques (ex : Limité à 48 éq.)', 'textarea'],
       ['h', 'Liens (facultatif)'], ['lienTexte', 'Texte du 1er bouton (ex : Règlement)'], ['lien', 'Adresse du 1er lien (https://…)', 'url'], ['lien2Texte', 'Texte du 2e bouton (ex : Inscription)'], ['lien2', 'Adresse du 2e lien (https://…)', 'url']] },
   actualites: { tab: 'Actualités', desc: 'Les informations affichées sur la page d\'accueil. Un brouillon n\'est pas visible sur le site.',
     add: 'Ajouter une actualité', req: ['titre', 'texte'], sort: (a, b) => (b.publieLe || '').localeCompare(a.publieLe || ''),
@@ -355,14 +355,21 @@ async function viewHome() {
 }
 
 /* Formulaires */
+const titleCase = t => String(t || '').toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
+const clubSelect = (k, val) => {
+  const opts = (cache.clubsList || []).filter(c => c.ville).map(c => ({ label: titleCase(c.ville) + (c.assoc ? ' — ' + c.assoc : ''), lieu: titleCase(c.ville) }));
+  if (val && !opts.some(o => o.label === val)) opts.push({ label: val, lieu: '' });
+  return `<select id="x_${k}" name="${k}"><option value="">— Choisir un club —</option>${opts.map(o => `<option value="${esc(o.label)}" data-lieu="${esc(o.lieu)}" ${o.label === val ? 'selected' : ''}>${esc(o.label)}</option>`).join('')}<option value="__autre">Autre lieu (je le saisis moi-même)</option></select>`;
+};
 const field = (f, v, req = []) => { const [k, l, t = 'text', o] = f, val = v ?? '';
   if (k === 'h') return `<h3 class="sec">${l}</h3>`;
   const lab = `<label for="x_${k}">${l}${req.includes(k) ? '<span class="rq" aria-hidden="true">*</span>' : ''}</label>`;
   return `<div class="f">${lab}` + (t === 'textarea' ? `<textarea id="x_${k}" name="${k}" rows="3">${esc(val)}</textarea>`
+    : t === 'clubselect' ? clubSelect(k, val)
     : t === 'select' ? `<select id="x_${k}" name="${k}">${o.map(([a, b]) => `<option value="${esc(a)}" ${a === val ? 'selected' : ''}>${esc(b)}</option>`).join('')}</select>`
     : `<input id="x_${k}" name="${k}" type="${t === 'url' ? 'text' : t}" ${t === 'url' ? 'inputmode="url" placeholder="https://…"' : ''} ${t === 'number' ? 'min="0"' : ''} value="${esc(val)}">`) + '</div>'; };
 const read = (fs, root) => Object.fromEntries(fs.filter(f => f[0] !== 'h').map(f => { const el = root.querySelector(`[name=${f[0]}]`); let v = el.value.trim();
-  if (f[2] === 'number') v = Number(v) || 0; if (f[2] === 'url' && v && !/^(https?:|mailto:)/i.test(v)) v = 'https://' + v; return [f[0], v]; }));
+  if (f[2] === 'clubselect' && v === '__autre') v = ''; if (f[2] === 'number') v = Number(v) || 0; if (f[2] === 'url' && v && !/^(https?:|mailto:)/i.test(v)) v = 'https://' + v; return [f[0], v]; }));
 
 async function viewSettings() {
   const d = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
@@ -373,6 +380,7 @@ async function viewSettings() {
 async function viewList(col) {
   const S = SCHEMA[col];
   cache[col] = (await getDocs(collection(db, col))).docs.map(d => ({ ...d.data(), _id: d.id })).sort(S.sort);
+  if (col === 'events') cache.clubsList = (await getDocs(collection(db, 'clubs'))).docs.map(d => d.data()).sort((a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'));
   const months = col === 'events' ? [...new Set(cache[col].map(S.group))] : [];
   let pdfCard = '', pdfBind = () => {};
   if (col === 'events') {
@@ -402,6 +410,8 @@ function edit(col, x) {
   const S = SCHEMA[col], f = $('#dform');
   f.innerHTML = `<h2 id="dlg-t">${x._id ? 'Modifier' : S.add}</h2><div class="grid">${S.f.map(fl => field(fl, x[fl[0]], S.req)).join('')}</div><div class="mact"><button type="button" class="btn b-ln" id="no">Annuler</button><button class="btn b-or" id="yes">${ic('save')}Enregistrer</button></div>`;
   $('#dlg').showModal(); $('#no').onclick = () => $('#dlg').close();
+  const cs = f.querySelector('[name=club]');
+  if (cs) cs.onchange = () => { const l = cs.selectedOptions[0]?.dataset.lieu; if (l) f.querySelector('[name=lieu]').value = l; if (cs.value === '__autre') f.querySelector('[name=lieu]').focus(); };
   f.onsubmit = async e => { e.preventDefault(); const d = read(S.f, f); const miss = S.req.find(k => !d[k]); if (miss) return toast('Complète le champ « ' + S.f.find(z => z[0] === miss)[1] + ' ».', 1);
     await busy($('#yes'), async () => { try { x._id ? await setDoc(doc(db, col, x._id), d) : await addDoc(collection(db, col), d); $('#dlg').close(); toast('Enregistré — visible sur le site'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } }); };
 }
