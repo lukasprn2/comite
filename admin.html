@@ -287,8 +287,7 @@ const SCHEMA = {
 };
 const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
   ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
-  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],
-  ['h', 'Calendrier PDF'], ['pdfLabel', 'Texte du bouton (ex : Version 3 (PDF))'], ['pdfUrl', 'Adresse du PDF (https://…)', 'url']];
+  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web']];
 
 /* Connexion */
 $('#eye').innerHTML = ic('eye', 20);
@@ -343,14 +342,24 @@ const read = (fs, root) => Object.fromEntries(fs.filter(f => f[0] !== 'h').map(f
 async function viewSettings() {
   const d = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
   $('#main').innerHTML = head('Infos du site', 'Textes et coordonnées affichés sur la page d\'accueil et en bas de chaque page.') + `<form id="sf" class="card" novalidate><div class="grid">${SETTINGS.map(f => field(f, d[f[0]])).join('')}</div><div class="savebar"><button class="btn b-or" id="ssv">${ic('save')}Enregistrer les modifications</button></div></form>`;
-  $('#sf').onsubmit = async e => { e.preventDefault(); await busy($('#ssv'), async () => { try { await setDoc(doc(db, 'settings', 'general'), read(SETTINGS, e.target)); toast('Enregistré — visible sur le site'); } catch (er) { toast('Échec : ' + er.message, 1); } }); };
+  $('#sf').onsubmit = async e => { e.preventDefault(); await busy($('#ssv'), async () => { try { await setDoc(doc(db, 'settings', 'general'), read(SETTINGS, e.target), { merge: true }); toast('Enregistré — visible sur le site'); } catch (er) { toast('Échec : ' + er.message, 1); } }); };
 }
 
 async function viewList(col) {
   const S = SCHEMA[col];
   cache[col] = (await getDocs(collection(db, col))).docs.map(d => ({ ...d.data(), _id: d.id })).sort(S.sort);
   const months = col === 'events' ? [...new Set(cache[col].map(S.group))] : [];
-  $('#main').innerHTML = head(S.tab, S.desc) + `<div class="bar"><div class="srch">${ic('search')}<input id="q" type="search" placeholder="Rechercher…" aria-label="Rechercher"></div>
+  let pdfCard = '', pdfBind = () => {};
+  if (col === 'events') {
+    const g = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
+    pdfCard = `<form class="card" id="pdfForm" novalidate><b>${ic('dl')}Calendrier PDF</b><p class="hint2">Le bouton de téléchargement affiché en haut de la page Calendrier du site. Pour changer de PDF, collez sa nouvelle adresse ici.</p>
+      <div class="grid"><div class="f"><label for="pdfLabel">Texte du bouton</label><input id="pdfLabel" value="${esc(g.pdfLabel)}" placeholder="Ex : Version 3 (PDF)"></div>
+      <div class="f"><label for="pdfUrl">Adresse du PDF (https://…)</label><input id="pdfUrl" inputmode="url" value="${esc(g.pdfUrl)}" placeholder="https://…"></div></div>
+      <button class="btn b-or" id="pdfSave">${ic('save')}Enregistrer le PDF</button></form>`;
+    pdfBind = () => { $('#pdfForm').onsubmit = async e => { e.preventDefault(); let u = $('#pdfUrl').value.trim(); if (u && !/^https?:/i.test(u)) u = 'https://' + u;
+      await busy($('#pdfSave'), async () => { try { await setDoc(doc(db, 'settings', 'general'), { pdfLabel: $('#pdfLabel').value.trim(), pdfUrl: u }, { merge: true }); toast('PDF enregistré — visible sur le calendrier'); } catch (er) { toast('Échec : ' + er.message, 1); } }); }; };
+  }
+  $('#main').innerHTML = head(S.tab, S.desc) + pdfCard + `<div class="bar"><div class="srch">${ic('search')}<input id="q" type="search" placeholder="Rechercher…" aria-label="Rechercher"></div>
     ${col === 'events' ? `<select id="mo" aria-label="Mois"><option value="">Tous les mois</option>${months.map(k => `<option value="${esc(k)}">${esc(S.glabel(k))}</option>`).join('')}</select><select id="ty" aria-label="Catégorie"><option value="">Toutes catégories</option>${CATOPT.map(([a, b]) => `<option value="${a}">${b}</option>`).join('')}</select>` : ''}
     <button class="btn b-or" id="add">${ic('plus')}${S.add}</button></div><div id="list"></div>`;
   const draw = () => { const q = $('#q').value.toLowerCase(), mo = $('#mo')?.value, ty = $('#ty')?.value;
@@ -359,6 +368,7 @@ async function viewList(col) {
     const g = {}; l.forEach(x => (g[S.group(x)] ||= []).push(x));
     const keys = S.gorder ? S.gorder.filter(k => g[k]).concat(Object.keys(g).filter(k => !S.gorder.includes(k))) : Object.keys(g);
     $('#list').innerHTML = keys.map(k => `<div class="gh">${esc(S.glabel(k))} <span>(${g[k].length})</span></div>` + g[k].map(x => `<div class="row ${x.date && x.date < today ? 'past' : ''}">${S.left(x)}<div class="m"><strong>${esc(S.title(x))}</strong><small>${S.sub(x)}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">${ic('edit', 16)}Modifier</button><button class="btn b-ko b-ic" data-d="${x._id}" aria-label="Supprimer" title="Supprimer">${ic('trash', 16)}</button></div></div>`).join('')).join(''); };
+  pdfBind();
   draw(); ['#q', '#mo', '#ty'].forEach(s => $(s) && ($(s).oninput = draw)); $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'actualites' ? { statut: 'brouillon', publieLe: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : { groupe: 'membre', ordre: cache[col].length + 1 });
   $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, x = cache[col].find(i => i._id === id);
     if (b.dataset.e) edit(col, x); else if (await ask('Mettre à la corbeille ?', `« ${S.title(x)} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash(col, id, x); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
