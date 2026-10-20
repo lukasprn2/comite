@@ -166,6 +166,31 @@ dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:
 .sb{display:grid;grid-template-columns:8rem 1fr 3.5rem;gap:.6rem;align-items:center;margin:.35rem 0;font-size:.9rem}
 .sb i{display:block;height:14px;background:var(--bleu);border-radius:3px;min-width:2px}
 .sb b{text-align:right;color:var(--bleu)}
+.st-top{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.st-top button{min-height:42px;border:1.5px solid var(--gris);background:#fff;color:var(--bleu);font-weight:700;font-size:.88rem;padding:.4rem 1.1rem;border-radius:25px}
+.st-top button.on,.st-top button:hover{background:var(--bleu);color:var(--or);border-color:var(--bleu)}
+.st-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;margin-bottom:1rem}
+.st-tile{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1rem 1.1rem;box-shadow:var(--sh)}
+.st-tile small{display:block;color:var(--mut);font-weight:700;font-size:.74rem;letter-spacing:.5px;text-transform:uppercase}
+.st-tile .v{font-family:'Bebas Neue';font-size:2.6rem;color:var(--bleu);line-height:1.05;overflow-wrap:anywhere}
+.st-tile .v.txt{font-size:1.9rem}
+.st-tile .s{font-size:.84rem;color:var(--mut)}
+.st-up{color:var(--ok);font-weight:700}.st-dn{color:var(--ko);font-weight:700}
+.st-card{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.2rem;margin-bottom:1rem;box-shadow:var(--sh)}
+.st-card h2{font-family:'DM Serif Display';font-weight:400;font-size:1.2rem;color:var(--bleu);margin:0 0 .2rem}
+.st-card>p{margin:0 0 1rem;color:var(--mut);font-size:.86rem}
+.st-chart{display:flex;align-items:flex-end;gap:2px;height:190px;border-bottom:2px solid var(--gris);position:relative}
+.st-chart .mx{position:absolute;left:0;top:0;font-size:.7rem;color:var(--mut);background:#fff;padding-right:.3rem}
+.st-col{flex:1;height:100%;display:flex;align-items:flex-end;justify-content:center;min-width:0}
+.st-bar{width:100%;max-width:28px;background:var(--bleu);border-radius:3px 3px 0 0;min-height:2px}
+.st-col.td .st-bar{background:var(--or)}
+.st-x{display:flex;gap:2px;margin-top:.3rem}
+.st-x span{flex:1;text-align:center;font-size:.68rem;color:var(--mut);white-space:nowrap;min-width:0}
+.st-pg{display:grid;grid-template-columns:7.5rem 1fr 6.2rem;gap:.7rem;align-items:center;margin:.55rem 0;font-size:.92rem}
+.st-pg .t{height:16px;background:#eef0f4;border-radius:8px;overflow:hidden}
+.st-pg .t i{display:block;height:100%;background:var(--or);border-radius:8px}
+.st-pg b{text-align:right;color:var(--bleu)}.st-pg b small{color:var(--mut);font-weight:400}
+.st-help{background:#fbf7e9;border-left:4px solid var(--or);border-radius:8px;padding:.8rem 1rem;color:#5b4a14;font-size:.86rem}
 @media(max-width:520px){.row{flex-wrap:wrap}.act{width:100%}.act .btn:not(.b-ic){flex:1}.brand small{display:none}.hr a span{display:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -492,17 +517,41 @@ async function viewTrash() {
       badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
 }
 
-const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les Clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements' };
+const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements' };
+let statsDays = 30;
 async function viewStats() {
-  const rows = (await getDocs(collection(db, 'stats_vues'))).docs.map(d => ({ day: d.id, ...d.data() })).sort((a, b) => b.day.localeCompare(a.day)).slice(0, 30);
-  const pages = {}, days = rows.map(r => { let s = 0; for (const [k, v] of Object.entries(r)) if (k !== 'day' && typeof v === 'number') { pages[k] = (pages[k] || 0) + v; s += v; } return [r.day, s]; });
-  const total = days.reduce((a, [, n]) => a + n, 0), H = head('Statistiques', 'Pages vues des 30 derniers jours avec données. Une page est comptée une fois par visiteur et par session, sans cookie ni donnée personnelle.');
-  if (!total) { $('#main').innerHTML = H + empty('Pas encore de données. Ajoute le fichier track.js aux pages du site.', 'stats'); return; }
-  const bars = (t, e) => { const mx = Math.max(...e.map(x => x[1]), 1); return `<div class="card"><b>${t}</b><div style="margin-top:.7rem">${e.map(([k, n]) => `<div class="sb"><span>${esc(k)}</span><i style="width:${n / mx * 100}%"></i><b>${n}</b></div>`).join('')}</div></div>`; };
-  const tile = (n, a, b) => `<div class="tile"><span class="i">${ic('stats', 24)}</span><span class="n">${n}</span><b>${a}</b><small>${b}</small></div>`;
-  $('#main').innerHTML = H + `<div class="tiles" style="margin-bottom:1rem">${tile(total, 'Pages vues', `sur ${days.length} jours`)}${tile(Math.round(total / days.length), 'Par jour', 'en moyenne')}</div>` +
-    bars('Pages les plus vues', Object.entries(pages).sort((a, b) => b[1] - a[1]).map(([k, n]) => [PAGES[k] || k, n])) +
-    bars('Vues par jour', days.slice(0, 14).map(([d, n]) => [d.slice(8) + '/' + d.slice(5, 7), n]));
+  const snap = await getDocs(collection(db, 'stats_vues'));
+  const byDay = {};
+  snap.docs.forEach(d => { const p = {}; let t = 0; for (const [k, v] of Object.entries(d.data())) if (typeof v === 'number') { p[k] = v; t += v; } byDay[d.id] = { p, t }; });
+  const H = head('Statistiques', 'Combien de personnes consultent le site, et quelles pages elles regardent.');
+  if (!Object.values(byDay).some(x => x.t)) { $('#main').innerHTML = H + empty('Pas encore de visites enregistrées. Les chiffres apparaîtront dès que quelqu\'un ouvrira une page du site.', 'stats'); return; }
+
+  const n = statsDays, DAY = 864e5, iso = ms => new Date(ms).toISOString().slice(0, 10);
+  const range = (len, off) => Array.from({ length: len }, (_, i) => { const d = iso(Date.now() - (len - 1 - i + off) * DAY); return { d, t: byDay[d]?.t || 0, p: byDay[d]?.p || {} }; });
+  const cur = range(n, 0), prev = range(n, n), sum = a => a.reduce((x, y) => x + y.t, 0);
+  const total = sum(cur), before = sum(prev), todayN = byDay[iso(Date.now())]?.t || 0;
+  const long = d => new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  const short = d => d.slice(8) + '/' + d.slice(5, 7);
+
+  const pages = {}; cur.forEach(x => Object.entries(x.p).forEach(([k, v]) => pages[k] = (pages[k] || 0) + v));
+  const top = Object.entries(pages).sort((a, b) => b[1] - a[1]), name = k => PAGES[k] || k;
+  const best = cur.reduce((m, x) => x.t > m.t ? x : m, cur[0]);
+  const diff = before ? Math.round((total - before) / before * 100) : null;
+  const trend = diff === null ? 'Pas de période précédente à comparer' : diff === 0 ? 'Stable par rapport à la période précédente' : `<span class="${diff > 0 ? 'st-up' : 'st-dn'}">${diff > 0 ? '▲ +' : '▼ '}${diff} %</span> par rapport aux ${n} jours d'avant`;
+
+  const mx = Math.max(...cur.map(x => x.t), 1), step = Math.ceil(n / 6);
+  const lab = (x, i) => n === 7 ? ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'][new Date(x.d + 'T12:00:00').getDay()] : (i === n - 1 || i % step === 0) ? short(x.d) : '';
+  const tile = (l, v, s, cls = '') => `<div class="st-tile"><small>${l}</small><div class="v ${cls}">${v}</div><div class="s">${s}</div></div>`;
+
+  $('#main').innerHTML = H +
+    `<div class="st-top" role="group" aria-label="Période">${[7, 30, 90].map(d => `<button data-p="${d}" class="${d === n ? 'on' : ''}">${d} derniers jours</button>`).join('')}</div>` +
+    `<div class="st-tiles">${tile('Aujourd\'hui', todayN, todayN > 1 ? 'pages vues' : 'page vue')}${tile(`Vues sur ${n} jours`, total, trend)}${tile('Moyenne par jour', (total / n).toFixed(1).replace('.', ','), total ? `Meilleur jour : ${esc(long(best.d))} (${best.t})` : 'Aucune visite sur la période')}${tile('Page la plus vue', top.length ? esc(name(top[0][0])) : '—', top.length ? `${top[0][1]} vues (${Math.round(top[0][1] / total * 100)} %)` : '', 'txt')}</div>` +
+    `<div class="st-card"><h2>Visites jour après jour</h2><p>Chaque barre est un jour. Passez la souris (ou appuyez) sur une barre pour voir la date exacte. Aujourd'hui est en doré.</p>
+      <div class="st-chart" role="img" aria-label="Graphique des vues par jour sur ${n} jours, maximum ${mx} vues en un jour"><span class="mx">${mx} vues</span>${cur.map(x => `<div class="st-col ${x.d === iso(Date.now()) ? 'td' : ''}" title="${esc(long(x.d))} : ${x.t} vue${x.t > 1 ? 's' : ''}"><div class="st-bar" style="height:${x.t / mx * 100}%"></div></div>`).join('')}</div>
+      <div class="st-x" aria-hidden="true">${cur.map((x, i) => `<span>${lab(x, i)}</span>`).join('')}</div></div>` +
+    `<div class="st-card"><h2>Pages les plus consultées</h2><p>Sur les ${n} derniers jours.</p>${top.length ? top.map(([k, v]) => `<div class="st-pg"><span>${esc(name(k))}</span><div class="t"><i style="width:${v / top[0][1] * 100}%"></i></div><b>${v} <small>(${Math.round(v / total * 100)} %)</small></b></div>`).join('') : '<p class="ex-empty">Aucune visite sur cette période.</p>'}</div>` +
+    `<div class="st-help"><b>À savoir :</b> une « vue » correspond à une page ouverte par un visiteur, comptée une seule fois par visite. Aucun cookie ni donnée personnelle n'est utilisé, donc les chiffres sont des ordres de grandeur.</div>`;
+  $('#main').onclick = e => { const b = e.target.closest('[data-p]'); if (b) { statsDays = +b.dataset.p; viewStats(); } };
 }
 
 /* Import du contenu actuel */
