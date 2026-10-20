@@ -99,6 +99,23 @@
   .cal-empty { background: #fff; border: 1px dashed var(--gris); border-radius: 10px; padding: 2rem 1rem; text-align: center; color: #777; }
   @media (min-width: 600px) { .cal-day { grid-template-columns: 78px 1fr; gap: 1.1rem; } .cal-day-date b { font-size: 2.3rem; } .cal-ev { padding: 1rem 1.2rem; } }
 
+  /* ── CARTE DE COMPÉTITION (même style que le reste du site) ── */
+  .ev-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.9rem; }
+  .ev-main { min-width: 0; flex: 1; }
+  .ev-tag { display: inline-block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 0.45rem; }
+  .ev-main .cal-next-badge { margin-left: 0.4rem; }
+  .ev-main .cal-ev-title, .ev-main .cal-modal-event-title { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.15rem; line-height: 1.3; color: var(--bleu); margin: 0; overflow-wrap: anywhere; }
+  .ev-time { flex-shrink: 0; background: var(--bleu); border-radius: 10px; padding: 0.4rem 0.75rem 0.45rem; text-align: center; line-height: 1; border-bottom: 3px solid var(--or); }
+  .ev-time span { display: block; font-size: 0.55rem; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 0.2rem; }
+  .ev-time b { font-family: 'Bebas Neue', sans-serif; font-weight: 400; font-size: 1.45rem; letter-spacing: 1px; color: var(--or); white-space: nowrap; }
+  .ev-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem 1rem; margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid var(--gris); }
+  .ev-i { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+  .ev-i svg { flex-shrink: 0; padding: 7px; border-radius: 50%; background: rgba(201,168,76,0.18); stroke: #9a7a1f; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ev-i small { display: block; font-size: 0.6rem; letter-spacing: 1.2px; text-transform: uppercase; color: #8a919c; font-weight: 700; line-height: 1.2; }
+  .ev-i b { display: block; font-size: 0.92rem; color: var(--bleu); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+  .ev-obs { margin-top: 0.85rem; font-size: 0.82rem; color: #5c6470; background: #faf8f1; border-left: 3px solid var(--or); padding: 0.5rem 0.8rem; border-radius: 0 6px 6px 0; }
+  .cal-modal-event { background: #fff; border: 1px solid var(--gris); border-left: 4px solid var(--or); border-radius: 8px; padding: 1rem 1.1rem; }
+
   /* Légende (les pastilles restent visibles à toutes les tailles) */
   .cal-legende { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
   .cal-legende .cal-event-dot { display: inline-block; }
@@ -719,16 +736,25 @@ const EVENTS = [
       if(!l.length) return '';
       return `<div class="cms-links cal-links">${l.map(x=>`<a href="${esc(safeUrl(x[0]))}" target="_blank" rel="noopener">🔗 ${esc(x[1]||'Plus d\'infos')}</a>`).join('')}</div>`;
     }
+    const ICO = {
+      pin:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+      users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>'
+    };
+    const ico = n => `<svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">${ICO[n]}</svg>`;
     function eventCard(e,cls,next){
       const t=TYPE_CLASS[e.type]||'cat-concours';
-      return `<div class="${cls}"><div class="${cls}-title">${esc(e.titre)}${next?' <span class="cal-next-badge">Prochaine</span>':''}</div>
-        <div class="${cls}-meta">
-          ${e.lieu?`<span>📍 ${esc(e.lieu)}</span>`:''}
-          ${e.heure?`<span>⏰ ${esc(e.heure)}</span>`:''}
-          ${e.formation?`<span>👥 ${esc(e.formation)}</span>`:''}
-          <span class="${t}" style="padding:2px 8px;border-radius:10px">${esc(TYPE_LABEL[e.type]||e.type)}</span>
-          ${e.obs?`<span style="font-style:italic">ℹ️ ${esc(e.obs)}</span>`:''}
-        </div>${linksHtml(e)}</div>`;
+      const info=[e.lieu&&['pin','Lieu',e.lieu], e.formation&&['users','Formule',e.formation]].filter(Boolean);
+      return `<div class="${cls}">
+        <div class="ev-head">
+          <div class="ev-main">
+            <span class="ev-tag ${t}">${esc(TYPE_LABEL[e.type]||e.type)}</span>${next?'<span class="cal-next-badge">Prochaine</span>':''}
+            <div class="${cls}-title">${esc(e.titre)}</div>
+          </div>
+          ${e.heure?`<div class="ev-time"><span>Début</span><b>${esc(e.heure)}</b></div>`:''}
+        </div>
+        ${info.length?`<div class="ev-info">${info.map(i=>`<div class="ev-i">${ico(i[0])}<div><small>${i[1]}</small><b>${esc(i[2])}</b></div></div>`).join('')}</div>`:''}
+        ${e.obs?`<div class="ev-obs">${esc(e.obs)}</div>`:''}
+        ${linksHtml(e)}</div>`;
     }
 
     function renderList(){
