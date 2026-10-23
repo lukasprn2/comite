@@ -51,7 +51,8 @@ const card = (m, cls) => `<div class="org-card ${cls}"><span class="org-role">${
 // (valeur absente = comité directeur, pour ne rien casser des données existantes).
 const cat = m => m.categorie || 'comite';
 
-// Arbitres / éducateurs : regroupés par niveau / qualification (champ « role »), dans l'ordre des positions
+// Arbitres / éducateurs : organigramme en arbre. Chaque niveau / qualification (champ « role »)
+// forme un étage, dans l'ordre des positions saisies dans l'admin (1er étage = en haut).
 function fillPeople(sel, people) {
   const box = $(`${sel} .liste`);
   if (!box || !people.length) return;
@@ -62,9 +63,12 @@ function fillPeople(sel, people) {
     if (!g) groups.push(g = { k, l: [] });
     g.l.push(m);
   });
-  box.innerHTML = groups.map(g =>
-    `<span class="membres-label">${esc(g.k)}</span><div class="membres-grid">${g.l.map(m => card(m, 'membre')).join('')}</div>`
-  ).join('');
+  const html = groups.map((g, i) => {
+    if (i === 0 && g.l.length === 1) return card(g.l[0], 'president');
+    const cls = i <= 1 ? 'vice' : 'admin';
+    return `<div class="org-level">${g.l.map(m => `<div class="org-item">${card(m, cls)}</div>`).join('')}</div>`;
+  });
+  box.innerHTML = `<div class="org-tree">${html.join('<div class="org-connector"></div>')}</div>`;
 }
 
 function applyComite(all) {
