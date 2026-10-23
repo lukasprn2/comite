@@ -47,14 +47,24 @@ function applyClubs(clubs) {
 const contact = m => `<div class="org-contact">${m.club ? `<div class="org-tel">${esc(m.club)}</div>` : ''}${m.tel ? `<div class="org-tel">${esc(m.tel)}</div>` : ''}${m.email ? `<div class="org-email">${esc(m.email)}</div>` : ''}${m.adresse ? `<div class="org-tel" style="font-size:0.66rem;color:rgba(255,255,255,0.3)">${esc(m.adresse)}</div>` : ''}</div>`;
 const card = (m, cls) => `<div class="org-card ${cls}"><span class="org-role">${esc(m.role)}</span><div class="org-name">${esc(m.nom)}</div>${contact(m)}</div>`;
 
-// Les membres, arbitres et éducateurs sont dans la même collection « membres », séparés par le champ « categorie »
+// Membres, arbitres et éducateurs : même collection « membres », séparés par « categorie »
 // (valeur absente = comité directeur, pour ne rien casser des données existantes).
 const cat = m => m.categorie || 'comite';
 
+// Arbitres / éducateurs : regroupés par niveau / qualification (champ « role »), dans l'ordre des positions
 function fillPeople(sel, people) {
   const box = $(`${sel} .liste`);
   if (!box || !people.length) return;
-  box.innerHTML = people.map(m => card(m, 'membre')).join('');
+  const groups = [];
+  people.forEach(m => {
+    const k = m.role || 'Autres';
+    let g = groups.find(x => x.k === k);
+    if (!g) groups.push(g = { k, l: [] });
+    g.l.push(m);
+  });
+  box.innerHTML = groups.map(g =>
+    `<span class="membres-label">${esc(g.k)}</span><div class="membres-grid">${g.l.map(m => card(m, 'membre')).join('')}</div>`
+  ).join('');
 }
 
 function applyComite(all) {
