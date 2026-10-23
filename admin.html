@@ -326,6 +326,14 @@ const SCHEMA = {
 };
 SCHEMA.arbitres = PERSON('Arbitres', 'Les arbitres affichés dans l\'onglet « Arbitres » de la page Le Comité. Ils sont regroupés selon leur niveau.', 'Ajouter un arbitre', 'Niveau (ex : Arbitre départemental, Arbitre régional)', 'arbitre');
 SCHEMA.educateurs = PERSON('Éducateurs', 'Les éducateurs et initiateurs affichés dans l\'onglet « Éducateurs / Initiateurs » de la page Le Comité. Ils sont regroupés selon leur qualification.', 'Ajouter un éducateur / initiateur', 'Qualification (ex : Initiateur, Éducateur fédéral)', 'educateur');
+SCHEMA.annuaire = {
+  tab: 'Annuaire', desc: 'Les sites des comités voisins affichés sur la page Annuaire. Le numéro de position règle l\'ordre d\'affichage.',
+  add: 'Ajouter un site', req: ['nom', 'url'],
+  sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: () => 'all', glabel: () => 'Sites référencés',
+  left: s => `<div class="bd">${esc(s.num || '—')}</div>`, title: s => s.nom, sub: s => esc(s.url),
+  f: [['h', 'Le site'], ['num', 'Numéro du département (ex : 60)'], ['nom', 'Nom (ex : Comité de l\'Oise)'], ['desc', 'Description (ex : Site du comité de l\'Oise)'],
+      ['url', 'Adresse du site (https://…)', 'url'], ['ordre', 'Position (1 = en premier)', 'number']]
+};
 
 const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
   ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
@@ -345,7 +353,7 @@ $('#out').onclick = () => signOut(auth);
 
 /* Navigation */
 let tab = 'home', cache = {};
-const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
 function start() {
   $('#tabs').innerHTML = Object.entries(NAMES).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}" ${k === tab ? 'aria-current="page"' : ''}>${ic(v[0], 22)}${v[1]}</button>`).join('');
   $('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
@@ -361,12 +369,12 @@ async function show() {
 }
 
 async function viewHome() {
-  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
+  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements', 'annuaire']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
   const people = k => n.membres.filter(m => catOf(m) === k).length;
   const S = SCHEMA.events, up = n.events.filter(e => e.date >= today).sort(S.sort);
   const T = (k, i, num, lab, sub) => `<button class="tile" data-go="${k}"><span class="i">${ic(i, 24)}</span><span class="n">${num}</span><b>${lab}</b><small>${sub}</small></button>`;
   $('#main').innerHTML = `<div class="hello"><h1>Bienvenue dans l'administration</h1><p>Choisis ce que tu veux modifier. Chaque changement apparaît sur le site dès l'enregistrement.</p></div>
-  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
+  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('annuaire', 'ext', n.annuaire.length, 'Annuaire', 'Sites des comités voisins')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
   ${up.length ? `<div class="sech"><h2>Prochaines compétitions</h2><button class="lnkb" data-go="events">Voir tout le calendrier</button></div>${up.slice(0, 4).map(e => `<div class="row">${S.left(e)}<div class="m"><strong>${esc(e.titre)}</strong><small>${S.sub(e)}</small></div></div>`).join('')}` : ''}
   ${n.events.length + n.clubs.length ? '' : `<div style="margin-top:1rem">${empty('Base vide : ouvre l\'onglet <b>Import</b> pour reprendre le contenu actuel du site.')}</div>`}`;
   $('#main').onclick = e => { const b = e.target.closest('[data-go]'); if (b) { tab = b.dataset.go; start(); window.scrollTo(0, 0); } };
@@ -492,7 +500,7 @@ async function saveCl() {
 }
 
 /* ===== Messages, Corbeille, Statistiques ===== */
-const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
 const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 
 async function trash(col, id, x) {
@@ -586,7 +594,7 @@ async function viewStats() {
 /* Import du contenu actuel */
 function viewImport() {
   $('#main').innerHTML = head('Import', 'À faire une seule fois au départ : copie dans Firebase ce qui est écrit aujourd\'hui dans tes pages. Attention : les données déjà présentes dans la section choisie sont remplacées.') +
-  `<div class="card"><div class="flex">${[['settings', 'Infos du site'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}">${ic('dl', 16)}Importer : ${l}</button>`).join('')}</div><p id="imsg" role="status" style="font-weight:700;margin:1rem 0 0"></p></div>`;
+  `<div class="card"><div class="flex">${[['settings', 'Infos du site'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier'], ['annuaire', 'L\'Annuaire']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}">${ic('dl', 16)}Importer : ${l}</button>`).join('')}</div><p id="imsg" role="status" style="font-weight:700;margin:1rem 0 0"></p></div>`;
   $('#main').onclick = async e => { const b = e.target.closest('[data-i]'); if (!b) return; const k = b.dataset.i;
     if (!await ask('Importer cette section ?', 'Les données existantes de cette section seront remplacées.', 'Importer')) return;
     try { $('#imsg').textContent = 'Import en cours…'; const n = await IMPORT[k](); $('#imsg').textContent = `Terminé (${n} élément${n > 1 ? 's' : ''}).`; } catch (er) { $('#imsg').textContent = 'Erreur : ' + er.message; } };
@@ -625,6 +633,14 @@ const IMPORT = {
     const txt = await (await fetch('calendrier.html?' + Date.now())).text(), m = txt.match(/const EVENTS = (\[[\s\S]*?\n\s*\]);/);
     if (!m) throw new Error('Calendrier introuvable dans calendrier.html');
     return replaceAll('events', new Function('return ' + m[1])().map(e => ({ date: e.date, titre: e.titre, type: e.type, lieu: e.lieu || '', heure: e.heure || '', formation: e.formation || '', obs: e.obs || '', lien: '', lienTexte: '', lien2: '', lien2Texte: '' })));
+  },
+  async annuaire() {
+    return replaceAll('annuaire', [
+      ['60', 'Comité de l\'Oise', 'https://ffpjp-comite-oise-petanque.e-monsite.com'],
+      ['59', 'Comité du Nord', 'https://ffpjp-nord.org/'],
+      ['62', 'Comité du Pas-de-Calais', 'https://www.ffpjp62.fr/'],
+      ['02', 'Comité de l\'Aisne', 'https://www.ffpjp-comite-aisne-petanque.com/']
+    ].map(([num, nom, url], i) => ({ num, nom, desc: 'Site du ' + nom.toLowerCase(), url, ordre: i + 1 })));
   }
 };
 </script>
