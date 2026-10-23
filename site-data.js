@@ -44,18 +44,33 @@ function applyClubs(clubs) {
   const p = $('.page-header p'); if (p) p.textContent = `${clubs.length} clubs affiliés répartis en trois secteurs géographiques`;
 }
 
-const contact = m => `<div class="org-contact">${m.tel ? `<div class="org-tel">${esc(m.tel)}</div>` : ''}${m.email ? `<div class="org-email">${esc(m.email)}</div>` : ''}${m.adresse ? `<div class="org-tel" style="font-size:0.66rem;color:rgba(255,255,255,0.3)">${esc(m.adresse)}</div>` : ''}</div>`;
+const contact = m => `<div class="org-contact">${m.club ? `<div class="org-tel">${esc(m.club)}</div>` : ''}${m.tel ? `<div class="org-tel">${esc(m.tel)}</div>` : ''}${m.email ? `<div class="org-email">${esc(m.email)}</div>` : ''}${m.adresse ? `<div class="org-tel" style="font-size:0.66rem;color:rgba(255,255,255,0.3)">${esc(m.adresse)}</div>` : ''}</div>`;
 const card = (m, cls) => `<div class="org-card ${cls}"><span class="org-role">${esc(m.role)}</span><div class="org-name">${esc(m.nom)}</div>${contact(m)}</div>`;
 
-function applyComite(ms) {
-  ms.sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+// Les membres, arbitres et éducateurs sont dans la même collection « membres », séparés par le champ « categorie »
+// (valeur absente = comité directeur, pour ne rien casser des données existantes).
+const cat = m => m.categorie || 'comite';
+
+function fillPeople(sel, people) {
+  const box = $(`${sel} .liste`);
+  if (!box || !people.length) return;
+  box.innerHTML = people.map(m => card(m, 'membre')).join('');
+}
+
+function applyComite(all) {
+  all.sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+  const ms = all.filter(m => cat(m) === 'comite');
   const g = k => ms.filter(m => m.groupe === k);
-  const pres = g('president')[0];
-  if (pres) $('.org-card.president').outerHTML = card(pres, 'president reveal visible');
-  const levels = $$('.org-level');
-  if (levels[0]) levels[0].innerHTML = g('vice').map(m => `<div class="org-item">${card(m, 'vice')}</div>`).join('');
-  if (levels[1]) levels[1].innerHTML = g('admin').map(m => `<div class="org-item">${card(m, 'admin')}</div>`).join('');
-  $('.membres-grid').innerHTML = g('membre').map(m => card(m, 'membre')).join('');
+  if (ms.length) {
+    const pres = g('president')[0];
+    if (pres) $('.org-card.president').outerHTML = card(pres, 'president reveal visible');
+    const levels = $$('#panel-comite .org-level');
+    if (levels[0]) levels[0].innerHTML = g('vice').map(m => `<div class="org-item">${card(m, 'vice')}</div>`).join('');
+    if (levels[1]) levels[1].innerHTML = g('admin').map(m => `<div class="org-item">${card(m, 'admin')}</div>`).join('');
+    $('#panel-comite .membres-grid').innerHTML = g('membre').map(m => card(m, 'membre')).join('');
+  }
+  fillPeople('#panel-arbitres', all.filter(m => cat(m) === 'arbitre'));
+  fillPeople('#panel-educateurs', all.filter(m => cat(m) === 'educateur'));
 }
 
 // Liens des compétitions : ajoutés automatiquement dans la fenêtre qui s'ouvre au clic sur un jour
