@@ -152,6 +152,30 @@
   @media (hover: hover) {
     .cal-cell.has-events:hover { box-shadow: 0 4px 16px rgba(10,35,66,0.13); }
   }
+  /* ── VUE MOIS LISIBLE (tous les concours visibles) ── */
+.cal-cell { overflow: visible; min-height: 90px; }
+.cal-cell.has-events::after { content: none; }
+.cal-cell .cal-event-dot {
+  display: block; white-space: normal; overflow: visible; text-overflow: clip;
+  font-size: .68rem; line-height: 1.25; padding: 3px 5px; margin-bottom: 3px;
+  border-left: 3px solid currentColor; border-radius: 3px;
+}
+.cal-cell .cal-event-dot .ce-h { display: block; font-size: .62rem; font-weight: 700; opacity: .85; }
+.cal-cell .cal-event-dot .ce-l { display: block; font-size: .62rem; font-weight: 500; opacity: .8; }
+.cal-cell-dow { display: none; }
+.cal-cell-evs { min-width: 0; }
+
+@media (max-width: 599px) {
+  .cal-grid { display: flex; flex-direction: column; gap: 8px; }
+  .cal-day-header, .cal-cell.other-month, .cal-cell.empty { display: none; }
+  .cal-cell { display: grid; grid-template-columns: 52px 1fr; gap: .7rem; align-items: start; padding: 8px; min-height: 0; }
+  .cal-cell-date { text-align: center; background: var(--bleu); border-radius: 8px; padding: .35rem 0; }
+  .cal-cell-num { color: var(--or); font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; font-weight: 400; margin: 0; display: block; line-height: 1; }
+  .cal-cell-dow { display: block; color: #fff; font-size: .62rem; letter-spacing: 1px; text-transform: uppercase; }
+  .cal-cell.today { border-color: var(--or); }
+  .cal-cell .cal-event-dot { font-size: .8rem; padding: 6px 8px; }
+  .cal-cell .cal-event-dot .ce-h, .cal-cell .cal-event-dot .ce-l { font-size: .72rem; }
+}
 </style>
 </head>
      <script type="module" src="site-data.js"></script>
@@ -795,19 +819,26 @@ const EVENTS = [
       const daysInMonth=new Date(year,month+1,0).getDate();
       const prevDays=new Date(year,month,0).getDate();
       for(let i=0;i<dow;i++){ const c=document.createElement('div'); c.className='cal-cell other-month'; c.innerHTML=`<span class="cal-cell-num">${prevDays-dow+1+i}</span>`; grid.appendChild(c); }
-      for(let d=1;d<=daysInMonth;d++){
-        const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        const evs=eventsFor(ds);
-        const isToday=(today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d);
-        const c=document.createElement('div');
-        c.className='cal-cell'+(isToday?' today':'')+(evs.length?' has-events':'');
-        let html=`<span class="cal-cell-num">${d}</span>`;
-        evs.slice(0,2).forEach(e=>{ html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">${esc(e.titre)}</span>`; });
-        if(evs.length>2) html+=`<span class="cal-more">+${evs.length-2} autres</span>`;
-        c.innerHTML=html;
-        if(evs.length) c.addEventListener('click',()=>openModal(ds,evs));
-        grid.appendChild(c);
-      }
+     for(let d=1;d<=daysInMonth;d++){
+  const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const evs=eventsFor(ds);
+  const isToday=(today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d);
+  const c=document.createElement('div');
+  c.className='cal-cell'+(isToday?' today':'')+(evs.length?' has-events':' empty');
+  const dowLabel=JOURS[(dow+d-1)%7];
+  let html=`<div class="cal-cell-date"><span class="cal-cell-num">${d}</span><span class="cal-cell-dow">${dowLabel}</span></div><div class="cal-cell-evs">`;
+  evs.forEach(e=>{
+    html+=`<span class="cal-event-dot ${TYPE_CLASS[e.type]||'cat-concours'}">`
+        +(e.heure?`<span class="ce-h">${esc(e.heure)}</span>`:'')
+        +esc(e.titre)
+        +(e.lieu?`<span class="ce-l">📍 ${esc(e.lieu)}</span>`:'')
+        +`</span>`;
+  });
+  html+='</div>';
+  c.innerHTML=html;
+  if(evs.length) c.addEventListener('click',()=>openModal(ds,evs));
+  grid.appendChild(c);
+}
       const total=dow+daysInMonth; const trailing=total%7===0?0:7-(total%7);
       for(let i=1;i<=trailing;i++){ const c=document.createElement('div'); c.className='cal-cell other-month'; c.innerHTML=`<span class="cal-cell-num">${i}</span>`; grid.appendChild(c); }
     }
