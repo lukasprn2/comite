@@ -176,6 +176,45 @@
   .cal-cell .cal-event-dot { font-size: .8rem; padding: 6px 8px; }
   .cal-cell .cal-event-dot .ce-h, .cal-cell .cal-event-dot .ce-l { font-size: .72rem; }
 }
+  /* ── CALENDRIER PLUS GRAND ── */
+#cal-app { font-size: 1.05rem; }
+
+/* Cases et texte */
+.cal-cell { min-height: 130px; padding: 8px; }
+.cal-cell-num { font-size: 1rem; }
+.cal-cell.today .cal-cell-num { width: 28px; height: 28px; font-size: .9rem; }
+.cal-cell .cal-event-dot { font-size: .8rem; padding: 5px 7px; margin-bottom: 4px; }
+.cal-cell .cal-event-dot .ce-h,
+.cal-cell .cal-event-dot .ce-l { font-size: .74rem; }
+.cal-day-header { font-size: .85rem; padding: .75rem 0; }
+.cal-grid { gap: 5px; }
+
+/* Barre de navigation */
+.cal-month-label { font-size: 2.2rem; min-width: 280px; }
+.cal-nav button { width: 48px; height: 48px; font-size: 1.4rem; }
+.cal-view-btn { font-size: .95rem; min-height: 46px; padding: .5rem 1.1rem; }
+#cal-year-jump { font-size: 1rem !important; min-height: 46px; }
+#cal-search { max-width: 600px; font-size: 1.05rem; min-height: 50px; }
+.cal-filter-btn { font-size: .88rem; padding: .5rem 1.1rem; }
+
+/* Fenêtre de détail */
+.cal-modal { max-width: 640px; }
+.cal-modal h3 { font-size: 1.6rem; }
+
+/* Page plus large sur grand écran */
+@media (min-width: 1000px) {
+  .page-content { max-width: 1400px; }
+  .cal-cell { min-height: 150px; }
+}
+
+/* Mobile : on garde la liste de jours, avec un texte un peu plus grand */
+@media (max-width: 599px) {
+  .cal-cell { min-height: 0; }
+  .cal-month-label { font-size: 1.6rem; min-width: 0; }
+  .cal-cell .cal-event-dot { font-size: .9rem; padding: 8px 10px; }
+  .cal-cell .cal-event-dot .ce-h,
+  .cal-cell .cal-event-dot .ce-l { font-size: .8rem; }
+}
 </style>
 </head>
      <script type="module" src="site-data.js"></script>
