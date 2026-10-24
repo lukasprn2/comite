@@ -176,45 +176,46 @@
   .cal-cell .cal-event-dot { font-size: .8rem; padding: 6px 8px; }
   .cal-cell .cal-event-dot .ce-h, .cal-cell .cal-event-dot .ce-l { font-size: .72rem; }
 }
-  /* ── CALENDRIER PLUS GRAND ── */
-#cal-app { font-size: 1.05rem; }
+/* ── CALENDRIER TAILLE INTERMÉDIAIRE ── */
+#cal-app { font-size: 1rem; }
 
 /* Cases et texte */
-.cal-cell { min-height: 130px; padding: 8px; }
-.cal-cell-num { font-size: 1rem; }
-.cal-cell.today .cal-cell-num { width: 28px; height: 28px; font-size: .9rem; }
-.cal-cell .cal-event-dot { font-size: .8rem; padding: 5px 7px; margin-bottom: 4px; }
+.cal-cell { min-height: 108px; padding: 6px; }
+.cal-cell-num { font-size: .9rem; }
+.cal-cell.today .cal-cell-num { width: 24px; height: 24px; font-size: .8rem; }
+.cal-cell .cal-event-dot { font-size: .74rem; padding: 4px 6px; margin-bottom: 3px; }
 .cal-cell .cal-event-dot .ce-h,
-.cal-cell .cal-event-dot .ce-l { font-size: .74rem; }
-.cal-day-header { font-size: .85rem; padding: .75rem 0; }
-.cal-grid { gap: 5px; }
+.cal-cell .cal-event-dot .ce-l { font-size: .67rem; }
+.cal-day-header { font-size: .76rem; padding: .6rem 0; }
+.cal-grid { gap: 4px; }
 
 /* Barre de navigation */
-.cal-month-label { font-size: 2.2rem; min-width: 280px; }
-.cal-nav button { width: 48px; height: 48px; font-size: 1.4rem; }
-.cal-view-btn { font-size: .95rem; min-height: 46px; padding: .5rem 1.1rem; }
-#cal-year-jump { font-size: 1rem !important; min-height: 46px; }
-#cal-search { max-width: 600px; font-size: 1.05rem; min-height: 50px; }
-.cal-filter-btn { font-size: .88rem; padding: .5rem 1.1rem; }
+.cal-month-label { font-size: 1.8rem; min-width: 240px; }
+.cal-nav button { width: 42px; height: 42px; font-size: 1.25rem; }
+.cal-view-btn { font-size: .85rem; min-height: 42px; padding: .45rem 1rem; }
+#cal-year-jump { font-size: .9rem !important; min-height: 42px; }
+#cal-search { max-width: 520px; font-size: 1rem; min-height: 46px; }
+.cal-filter-btn { font-size: .8rem; padding: .4rem .95rem; }
 
 /* Fenêtre de détail */
-.cal-modal { max-width: 640px; }
-.cal-modal h3 { font-size: 1.6rem; }
+.cal-modal { max-width: 560px; }
+.cal-modal h3 { font-size: 1.45rem; }
 
-/* Page plus large sur grand écran */
+/* Page un peu plus large sur grand écran */
 @media (min-width: 1000px) {
-  .page-content { max-width: 1400px; }
-  .cal-cell { min-height: 150px; }
+  .page-content { max-width: 1200px; }
+  .cal-cell { min-height: 120px; }
 }
 
-/* Mobile : on garde la liste de jours, avec un texte un peu plus grand */
+/* Mobile : liste de jours, texte lisible */
 @media (max-width: 599px) {
   .cal-cell { min-height: 0; }
-  .cal-month-label { font-size: 1.6rem; min-width: 0; }
-  .cal-cell .cal-event-dot { font-size: .9rem; padding: 8px 10px; }
+  .cal-month-label { font-size: 1.5rem; min-width: 0; }
+  .cal-cell .cal-event-dot { font-size: .85rem; padding: 7px 9px; }
   .cal-cell .cal-event-dot .ce-h,
-  .cal-cell .cal-event-dot .ce-l { font-size: .8rem; }
+  .cal-cell .cal-event-dot .ce-l { font-size: .76rem; }
 }
+  .cal-day { scroll-margin-top: 90px; }
 </style>
 </head>
      <script type="module" src="site-data.js"></script>
@@ -819,7 +820,12 @@ const EVENTS = [
         ${e.obs?`<div class="ev-obs">${esc(e.obs)}</div>`:''}
         ${linksHtml(e)}</div>`;
     }
-
+let scrollToToday = true;
+function goToToday(){
+  if(view!=='list' || query || year!==today.getFullYear() || month!==today.getMonth()) return;
+  const target=[...document.querySelectorAll('#cal-list .cal-day')].find(d=>d.dataset.date>=todayStr);
+  if(target) requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'smooth'}));
+}
     function renderList(){
       const box=document.getElementById('cal-list');
       const prefix=`${year}-${pad(month+1)}`;
@@ -832,11 +838,12 @@ const EVENTS = [
         const [y,m,d]=ds.split('-');
         if(query && m+y!==lastMonth){ lastMonth=m+y; html+=`<div class="cal-month-sep">${MOIS[+m-1]} ${y}</div>`; }
         const dt=new Date(+y,+m-1,+d);
-        html+=`<div class="cal-day${ds<todayStr?' past':''}${ds===todayStr?' is-today':''}">
+     html+=`<div class="cal-day${ds<todayStr?' past':''}${ds===todayStr?' is-today':''}" data-date="${ds}">
           <div class="cal-day-date"><span>${JOURS_LONGS[dt.getDay()].slice(0,3)}</span><b>${+d}</b><span>${MOIS[+m-1].slice(0,4)}</span></div>
           <div class="cal-day-evs">${days[ds].map(e=>eventCard(e,'cal-ev',e===next)).join('')}</div></div>`;
       });
       box.innerHTML=html;
+if(scrollToToday){ scrollToToday=false; goToToday(); }
     }
 
     function renderCalendar(){
