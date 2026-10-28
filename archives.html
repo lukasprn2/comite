@@ -44,6 +44,30 @@
 .arc-btn { align-self: flex-start; margin-top: 0.2rem; display: inline-flex; align-items: center; gap: 0.4rem; background: var(--or); color: var(--bleu); font-weight: 700; font-size: 0.82rem; padding: 0.55rem 1rem; border-radius: 8px; text-decoration: none; min-height: 40px; transition: background 0.2s; }
 .arc-btn:hover { background: var(--or-light); }
 .arc-empty { text-align: center; color: rgba(255,255,255,0.55); padding: 2.5rem 1rem; border: 1px dashed rgba(201,168,76,0.3); border-radius: 10px; }
+.arc-btn { border: 0; font: inherit; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
+.arc-btn:disabled { opacity: .6; cursor: wait; }
+.arc-btn.alt { background: transparent; color: var(--or-light); border: 1px solid rgba(201,168,76,0.5); }
+.arc-btn.alt:hover { background: rgba(201,168,76,0.12); }
+.arc-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
+.arc-actions .arc-btn { margin-top: 0; }
+#tbDlg { border: 0; border-radius: 14px; padding: 0; width: min(1000px, 96vw); max-height: 92vh; border-top: 5px solid var(--or); background: #fff; color: #1a1f2e; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+#tbDlg::backdrop { background: rgba(10,35,66,0.7); }
+.tb-in { display: flex; flex-direction: column; max-height: 92vh; }
+.tb-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.8rem 1rem 0.8rem 1.2rem; background: var(--bleu); color: #fff; }
+.tb-head h2 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 2px; font-size: 1.6rem; line-height: 1.1; margin: 0; overflow-wrap: anywhere; }
+.tb-x { background: none; border: 0; color: #fff; font-size: 1.8rem; line-height: 1; min-width: 44px; min-height: 44px; border-radius: 8px; cursor: pointer; }
+.tb-x:hover { background: rgba(255,255,255,0.12); }
+.tb-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0.8rem 1.2rem; border-bottom: 1px solid #dfe3e8; align-items: center; }
+.tb-bar select, .tb-bar input { font: inherit; font-size: 0.9rem; padding: 0.55rem 0.75rem; border: 1.5px solid #dfe3e8; border-radius: 8px; min-height: 42px; background: #fff; color: #1a1f2e; }
+.tb-bar select { flex: 1; min-width: 130px; }
+.tb-bar input { flex: 2; min-width: 160px; }
+.tb-bar select:focus, .tb-bar input:focus { outline: none; border-color: var(--or); }
+.tb-wrap { overflow: auto; flex: 1; padding: 0 1.2rem 1rem; }
+.tb-wrap table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+.tb-wrap th { position: sticky; top: 0; background: #faf6e8; color: var(--bleu); text-align: left; padding: 0.55rem 0.6rem; border-bottom: 2px solid var(--or); white-space: nowrap; }
+.tb-wrap td { padding: 0.45rem 0.6rem; border-bottom: 1px solid #eef0f4; }
+.tb-wrap tbody tr:nth-child(even) td { background: #fafbfc; }
+.tb-n { color: #667085; font-size: 0.8rem; margin: 0.7rem 0 0; }
 @media (min-width: 640px) {
   .arc-tools { flex-direction: row; }
   .arc-tools input { flex: 2; }
@@ -121,6 +145,19 @@
   </div>
 </section>
 
+<!-- ── TABLEAU (fenêtre) ── -->
+<dialog id="tbDlg" aria-labelledby="tbT">
+  <div class="tb-in">
+    <div class="tb-head"><h2 id="tbT"></h2><button type="button" class="tb-x" id="tbClose" aria-label="Fermer">&times;</button></div>
+    <div class="tb-bar">
+      <select id="tbS" aria-label="Choisir la feuille"></select>
+      <input id="tbQ" type="search" placeholder="Rechercher dans le tableau…" aria-label="Rechercher dans le tableau">
+      <button type="button" class="arc-btn" id="tbDl">Télécharger en Excel</button>
+    </div>
+    <div class="tb-wrap" id="tbW"></div>
+  </div>
+</dialog>
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
@@ -186,25 +223,54 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const safeUrl = u => /^(https?:\/\/|mailto:|[\w\-./]+\.\w+$)/i.test(u || '') ? u : '';
 
-let items = [];
+let items = [], cur = null;
 
 function draw() {
   const q = $('#arcQ').value.toLowerCase().trim(), y = $('#arcY').value, c = $('#arcC').value;
-  const l = items.filter(x => (!q || JSON.stringify(x).toLowerCase().includes(q)) && (!y || x.saison === y) && (!c || x.categorie === c));
+  const l = items.filter(x => (!q || x._s.includes(q)) && (!y || x.saison === y) && (!c || x.categorie === c));
   if (!l.length) { $('#arcList').innerHTML = '<div class="arc-empty">Aucun document pour le moment.</div>'; return; }
   const g = {};
   l.forEach(x => (g[x.saison || 'Sans saison'] ||= []).push(x));
   const keys = Object.keys(g).sort((a, b) => b.localeCompare(a, 'fr'));
   $('#arcList').innerHTML = keys.map(k => `<div class="arc-year"><div class="arc-year-title">${esc(k)}<span>${g[k].length} document${g[k].length > 1 ? 's' : ''}</span></div><div class="arc-list">` +
-    g[k].map(x => { const u = safeUrl(x.lien);
-      return `<article class="arc-card"><span class="arc-cat">${esc(CAT[x.categorie] || x.categorie || 'Document')}</span><div class="arc-title">${esc(x.titre)}</div>` +
+    g[k].map(x => { const u = safeUrl(x.lien), n = (x.feuilles || []).length;
+      const acts = (n ? `<button type="button" class="arc-btn" data-open="${x._i}">Consulter le tableau</button>` : '') +
+        (u ? `<a class="arc-btn${n ? ' alt' : ''}" href="${esc(u)}" target="_blank" rel="noopener">${esc(x.lienTexte || 'Consulter')}</a>` : '');
+      return `<article class="arc-card"><span class="arc-cat">${esc(CAT[x.categorie] || x.categorie || 'Document')}${n > 1 ? ` · ${n} feuilles` : ''}</span><div class="arc-title">${esc(x.titre)}</div>` +
         (x.description ? `<div class="arc-desc">${esc(x.description)}</div>` : '') +
-        (u ? `<a class="arc-btn" href="${esc(u)}" target="_blank" rel="noopener">${esc(x.lienTexte || 'Consulter')}</a>` : '') + '</article>'; }).join('') + '</div></div>').join('');
+        (acts ? `<div class="arc-actions">${acts}</div>` : '') + '</article>'; }).join('') + '</div></div>').join('');
+}
+
+/* ── Fenêtre du tableau ── */
+function sheet() {
+  const s = cur.feuilles[+$('#tbS').value] || cur.feuilles[0], q = $('#tbQ').value.toLowerCase().trim();
+  const rows = s.lignes.filter(r => !q || r.v.join(' ').toLowerCase().includes(q));
+  $('#tbW').innerHTML = `<table><thead><tr>${s.colonnes.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
+    rows.map(r => `<tr>${r.v.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('') + `</tbody></table>` +
+    `<p class="tb-n">${rows.length} ligne${rows.length > 1 ? 's' : ''}${q ? ' trouvée' + (rows.length > 1 ? 's' : '') : ''}</p>`;
+}
+function openTable(x) {
+  cur = x; $('#tbT').textContent = x.titre; $('#tbQ').value = '';
+  $('#tbS').innerHTML = x.feuilles.map((s, i) => `<option value="${i}">${esc(s.nom)}</option>`).join('');
+  $('#tbS').hidden = x.feuilles.length < 2;
+  sheet(); $('#tbDlg').showModal();
+}
+const loadX = () => window.XLSX ? Promise.resolve() : new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = () => ko(new Error('x')); document.head.append(s); });
+async function download() {
+  const b = $('#tbDl'); b.disabled = true;
+  try { await loadX(); const wb = XLSX.utils.book_new(), used = new Set();
+    cur.feuilles.forEach((s, i) => { const n = (String(s.nom || '').replace(/[:\\/?*\[\]]/g, ' ').trim().slice(0, 28)) || 'Feuille ' + (i + 1); let k = n, j = 2;
+      while (used.has(k.toLowerCase())) k = n + ' ' + j++; used.add(k.toLowerCase());
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([s.colonnes, ...s.lignes.map(l => l.v)]), k); });
+    XLSX.writeFile(wb, (cur.titre || 'archive').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() + '.xlsx');
+  } catch { alert('Téléchargement impossible : vérifie ta connexion.'); }
+  finally { b.disabled = false; }
 }
 
 try {
   const [snap, gen] = await Promise.all([getDocs(collection(db, 'archives')), getDoc(doc(db, 'settings', 'general'))]);
-  items = snap.docs.map(d => d.data()).sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+  items = snap.docs.map(d => d.data()).sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99))
+    .map((x, i) => ({ ...x, _i: i, _s: [x.titre, x.description, x.saison, CAT[x.categorie]].join(' ').toLowerCase() }));
   const intro = gen.data()?.archivesIntro;
   if (intro) { $('#arcIntro').textContent = intro; $('#arcIntro').hidden = false; }
   const years = [...new Set(items.map(x => x.saison).filter(Boolean))].sort((a, b) => b.localeCompare(a, 'fr'));
@@ -212,6 +278,10 @@ try {
   const cats = [...new Set(items.map(x => x.categorie).filter(Boolean))];
   $('#arcC').insertAdjacentHTML('beforeend', cats.map(c => `<option value="${esc(c)}">${esc(CAT[c] || c)}</option>`).join(''));
   ['#arcQ', '#arcY', '#arcC'].forEach(s => $(s).oninput = draw);
+  $('#arcList').onclick = e => { const b = e.target.closest('[data-open]'); if (b) openTable(items[+b.dataset.open]); };
+  $('#tbS').oninput = sheet; $('#tbQ').oninput = sheet; $('#tbDl').onclick = download;
+  $('#tbClose').onclick = () => $('#tbDlg').close();
+  $('#tbDlg').onclick = e => { if (e.target === $('#tbDlg')) $('#tbDlg').close(); };
   draw();
 } catch (e) {
   $('#arcList').innerHTML = '<div class="arc-empty">Les archives sont momentanément indisponibles.</div>';
