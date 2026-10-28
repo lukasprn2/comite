@@ -16,10 +16,10 @@
   .maj-bar strong { color: var(--or); }
 
   /* ── ONGLETS : une ligne défilable au doigt sur mobile ── */
-  .cat-tabs { display: flex; gap: 0.4rem; flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(var(--pad-x) * -1) 1.25rem; padding: 0 var(--pad-x) 0.35rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-  .cat-tabs::-webkit-scrollbar { display: none; }
-  .cat-tab { flex-shrink: 0; white-space: nowrap; min-height: 42px; border: 2px solid var(--gris); background: #fff; color: #555; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.3px; padding: 0.45rem 1rem; border-radius: 25px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 0.4rem; }
-  .cat-tab.active, .cat-tab:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
+  .cat-tabs { display: flex; gap: 0.5rem; flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(var(--pad-x) * -1) 1.25rem; padding: 0 var(--pad-x) 0.35rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab { flex-shrink: 0; white-space: nowrap; min-height: 54px; border: 2px solid var(--gris); background: #fff; color: #555; font-size: 1.05rem; font-weight: 600; letter-spacing: 0.3px; padding: 0.65rem 1.4rem; border-radius: 30px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 0.5rem; }
+.cat-tab.active, .cat-tab:hover { background: var(--bleu); color: var(--or); border-color: var(--bleu); }
 
   /* ── RECHERCHE + FILTRES ── */
   .controls { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1rem; }
