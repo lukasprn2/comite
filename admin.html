@@ -174,6 +174,13 @@ dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:
 .flex{display:flex;gap:.5rem;flex-wrap:wrap}
 
 .card.unread{border-left:5px solid var(--or)}
+.f:has(.dz){grid-column:1/-1}
+.dz{display:flex;flex-direction:column;align-items:center;gap:.4rem;text-align:center;padding:1.3rem 1rem;border:2px dashed #c4cad3;border-radius:10px;background:#fcfbf7;color:var(--bleu);cursor:pointer;transition:border-color .15s,background .15s}
+.dz:hover,.dz.over{border-color:var(--or);background:#fbf7e9}
+.dz b{display:inline-flex;align-items:center;gap:.4rem}
+.dz small{color:var(--mut);overflow-wrap:anywhere}
+.dzb{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:.4rem}
+#dzn{margin:.4rem 0 0}#dzn.err{color:var(--ko);font-weight:700}
 .sb{display:grid;grid-template-columns:8rem 1fr 3.5rem;gap:.6rem;align-items:center;margin:.35rem 0;font-size:.9rem}
 .sb i{display:block;height:14px;background:var(--bleu);border-radius:3px;min-width:2px}
 .sb b{text-align:right;color:var(--bleu)}
@@ -359,9 +366,10 @@ SCHEMA.archives = {
   group: a => a.saison || 'Sans saison', glabel: k => k,
   left: a => `<div class="bd">${esc(a.ordre ?? '')}</div>`,
   title: a => a.titre,
-  sub: a => `<span class="pill champ">${esc(Object.fromEntries(ARCCAT)[a.categorie] || '')}</span>${esc(a.description || '')}`,
+  sub: a => `<span class="pill champ">${esc(Object.fromEntries(ARCCAT)[a.categorie] || '')}</span>${(a.feuilles || []).length ? `<span class="pill concours">Tableau · ${a.feuilles.length} feuille${a.feuilles.length > 1 ? 's' : ''}</span>` : ''}${esc(a.description || '')}`,
   f: [['h','Le document'], ['saison','Saison (ex : 2024-2025)'], ['categorie','Catégorie','select',ARCCAT], ['titre','Titre'], ['description','Description (facultatif)','textarea'], ['ordre','Position (1 = en premier)','number'],
-      ['h','Fichier ou lien'], ['lienTexte','Texte du bouton (ex : Télécharger le PDF)'], ['lien','Adresse du fichier (https://…)','url']]
+      ['h','Tableau Excel (facultatif)'], ['feuilles','Glisse un fichier Excel : chaque feuille s\'affichera en tableau sur le site','xlsx'],
+      ['h','Lien vers un fichier (facultatif)'], ['lienTexte','Texte du bouton (ex : Télécharger le PDF)'], ['lien','Adresse du fichier (https://…)','url']]
 };
 const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
   ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
@@ -432,9 +440,10 @@ const field = (f, v, req = []) => { const [k, l, t = 'text', o] = f, val = v ?? 
   const lab = `<label for="x_${k}">${l}${req.includes(k) ? '<span class="rq" aria-hidden="true">*</span>' : ''}</label>`;
   return `<div class="f">${lab}` + (t === 'textarea' ? `<textarea id="x_${k}" name="${k}" rows="3">${esc(val)}</textarea>`
     : t === 'clubselect' ? clubSelect(k, val)
+    : t === 'xlsx' ? '<div class="dz" id="dz" tabindex="0" role="button" aria-label="Zone de dépôt du fichier Excel"></div><p id="dzn" class="hint2" role="status"></p>'
     : t === 'select' ? `<select id="x_${k}" name="${k}">${o.map(([a, b]) => `<option value="${esc(a)}" ${a === val ? 'selected' : ''}>${esc(b)}</option>`).join('')}</select>`
     : `<input id="x_${k}" name="${k}" type="${t === 'url' ? 'text' : t}" ${t === 'url' ? 'inputmode="url" placeholder="https://…"' : ''} ${t === 'number' ? 'min="0"' : ''} value="${esc(val)}">`) + '</div>'; };
-const read = (fs, root) => Object.fromEntries(fs.filter(f => f[0] !== 'h').map(f => { const el = root.querySelector(`[name=${f[0]}]`); let v = el.value.trim();
+const read = (fs, root) => Object.fromEntries(fs.filter(f => f[0] !== 'h' && f[2] !== 'xlsx').map(f => { const el = root.querySelector(`[name=${f[0]}]`); let v = el.value.trim();
   if (f[2] === 'clubselect' && v === '__autre') v = ''; if (f[2] === 'number') v = Number(v) || 0; if (f[2] === 'url' && v && !/^(https?:|mailto:)/i.test(v)) v = 'https://' + v; return [f[0], v]; }));
 
 async function viewSettings() {
@@ -473,13 +482,58 @@ async function viewList(col) {
   $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, x = cache[col].find(i => i._id === id);
     if (b.dataset.e) edit(col, x); else if (await ask('Mettre à la corbeille ?', `« ${S.title(x)} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash(C, id, x); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
 }
+/* Dépôt d'un fichier Excel : chaque feuille devient un tableau (comme les classements) */
+let feuilles = [];
+const LIM = 900000;   // limite d'un document Firestore ≈ 1 Mo
+function toSheets(wb) {
+  return wb.SheetNames.map(nom => {
+    let rows = XLSX.utils.sheet_to_json(wb.Sheets[nom], { header: 1, defval: '', raw: false }).map(r => r.map(c => String(c).trim())).filter(r => r.some(Boolean));
+    if (!rows.length) return null;
+    const cnt = r => r.filter(Boolean).length, w = Math.max(...rows.slice(0, 30).map(cnt));
+    rows = rows.slice(Math.max(0, rows.slice(0, 6).findIndex(r => cnt(r) >= Math.ceil(w * .6))));   // saute les lignes de titre avant l'en-tête
+    const n = Math.max(...rows.map(r => r.length)), fix = r => Array.from({ length: n }, (_, i) => r[i] ?? '');
+    return { nom, colonnes: fix(rows[0]), lignes: rows.slice(1).map(r => ({ v: fix(r) })) };
+  }).filter(s => s && (s.lignes.length || s.colonnes.some(Boolean)));
+}
+function dzNote(m, err) { const n = $('#dzn'); if (n) { n.textContent = m; n.className = 'hint2' + (err ? ' err' : ''); } }
+function dzDraw() {
+  const z = $('#dz'); if (!z) return; z.classList.remove('over');
+  z.innerHTML = feuilles.length
+    ? `<b>${ic('ok', 18)}${feuilles.length} feuille${feuilles.length > 1 ? 's' : ''} prête${feuilles.length > 1 ? 's' : ''}</b><small>${feuilles.slice(0, 8).map(s => esc(s.nom) + ' (' + s.lignes.length + ' lignes)').join(' · ')}${feuilles.length > 8 ? ' …' : ''}</small><span class="dzb"><button type="button" class="btn b-ln" data-dz="pick">Remplacer le fichier</button><button type="button" class="btn b-ko" data-dz="del">Retirer</button></span>`
+    : `${ic('dl', 28)}<b>Glisse ton fichier Excel ici</b><small>ou clique pour le choisir (.xlsx, .xls, .csv)</small>`;
+}
+async function dzTake(file) {
+  if (!file) return;
+  try { dzNote('Lecture du fichier…'); await loadXLSX();
+    const s = toSheets(XLSX.read(await file.arrayBuffer(), { type: 'array' }));
+    if (!s.length) return dzNote('Fichier vide ou illisible.', 1);
+    if (JSON.stringify(s).length > LIM) return dzNote('Fichier trop volumineux : sépare-le en plusieurs documents.', 1);
+    feuilles = s; dzDraw(); dzNote(`${s.length} feuille${s.length > 1 ? 's' : ''} lue${s.length > 1 ? 's' : ''} — clique sur « Enregistrer » pour les publier.`);
+  } catch (er) { dzNote('Import impossible : ' + er.message, 1); }
+}
+function initDz(x) {
+  feuilles = (x.feuilles || []).slice(); dzDraw();
+  const z = $('#dz'), inp = Object.assign(document.createElement('input'), { type: 'file', accept: '.xlsx,.xls,.csv', hidden: true });
+  z.after(inp);
+  z.onclick = e => { if (e.target.closest('[data-dz=del]')) { feuilles = []; dzDraw(); dzNote('Fichier retiré — clique sur « Enregistrer » pour confirmer.'); } else inp.click(); };
+  z.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inp.click(); } };
+  z.ondragover = e => { e.preventDefault(); z.classList.add('over'); };
+  z.ondragleave = () => z.classList.remove('over');
+  z.ondrop = e => { e.preventDefault(); z.classList.remove('over'); dzTake(e.dataTransfer.files[0]); };
+  inp.onchange = () => { dzTake(inp.files[0]); inp.value = ''; };
+}
+window.addEventListener('dragover', e => e.preventDefault());   // évite que le navigateur ouvre un fichier lâché à côté de la zone
+window.addEventListener('drop', e => e.preventDefault());
+
 function edit(col, x) {
   const S = SCHEMA[col], C = S.col || col, f = $('#dform');
   f.innerHTML = `<h2 id="dlg-t">${x._id ? 'Modifier' : S.add}</h2><div class="grid">${S.f.map(fl => field(fl, x[fl[0]], S.req)).join('')}</div><div class="mact"><button type="button" class="btn b-ln" id="no">Annuler</button><button class="btn b-or" id="yes">${ic('save')}Enregistrer</button></div>`;
   $('#dlg').showModal(); $('#no').onclick = () => $('#dlg').close();
+  if (f.querySelector('#dz')) initDz(x);
   const cs = f.querySelector('[name=club]');
   if (cs && cs.tagName === 'SELECT') cs.onchange = () => { const l = cs.selectedOptions[0]?.dataset.lieu; if (l) f.querySelector('[name=lieu]').value = l; if (cs.value === '__autre') f.querySelector('[name=lieu]').focus(); };
   f.onsubmit = async e => { e.preventDefault(); const d = { ...read(S.f, f), ...(S.fixed || {}) }; const miss = S.req.find(k => !d[k]); if (miss) return toast('Complète le champ « ' + S.f.find(z => z[0] === miss)[1] + ' ».', 1);
+    if (S.f.some(z => z[2] === 'xlsx')) { if (JSON.stringify(feuilles).length > LIM) return dzNote('Fichier trop volumineux : sépare-le en plusieurs documents.', 1); d.feuilles = feuilles; }
     await busy($('#yes'), async () => { try { x._id ? await setDoc(doc(db, C, x._id), d) : await addDoc(collection(db, C), d); $('#dlg').close(); toast('Enregistré — visible sur le site'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } }); };
 }
 
