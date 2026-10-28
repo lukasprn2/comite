@@ -69,13 +69,26 @@ header{background:var(--bleu);border-bottom:3px solid var(--or);color:#fff;paddi
 .hr a:hover{background:rgba(255,255,255,.08)}
 .hr .btn{min-height:38px;padding:.3rem .9rem;font-size:.85rem}
 
-/* Onglets */
-.tabbar{background:#fff;border-bottom:1px solid var(--gris);position:static;box-shadow:0 2px 10px rgba(10,35,66,.06)}
-#tabs{display:flex;flex-wrap:wrap;justify-content:center;max-width:960px;margin:0 auto}
-#tabs::-webkit-scrollbar{display:none}
-#tabs button{flex:1 0 auto;min-width:92px;background:none;border:0;border-bottom:3px solid transparent;padding:.7rem .6rem .55rem;color:var(--mut);font-weight:700;font-size:.8rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;transition:color .15s,background .15s}
-#tabs button:hover{color:var(--bleu);background:#faf8f2}
-#tabs button.on{color:var(--bleu);border-bottom-color:var(--or);background:#fbf7e9}
+/* Menu hamburger */
+header{position:sticky;top:0;z-index:30}
+.lft{display:flex;align-items:center;gap:.75rem;min-width:0}
+#burger{display:inline-flex;align-items:center;gap:.5rem;position:relative;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;min-height:44px;padding:.4rem .8rem;font-weight:700;font-size:.88rem}
+#burger:hover{background:rgba(255,255,255,.14);border-color:var(--or)}
+#curname{color:var(--orl);max-width:9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#scrim{position:fixed;inset:0;background:rgba(10,35,66,.55);z-index:40}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(320px,86vw);background:#fff;z-index:50;display:flex;flex-direction:column;border-right:4px solid var(--or);box-shadow:var(--sh2);transform:translateX(-100%);visibility:hidden;transition:transform .22s ease,visibility 0s .22s}
+#drawer.open{transform:none;visibility:visible;transition:transform .22s ease}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:.6rem .6rem .6rem 1rem;background:var(--bleu);color:#fff}
+.dh b{font-family:'Bebas Neue';font-weight:400;font-size:1.5rem;letter-spacing:2px}
+.dh button{background:none;border:0;color:#fff;min-width:44px;min-height:44px;border-radius:8px;display:grid;place-items:center}
+.dh button:hover{background:rgba(255,255,255,.12)}
+#tabs{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:.4rem .6rem 1.2rem}
+.dg{font-size:.7rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);margin:1rem .6rem .3rem}
+#tabs button{width:100%;display:flex;align-items:center;gap:.8rem;min-height:46px;padding:.5rem .7rem;background:none;border:0;border-left:3px solid transparent;border-radius:8px;color:var(--txt);font-weight:700;font-size:.95rem;text-align:left}
+#tabs button:hover{background:#faf8f2;color:var(--bleu)}
+#tabs button.on{background:#fbf7e9;color:var(--bleu);border-left-color:var(--or)}
+.nb{margin-left:auto;background:var(--ko);color:#fff;border-radius:99px;font-size:.7rem;min-width:20px;height:20px;display:grid;place-items:center;padding:0 6px}
+#burger .nb.dot{position:absolute;top:-4px;right:-4px;min-width:12px;height:12px;padding:0;border:2px solid var(--bleu)}
 main{max-width:960px;margin:0 auto;padding:1.6rem 1rem 4rem}
 
 /* Titres de page */
@@ -160,8 +173,6 @@ dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:
 .hint2{color:var(--mut);font-size:.88rem;margin:.3rem 0 .7rem}
 .flex{display:flex;gap:.5rem;flex-wrap:wrap}
 
-#tabs button{position:relative}
-.nb{position:absolute;top:.3rem;right:calc(50% - 1.9rem);background:var(--ko);color:#fff;border-radius:99px;font-size:.7rem;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
 .card.unread{border-left:5px solid var(--or)}
 .sb{display:grid;grid-template-columns:8rem 1fr 3.5rem;gap:.6rem;align-items:center;margin:.35rem 0;font-size:.9rem}
 .sb i{display:block;height:14px;background:var(--bleu);border-radius:3px;min-width:2px}
@@ -191,7 +202,7 @@ dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:
 .st-pg .t i{display:block;height:100%;background:var(--or);border-radius:8px}
 .st-pg b{text-align:right;color:var(--bleu)}.st-pg b small{color:var(--mut);font-weight:400}
 .st-help{background:#fbf7e9;border-left:4px solid var(--or);border-radius:8px;padding:.8rem 1rem;color:#5b4a14;font-size:.86rem}
-@media(max-width:520px){.row{flex-wrap:wrap}.act{width:100%}.act .btn:not(.b-ic){flex:1}.brand small{display:none}.hr a span{display:none}}
+@media(max-width:520px){.row{flex-wrap:wrap}.act{width:100%}.act .btn:not(.b-ic){flex:1}.brand small{display:none}.hr a span{display:none}.brand>div{display:none}#curname{max-width:6rem}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -214,10 +225,15 @@ dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:
 
 <div id="app" hidden>
   <header>
-    <div class="brand"><img src="logocomite.png" alt=""><div><b>Administration</b><small>COMITÉ DE LA SOMME — FFPJP</small></div></div>
+    <div class="lft"><button id="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Ouvrir le menu"></button>
+    <div class="brand"><img src="logocomite.png" alt=""><div><b>Administration</b><small>COMITÉ DE LA SOMME — FFPJP</small></div></div></div>
     <div class="hr"><a href="index.html" target="_blank" rel="noopener" id="site"></a><button class="btn b-ln" id="out"></button></div>
   </header>
-  <nav class="tabbar" aria-label="Sections"><div id="tabs"></div></nav>
+  <div id="scrim" hidden></div>
+  <nav id="drawer" aria-label="Sections" inert>
+    <div class="dh"><b>Menu</b><button id="dclose" type="button" aria-label="Fermer le menu"></button></div>
+    <div id="tabs"></div>
+  </nav>
   <main id="main"></main>
 </div>
 
@@ -268,7 +284,8 @@ const ICON = {
   stats: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
   undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/>',
   whistle: '<circle cx="8" cy="15" r="5"/><path d="M13 13l8-3V6h-9M8 12v3"/>',
-  award: '<circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/>'
+  award: '<circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/>',
+  menu: '<path d="M3 6h18M3 12h18M3 18h18"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 
@@ -348,7 +365,8 @@ SCHEMA.archives = {
 };
 const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
   ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
-  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],['h', 'Page Archives'], ['archivesIntro', 'Texte de présentation de la page Archives', 'textarea']];
+  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],
+  ['h', 'Page Archives'], ['archivesIntro', 'Texte de présentation de la page Archives', 'textarea']];
 
 /* Connexion */
 $('#eye').innerHTML = ic('eye', 20);
@@ -362,13 +380,24 @@ $('#loginForm').onsubmit = async e => { e.preventDefault(); const er = $('#lerr'
 $('#forgot').onclick = async e => { e.preventDefault(); if (!$('#em').value.trim()) return toast('Écris ton email ci-dessus, puis clique à nouveau.', 1); try { await sendPasswordResetEmail(auth, $('#em').value.trim()); toast('Email de réinitialisation envoyé.'); } catch { toast('Envoi impossible.', 1); } };
 $('#out').onclick = () => signOut(auth);
 
-/* Navigation */
+/* Navigation (menu hamburger) */
 let tab = 'home', cache = {};
-const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] archives: ['clip', 'Archives'],};
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], archives: ['clip', 'Archives'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const GROUPS = [['Général', ['home', 'messages', 'stats']], ['Contenu du site', ['events', 'actualites', 'clubs', 'membres', 'arbitres', 'educateurs', 'annuaire', 'archives', 'classements']], ['Outils', ['settings', 'import', 'corbeille']]];
+const drawer = $('#drawer'), scrim = $('#scrim'), burger = $('#burger');
+burger.innerHTML = ic('menu', 22) + '<span id="curname"></span>';
+$('#dclose').innerHTML = ic('x', 22);
+function openMenu() { drawer.removeAttribute('inert'); drawer.classList.add('open'); scrim.hidden = false; burger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; (drawer.querySelector('.on') || drawer.querySelector('button')).focus(); }
+function closeMenu() { drawer.classList.remove('open'); drawer.setAttribute('inert', ''); scrim.hidden = true; burger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }
+burger.onclick = () => drawer.classList.contains('open') ? closeMenu() : openMenu();
+$('#dclose').onclick = () => { closeMenu(); burger.focus(); };
+scrim.onclick = closeMenu;
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) { closeMenu(); burger.focus(); } });
+$('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
 function start() {
-  $('#tabs').innerHTML = Object.entries(NAMES).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}" ${k === tab ? 'aria-current="page"' : ''}>${ic(v[0], 22)}${v[1]}</button>`).join('');
-  $('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
-  show(); badge();
+  $('#tabs').innerHTML = GROUPS.map(([g, ks]) => `<div class="dg">${g}</div>` + ks.map(k => `<button data-t="${k}" class="${k === tab ? 'on' : ''}" ${k === tab ? 'aria-current="page"' : ''}>${ic(NAMES[k][0], 20)}<span>${NAMES[k][1]}</span></button>`).join('')).join('');
+  $('#curname').textContent = NAMES[tab][1];
+  closeMenu(); show(); badge();
 }
 const head = (t, d) => `<div class="ph"><h1>${t}</h1><p>${d}</p></div>`;
 const empty = (m, i = 'inbox') => `<div class="empty">${ic(i, 32)}${m}</div>`;
@@ -380,12 +409,12 @@ async function show() {
 }
 
 async function viewHome() {
-  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements', 'annuaire']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
+  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements', 'annuaire', 'archives']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
   const people = k => n.membres.filter(m => catOf(m) === k).length;
   const S = SCHEMA.events, up = n.events.filter(e => e.date >= today).sort(S.sort);
   const T = (k, i, num, lab, sub) => `<button class="tile" data-go="${k}"><span class="i">${ic(i, 24)}</span><span class="n">${num}</span><b>${lab}</b><small>${sub}</small></button>`;
   $('#main').innerHTML = `<div class="hello"><h1>Bienvenue dans l'administration</h1><p>Choisis ce que tu veux modifier. Chaque changement apparaît sur le site dès l'enregistrement.</p></div>
-  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('annuaire', 'ext', n.annuaire.length, 'Annuaire', 'Sites des comités voisins')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
+  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('annuaire', 'ext', n.annuaire.length, 'Annuaire', 'Sites des comités voisins')}${T('archives', 'clip', n.archives.length, 'Archives', 'PV, résultats, classements passés')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
   ${up.length ? `<div class="sech"><h2>Prochaines compétitions</h2><button class="lnkb" data-go="events">Voir tout le calendrier</button></div>${up.slice(0, 4).map(e => `<div class="row">${S.left(e)}<div class="m"><strong>${esc(e.titre)}</strong><small>${S.sub(e)}</small></div></div>`).join('')}` : ''}
   ${n.events.length + n.clubs.length ? '' : `<div style="margin-top:1rem">${empty('Base vide : ouvre l\'onglet <b>Import</b> pour reprendre le contenu actuel du site.')}</div>`}`;
   $('#main').onclick = e => { const b = e.target.closest('[data-go]'); if (b) { tab = b.dataset.go; start(); window.scrollTo(0, 0); } };
@@ -511,7 +540,7 @@ async function saveCl() {
 }
 
 /* ===== Messages, Corbeille, Statistiques ===== */
-const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] archives: ['Archive', d => d.titre],};
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], archives: ['Archive', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
 const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 
 async function trash(col, id, x) {
@@ -521,8 +550,10 @@ async function trash(col, id, x) {
 }
 async function badge() {
   try { document.querySelectorAll('.nb').forEach(n => n.remove());
-    const n = (await getDocs(collection(db, 'messages'))).docs.filter(d => !d.data().lu).length, b = document.querySelector('#tabs [data-t=messages]');
-    if (b && n) b.insertAdjacentHTML('beforeend', `<span class="nb" aria-label="${n} non lus">${n}</span>`); } catch {}
+    const n = (await getDocs(collection(db, 'messages'))).docs.filter(d => !d.data().lu).length;
+    if (!n) return;
+    document.querySelector('#tabs [data-t=messages]')?.insertAdjacentHTML('beforeend', `<span class="nb" aria-label="${n} non lus">${n}</span>`);
+    burger.insertAdjacentHTML('beforeend', `<span class="nb dot" aria-label="${n} messages non lus"></span>`); } catch {}
 }
 
 async function viewMessages() {
@@ -565,7 +596,7 @@ async function viewTrash() {
       badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
 }
 
-const PAGES = const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives' };
+const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives' };
 let statsDays = 30;
 async function viewStats() {
   const snap = await getDocs(collection(db, 'stats_vues'));
