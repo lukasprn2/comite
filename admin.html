@@ -70,8 +70,8 @@ header{background:var(--bleu);border-bottom:3px solid var(--or);color:#fff;paddi
 .hr .btn{min-height:38px;padding:.3rem .9rem;font-size:.85rem}
 
 /* Onglets */
-.tabbar{background:#fff;border-bottom:1px solid var(--gris);position:sticky;top:0;z-index:5;box-shadow:0 2px 10px rgba(10,35,66,.06)}
-#tabs{display:flex;overflow-x:auto;max-width:960px;margin:0 auto;scrollbar-width:none}
+.tabbar{background:#fff;border-bottom:1px solid var(--gris);position:static;box-shadow:0 2px 10px rgba(10,35,66,.06)}
+#tabs{display:flex;flex-wrap:wrap;justify-content:center;max-width:960px;margin:0 auto}
 #tabs::-webkit-scrollbar{display:none}
 #tabs button{flex:1 0 auto;min-width:92px;background:none;border:0;border-bottom:3px solid transparent;padding:.7rem .6rem .55rem;color:var(--mut);font-weight:700;font-size:.8rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;transition:color .15s,background .15s}
 #tabs button:hover{color:var(--bleu);background:#faf8f2}
@@ -334,10 +334,21 @@ SCHEMA.annuaire = {
   f: [['h', 'Le site'], ['num', 'Numéro du département (ex : 60)'], ['nom', 'Nom (ex : Comité de l\'Oise)'], ['desc', 'Description (ex : Site du comité de l\'Oise)'],
       ['url', 'Adresse du site (https://…)', 'url'], ['ordre', 'Position (1 = en premier)', 'number']]
 };
-
+const ARCCAT = [['pv','Procès-verbal'],['resultats','Résultats'],['classements','Classement'],['docs','Document'],['photos','Photos'],['autre','Autre']];
+SCHEMA.archives = {
+  tab: 'Archives', desc: 'Les documents de la page Archives (PV, résultats, classements, photos…). Chaque document est rangé par saison.',
+  add: 'Ajouter un document', req: ['titre', 'saison'],
+  sort: (a, b) => (b.saison || '').localeCompare(a.saison || '') || (a.ordre ?? 99) - (b.ordre ?? 99),
+  group: a => a.saison || 'Sans saison', glabel: k => k,
+  left: a => `<div class="bd">${esc(a.ordre ?? '')}</div>`,
+  title: a => a.titre,
+  sub: a => `<span class="pill champ">${esc(Object.fromEntries(ARCCAT)[a.categorie] || '')}</span>${esc(a.description || '')}`,
+  f: [['h','Le document'], ['saison','Saison (ex : 2024-2025)'], ['categorie','Catégorie','select',ARCCAT], ['titre','Titre'], ['description','Description (facultatif)','textarea'], ['ordre','Position (1 = en premier)','number'],
+      ['h','Fichier ou lien'], ['lienTexte','Texte du bouton (ex : Télécharger le PDF)'], ['lien','Adresse du fichier (https://…)','url']]
+};
 const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
   ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
-  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web']];
+  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],['h', 'Page Archives'], ['archivesIntro', 'Texte de présentation de la page Archives', 'textarea']];
 
 /* Connexion */
 $('#eye').innerHTML = ic('eye', 20);
@@ -353,7 +364,7 @@ $('#out').onclick = () => signOut(auth);
 
 /* Navigation */
 let tab = 'home', cache = {};
-const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] archives: ['clip', 'Archives'],};
 function start() {
   $('#tabs').innerHTML = Object.entries(NAMES).map(([k, v]) => `<button data-t="${k}" class="${k === tab ? 'on' : ''}" ${k === tab ? 'aria-current="page"' : ''}>${ic(v[0], 22)}${v[1]}</button>`).join('');
   $('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
@@ -500,7 +511,7 @@ async function saveCl() {
 }
 
 /* ===== Messages, Corbeille, Statistiques ===== */
-const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] archives: ['Archive', d => d.titre],};
 const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 
 async function trash(col, id, x) {
@@ -554,7 +565,7 @@ async function viewTrash() {
       badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
 }
 
-const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements' };
+const PAGES = const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives' };
 let statsDays = 30;
 async function viewStats() {
   const snap = await getDocs(collection(db, 'stats_vues'));
