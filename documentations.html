@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/png" href="logocomite.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a2342">
+<title>Administration — Comité de la Somme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bleu:#0a2342;--bleu2:#0d3060;--or:#c9a84c;--orl:#e2c87a;--fond:#f5f4f0;--gris:#dfe3e8;
+  --txt:#1a1f2e;--mut:#667085;--ko:#b3261e;--ok:#18794e;--r:10px;
+  --sh:0 1px 2px rgba(10,35,66,.06),0 4px 14px rgba(10,35,66,.06);
+  --sh2:0 2px 4px rgba(10,35,66,.08),0 12px 28px rgba(10,35,66,.12)
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;background:var(--fond);color:var(--txt);line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+[hidden]{display:none!important}
+a{color:var(--bleu)}
+.ic{flex-shrink:0}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border:1.5px solid transparent;border-radius:8px;padding:.6rem 1.1rem;font-weight:700;font-size:.92rem;min-height:44px;letter-spacing:.2px;transition:background .15s,border-color .15s,box-shadow .15s,transform .1s}
+.btn:active{transform:translateY(1px)}
+.btn:disabled,.btn.load{opacity:.65;pointer-events:none}
+.b-or{background:var(--or);color:var(--bleu)}.b-or:hover{background:var(--orl)}
+.b-bl{background:var(--bleu);color:#fff}.b-bl:hover{background:var(--bleu2)}
+.b-ln{background:#fff;border-color:var(--gris);color:var(--bleu)}.b-ln:hover{border-color:var(--or);background:#fffdf6}
+.b-ko{background:#fff;border-color:#efc4c0;color:var(--ko)}.b-ko:hover{background:#fdeceb;border-color:#e6a8a2}
+.b-ko-s{background:var(--ko);color:#fff}.b-ko-s:hover{background:#962019}
+.b-ic{padding:.5rem;min-width:44px}
+
+/* Champs */
+input,select,textarea{width:100%;font:inherit;font-size:1rem;color:var(--txt);padding:.65rem .85rem;border:1.5px solid var(--gris);border-radius:8px;background:#fff;min-height:44px;transition:border-color .15s,box-shadow .15s}
+textarea{resize:vertical}
+input:hover,select:hover,textarea:hover{border-color:#c4cad3}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--or);box-shadow:0 0 0 3px rgba(201,168,76,.28)}
+button:focus-visible,a:focus-visible{outline:3px solid var(--or);outline-offset:2px;border-radius:6px}
+label{display:block;font-size:.78rem;font-weight:700;color:var(--bleu);margin:0 0 .35rem;letter-spacing:.2px}
+label .rq{color:var(--ko);margin-left:2px}
+.f{margin-bottom:1rem}
+
+/* Connexion */
+#login{min-height:100vh;display:grid;place-items:center;padding:1rem;background:linear-gradient(160deg,var(--bleu),var(--bleu2) 55%,#1a5276)}
+.box{background:#fff;border-radius:16px;padding:2.2rem 2rem 2rem;width:100%;max-width:400px;text-align:center;border-top:4px solid var(--or);box-shadow:var(--sh2)}
+.box img{width:84px;height:auto;margin-bottom:.6rem}
+.box h1{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:2rem;margin:0;color:var(--bleu);line-height:1.1}
+.box .sub{color:var(--mut);margin:.2rem 0 1.5rem;font-size:.9rem}
+.box .f{text-align:left}
+.pwrap{position:relative}.pwrap input{padding-right:3rem}
+.pwrap button{position:absolute;right:2px;top:2px;bottom:2px;width:44px;background:none;border:0;color:var(--mut);border-radius:6px;display:grid;place-items:center}
+.pwrap button:hover{color:var(--bleu)}
+.lerr{background:#fdeceb;color:var(--ko);border:1px solid #efc4c0;border-radius:8px;padding:.6rem .8rem;font-size:.88rem;margin-bottom:1rem;text-align:left}
+.box .lnk{margin:1.1rem 0 0;font-size:.88rem}
+
+/* Bandeau */
+header{background:var(--bleu);border-bottom:3px solid var(--or);color:#fff;padding:.6rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.brand{display:flex;align-items:center;gap:.75rem;min-width:0}
+.brand img{height:42px;width:auto}
+.brand b{font-family:'Bebas Neue';font-weight:400;font-size:1.4rem;letter-spacing:1.5px;display:block;line-height:1}
+.brand small{color:var(--orl);font-size:.7rem;letter-spacing:1.2px}
+.hr{display:flex;gap:.5rem;align-items:center}
+.hr a{color:var(--orl);font-weight:700;font-size:.85rem;text-decoration:none;padding:.5rem .6rem;display:inline-flex;align-items:center;gap:.35rem;border-radius:6px}
+.hr a:hover{background:rgba(255,255,255,.08)}
+.hr .btn{min-height:38px;padding:.3rem .9rem;font-size:.85rem}
+
+/* Menu hamburger */
+header{position:sticky;top:0;z-index:30}
+.lft{display:flex;align-items:center;gap:.75rem;min-width:0}
+#burger{display:inline-flex;align-items:center;gap:.5rem;position:relative;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;min-height:44px;padding:.4rem .8rem;font-weight:700;font-size:.88rem}
+#burger:hover{background:rgba(255,255,255,.14);border-color:var(--or)}
+#curname{color:var(--orl);max-width:9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#scrim{position:fixed;inset:0;background:rgba(10,35,66,.55);z-index:40}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(320px,86vw);background:#fff;z-index:50;display:flex;flex-direction:column;border-right:4px solid var(--or);box-shadow:var(--sh2);transform:translateX(-100%);visibility:hidden;transition:transform .22s ease,visibility 0s .22s}
+#drawer.open{transform:none;visibility:visible;transition:transform .22s ease}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:.6rem .6rem .6rem 1rem;background:var(--bleu);color:#fff}
+.dh b{font-family:'Bebas Neue';font-weight:400;font-size:1.5rem;letter-spacing:2px}
+.dh button{background:none;border:0;color:#fff;min-width:44px;min-height:44px;border-radius:8px;display:grid;place-items:center}
+.dh button:hover{background:rgba(255,255,255,.12)}
+#tabs{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:.4rem .6rem 1.2rem}
+.dg{font-size:.7rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);margin:1rem .6rem .3rem}
+#tabs button{width:100%;display:flex;align-items:center;gap:.8rem;min-height:46px;padding:.5rem .7rem;background:none;border:0;border-left:3px solid transparent;border-radius:8px;color:var(--txt);font-weight:700;font-size:.95rem;text-align:left}
+#tabs button:hover{background:#faf8f2;color:var(--bleu)}
+#tabs button.on{background:#fbf7e9;color:var(--bleu);border-left-color:var(--or)}
+.nb{margin-left:auto;background:var(--ko);color:#fff;border-radius:99px;font-size:.7rem;min-width:20px;height:20px;display:grid;place-items:center;padding:0 6px}
+#burger .nb.dot{position:absolute;top:-4px;right:-4px;min-width:12px;height:12px;padding:0;border:2px solid var(--bleu)}
+main{max-width:960px;margin:0 auto;padding:1.6rem 1rem 4rem}
+
+/* Titres de page */
+.ph{margin-bottom:1.3rem}
+.ph h1{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:2.2rem;color:var(--bleu);margin:0;line-height:1.1;border-bottom:3px solid var(--or);display:inline-block;padding-bottom:.15rem}
+.ph p{color:var(--mut);margin:.55rem 0 0;max-width:62ch}
+
+/* Accueil */
+.hello{background:linear-gradient(160deg,var(--bleu),var(--bleu2));color:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;border-left:5px solid var(--or);box-shadow:var(--sh)}
+.hello h1{font-family:'DM Serif Display';font-weight:400;font-size:1.6rem;margin:0 0 .3rem}
+.hello p{margin:0;color:rgba(255,255,255,.78)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.tile{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.1rem 1.2rem;display:grid;grid-template-columns:auto 1fr;gap:.2rem 1rem;align-items:center;text-align:left;box-shadow:var(--sh);transition:transform .2s,box-shadow .2s,border-color .2s}
+.tile:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:var(--or)}
+.tile .i{grid-row:1/4;width:46px;height:46px;border-radius:10px;background:#fbf3d9;color:var(--bleu);display:grid;place-items:center}
+.tile .n{font-family:'Bebas Neue';font-size:2.3rem;color:var(--bleu);line-height:1}
+.tile b{color:var(--bleu)}
+.tile small{color:var(--mut)}
+.sech{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:1.8rem 0 .7rem}
+.sech h2{font-family:'DM Serif Display';font-weight:400;font-size:1.3rem;color:var(--bleu);margin:0}
+.lnkb{background:none;border:0;color:var(--bleu);font-weight:700;font-size:.88rem;padding:.4rem .2rem;text-decoration:underline;text-underline-offset:3px}
+.lnkb:hover{color:var(--or)}
+
+/* Listes */
+.bar{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.srch{position:relative;flex:2;min-width:200px}
+.srch .ic{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--mut);pointer-events:none}
+.srch input{padding-left:2.5rem}
+.bar select{flex:1;min-width:150px;width:auto}
+.gh{font-family:'Bebas Neue';letter-spacing:2px;font-size:1.3rem;color:var(--bleu);margin:1.5rem 0 .6rem;padding-bottom:.2rem;border-bottom:2px solid var(--or);display:inline-block}
+.gh span{color:var(--mut);font-size:1rem;letter-spacing:1px}
+.row{background:#fff;border:1px solid var(--gris);border-radius:var(--r);padding:.7rem .9rem;margin-bottom:.5rem;display:flex;gap:.9rem;align-items:center;box-shadow:0 1px 2px rgba(10,35,66,.04);transition:border-color .15s,box-shadow .15s}
+.row:hover{border-color:#cfd5dd;box-shadow:var(--sh)}
+.row.past{opacity:.6}
+.row .m{flex:1;min-width:0}
+.row strong{display:block;color:var(--bleu);overflow-wrap:anywhere}
+.row small{color:var(--mut);overflow-wrap:anywhere;display:block}
+.dt{background:var(--bleu);color:var(--or);border-radius:8px;width:54px;flex-shrink:0;text-align:center;padding:.35rem 0;font-family:'Bebas Neue';line-height:1}
+.dt b{display:block;font-size:1.6rem;font-weight:400;color:var(--or)}
+.dt span{font-size:.8rem;letter-spacing:1px;color:#fff}
+.bd{background:var(--or);color:var(--bleu);border-radius:6px;font-family:'Bebas Neue';letter-spacing:1px;padding:.3rem .6rem;flex-shrink:0;min-width:54px;text-align:center}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;padding:1px 9px;border-radius:10px;margin-right:.4rem;letter-spacing:.2px}
+.champ{background:#e8f0fe;color:#1a3a8a}.concours{background:#e8f9ee;color:#1a6a35}.gp{background:#fff8e0;color:#7a5500}.cdc{background:#ffe0f0;color:#8a0050}.jeunes{background:#e0f8ff;color:#005a8a}.veterans{background:#f0ede8;color:#5a3a1a}.regional{background:#f3e8ff;color:#5a1a8a}.propagande{background:#fff0e0;color:#8a4a00}
+.act{display:flex;gap:.4rem;flex-shrink:0}
+.act .btn{min-height:40px;padding:.3rem .8rem}
+.card{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.3rem;margin-bottom:1rem;box-shadow:var(--sh)}
+.card>b{display:inline-flex;align-items:center;gap:.45rem;color:var(--bleu)}
+.grid{display:grid;grid-template-columns:1fr;gap:0 1rem}
+@media(min-width:600px){.grid{grid-template-columns:1fr 1fr}}
+.sec{grid-column:1/-1;font-family:'DM Serif Display';font-weight:400;color:var(--bleu);font-size:1.2rem;margin:.8rem 0 .6rem;padding-bottom:.25rem;border-bottom:1px solid var(--gris)}
+.sec:first-child{margin-top:0}
+.savebar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--fond) 35%);padding:1.2rem 0 .3rem}
+.empty{text-align:center;color:var(--mut);padding:2.5rem 1rem;background:#fff;border-radius:var(--r);border:1px dashed #cfd5dd}
+.empty .ic{display:block;margin:0 auto .5rem;color:#a9b1bd}
+
+/* Fenêtres */
+dialog{border:0;border-radius:14px;padding:0;width:min(620px,94vw);max-height:92vh;border-top:5px solid var(--or);box-shadow:var(--sh2);color:var(--txt)}
+dialog::backdrop{background:rgba(10,35,66,.6)}
+dialog form{padding:1.4rem}
+dialog h2{font-family:'Bebas Neue';font-weight:400;letter-spacing:2px;font-size:1.8rem;color:var(--bleu);margin:0 0 1rem}
+.mact{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1rem;position:sticky;bottom:0;background:#fff;padding-top:.7rem}
+#cfm{width:min(430px,92vw)}
+#cfm .cb{padding:1.4rem}
+#cfm h2{font-size:1.6rem;margin-bottom:.4rem}
+#cfm p{margin:0;color:var(--mut)}
+
+/* Notification */
+#toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:var(--bleu);color:#fff;padding:.85rem 1.3rem;border-radius:10px;z-index:99;max-width:92vw;border-left:5px solid var(--or);box-shadow:0 8px 30px rgba(0,0,0,.3);display:flex;align-items:center;gap:.6rem;animation:up .25s ease}
+#toast.err{background:var(--ko);border-left-color:#fff}
+@keyframes up{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* Tableaux de classement */
+.tw{overflow-x:auto;border:1px solid var(--gris);border-radius:8px}
+.tbl{border-collapse:collapse;min-width:100%}
+.tbl th,.tbl td{padding:3px;background:#fff}
+.tbl input{min-height:38px;padding:.4rem .5rem;font-size:.9rem;min-width:110px}
+.tbl .th{font-weight:700;background:#faf6e8;border-color:var(--or)}
+.tbl th{white-space:nowrap}
+.rn{color:#889;font-size:.8rem;text-align:center;padding:0 .5rem!important}
+.x{background:none;border:0;color:var(--ko);min-width:38px;min-height:38px;border-radius:6px;display:inline-grid;place-items:center;vertical-align:middle}
+.x:hover{background:#fdeceb}
+.hint2{color:var(--mut);font-size:.88rem;margin:.3rem 0 .7rem}
+.flex{display:flex;gap:.5rem;flex-wrap:wrap}
+
+.card.unread{border-left:5px solid var(--or)}
+.f:has(.dz){grid-column:1/-1}
+.dz{display:flex;flex-direction:column;align-items:center;gap:.4rem;text-align:center;padding:1.3rem 1rem;border:2px dashed #c4cad3;border-radius:10px;background:#fcfbf7;color:var(--bleu);cursor:pointer;transition:border-color .15s,background .15s}
+.dz:hover,.dz.over{border-color:var(--or);background:#fbf7e9}
+.dz b{display:inline-flex;align-items:center;gap:.4rem}
+.dz small{color:var(--mut);overflow-wrap:anywhere}
+.dzb{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:.4rem}
+#dzn{margin:.4rem 0 0}#dzn.err{color:var(--ko);font-weight:700}
+.sb{display:grid;grid-template-columns:8rem 1fr 3.5rem;gap:.6rem;align-items:center;margin:.35rem 0;font-size:.9rem}
+.sb i{display:block;height:14px;background:var(--bleu);border-radius:3px;min-width:2px}
+.sb b{text-align:right;color:var(--bleu)}
+.st-top{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.st-top button{min-height:42px;border:1.5px solid var(--gris);background:#fff;color:var(--bleu);font-weight:700;font-size:.88rem;padding:.4rem 1.1rem;border-radius:25px}
+.st-top button.on,.st-top button:hover{background:var(--bleu);color:var(--or);border-color:var(--bleu)}
+.st-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;margin-bottom:1rem}
+.st-tile{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1rem 1.1rem;box-shadow:var(--sh)}
+.st-tile small{display:block;color:var(--mut);font-weight:700;font-size:.74rem;letter-spacing:.5px;text-transform:uppercase}
+.st-tile .v{font-family:'Bebas Neue';font-size:2.6rem;color:var(--bleu);line-height:1.05;overflow-wrap:anywhere}
+.st-tile .v.txt{font-size:1.9rem}
+.st-tile .s{font-size:.84rem;color:var(--mut)}
+.st-up{color:var(--ok);font-weight:700}.st-dn{color:var(--ko);font-weight:700}
+.st-card{background:#fff;border:1px solid var(--gris);border-radius:12px;padding:1.2rem;margin-bottom:1rem;box-shadow:var(--sh)}
+.st-card h2{font-family:'DM Serif Display';font-weight:400;font-size:1.2rem;color:var(--bleu);margin:0 0 .2rem}
+.st-card>p{margin:0 0 1rem;color:var(--mut);font-size:.86rem}
+.st-chart{display:flex;align-items:flex-end;gap:2px;height:190px;border-bottom:2px solid var(--gris);position:relative}
+.st-chart .mx{position:absolute;left:0;top:0;font-size:.7rem;color:var(--mut);background:#fff;padding-right:.3rem}
+.st-col{flex:1;height:100%;display:flex;align-items:flex-end;justify-content:center;min-width:0}
+.st-bar{width:100%;max-width:28px;background:var(--bleu);border-radius:3px 3px 0 0;min-height:2px}
+.st-col.td .st-bar{background:var(--or)}
+.st-x{display:flex;gap:2px;margin-top:.3rem}
+.st-x span{flex:1;text-align:center;font-size:.68rem;color:var(--mut);white-space:nowrap;min-width:0}
+.st-pg{display:grid;grid-template-columns:7.5rem 1fr 6.2rem;gap:.7rem;align-items:center;margin:.55rem 0;font-size:.92rem}
+.st-pg .t{height:16px;background:#eef0f4;border-radius:8px;overflow:hidden}
+.st-pg .t i{display:block;height:100%;background:var(--or);border-radius:8px}
+.st-pg b{text-align:right;color:var(--bleu)}.st-pg b small{color:var(--mut);font-weight:400}
+.st-help{background:#fbf7e9;border-left:4px solid var(--or);border-radius:8px;padding:.8rem 1rem;color:#5b4a14;font-size:.86rem}
+@media(max-width:520px){.row{flex-wrap:wrap}.act{width:100%}.act .btn:not(.b-ic){flex:1}.brand small{display:none}.hr a span{display:none}.brand>div{display:none}#curname{max-width:6rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<section id="login" hidden>
+  <form class="box" id="loginForm" novalidate>
+    <img src="logocomite.png" alt="">
+    <h1>Espace administrateur</h1>
+    <p class="sub">Comité de la Somme — FFPJP</p>
+    <div class="lerr" id="lerr" role="alert" hidden></div>
+    <div class="f"><label for="em">Adresse email</label><input id="em" type="email" autocomplete="username" inputmode="email" required></div>
+    <div class="f"><label for="pw">Mot de passe</label>
+      <div class="pwrap"><input id="pw" type="password" autocomplete="current-password" required><button type="button" id="eye" aria-label="Afficher le mot de passe"></button></div>
+    </div>
+    <button class="btn b-or" id="lbtn" style="width:100%">Se connecter</button>
+    <p class="lnk"><a href="#" id="forgot">Mot de passe oublié ?</a></p>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header>
+    <div class="lft"><button id="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Ouvrir le menu"></button>
+    <div class="brand"><img src="logocomite.png" alt=""><div><b>Administration</b><small>COMITÉ DE LA SOMME — FFPJP</small></div></div></div>
+    <div class="hr"><a href="index.html" target="_blank" rel="noopener" id="site"></a><button class="btn b-ln" id="out"></button></div>
+  </header>
+  <div id="scrim" hidden></div>
+  <nav id="drawer" aria-label="Sections" inert>
+    <div class="dh"><b>Menu</b><button id="dclose" type="button" aria-label="Fermer le menu"></button></div>
+    <div id="tabs"></div>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-t"><form id="dform" novalidate></form></dialog>
+
+<dialog id="cfm" aria-labelledby="cfm-t">
+  <div class="cb">
+    <h2 id="cfm-t"></h2><p id="cfm-m"></p>
+    <div class="mact"><button type="button" class="btn b-ln" id="cfm-n">Annuler</button><button type="button" class="btn b-ko-s" id="cfm-y"></button></div>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module">
+import { db, auth } from './firebase-config.js';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, doc, getDocs, getDoc, setDoc, addDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* Icônes (SVG en ligne, style trait) */
+const ICON = {
+  grid: '<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+  cal: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>',
+  sliders: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  dl: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  trash: '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>',
+  ext: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>',
+  out: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+  save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+  ok: '<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14l-3-3"/>',
+  alert: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>',
+  eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff: '<path d="M17.9 17.9A10.9 10.9 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M1 1l22 22"/>',
+  clip: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
+  x: '<path d="M18 6L6 18M6 6l12 12"/>',
+  inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/>',
+  mail: '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',
+  news: '<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M19 8h2v10a2 2 0 0 1-2 2M8 8h7M8 12h7M8 16h4"/>',
+  stats: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+  undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/>',
+  whistle: '<circle cx="8" cy="15" r="5"/><path d="M13 13l8-3V6h-9M8 12v3"/>',
+  award: '<circle cx="12" cy="8" r="6"/><path d="M15.5 13L17 22l-5-3-5 3 1.5-9"/>',
+  menu: '<path d="M3 6h18M3 12h18M3 18h18"/>'
+};
+const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+
+/* Notifications, confirmation, état « en cours » */
+const toast = (m, err) => { const t = $('#toast'); t.className = err ? 'err' : ''; t.innerHTML = ic(err ? 'alert' : 'ok', 18) + '<span></span>'; t.lastChild.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 4200); };
+const ask = (title, msg, label = 'Supprimer') => new Promise(res => {
+  const d = $('#cfm'); $('#cfm-t').textContent = title; $('#cfm-m').textContent = msg; $('#cfm-y').textContent = label;
+  $('#cfm-y').onclick = () => { d.close(); res(true); }; $('#cfm-n').onclick = () => { d.close(); res(false); }; d.oncancel = () => res(false); d.showModal();
+});
+async function busy(btn, fn) { const h = btn.innerHTML; btn.disabled = true; btn.classList.add('load'); try { return await fn(); } finally { btn.disabled = false; btn.classList.remove('load'); btn.innerHTML = h; } }
+
+const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const CAT = { champ: 'Championnat', concours: 'Concours officiel', gp: 'Grand Prix', cdc: 'Championnat des clubs', jeunes: 'Jeunes', veterans: 'Vétérans', regional: 'Régional / France', propagande: 'Propagande' };
+const CATOPT = Object.entries(CAT);
+const SECT = { centre: 'Secteur Centre', maritime: 'Secteur Maritime', santerre: 'Secteur Santerre' };
+const GRP = { president: 'Président', vice: 'Vice-présidents', admin: 'Secrétaires et trésoriers', membre: 'Membres du comité directeur' };
+const today = new Date().toISOString().slice(0, 10);
+
+/* Arbitres, éducateurs et membres du comité partagent la collection « membres » :
+   le champ « categorie » (comite / arbitre / educateur) les distingue.
+   Une fiche sans « categorie » est considérée comme membre du comité (anciennes données). */
+const catOf = m => m.categorie || 'comite';
+const PERSON = (tab, desc, add, qual, categorie) => ({
+  col: 'membres', tab, desc, add, req: ['nom'], fixed: { categorie }, filter: m => catOf(m) === categorie,
+  sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: m => m.role || 'Autres', glabel: k => k,
+  left: m => `<div class="bd">${esc(m.ordre ?? '')}</div>`, title: m => m.nom, sub: m => [m.club, m.tel, m.email].filter(Boolean).map(esc).join(' · '),
+  f: [['h', 'La personne'], ['role', qual], ['nom', 'Nom et prénom'], ['club', 'Club (facultatif)'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email']]
+});
+
+/* [clé, libellé, type, options] — type "h" = titre de section */
+const SCHEMA = {
+  events: { tab: 'Calendrier', desc: 'Toutes les compétitions affichées dans le calendrier du site. Tu peux joindre jusqu\'à 2 liens à chaque compétition (règlement, inscription, résultats…).',
+    add: 'Ajouter une compétition', req: ['date', 'titre'], sort: (a, b) => (a.date || '').localeCompare(b.date || '') || (a.heure || '').localeCompare(b.heure || ''),
+    group: e => (e.date || '').slice(0, 7), glabel: k => k ? `${MOIS[+k.slice(5) - 1]} ${k.slice(0, 4)}` : 'Sans date',
+    left: e => `<div class="dt"><b>${esc((e.date || '').slice(8))}</b><span>${esc((MOIS[+(e.date || '').slice(5, 7) - 1] || '').slice(0, 3).toUpperCase())}</span></div>`,
+    title: e => e.titre, sub: e => `<span class="pill ${esc(e.type)}">${esc(CAT[e.type] || e.type || '')}</span>${[e.lieu, e.heure, e.formation, (e.lien || e.lien2) && 'avec lien'].filter(Boolean).map(esc).join(' · ')}`,
+    f: [['h', 'La compétition'], ['date', 'Date', 'date'], ['type', 'Catégorie', 'select', CATOPT], ['titre', 'Titre (ex : Concours Roye)'], ['formation', 'Formation (ex : Doublette)'], ['club', 'Club organisateur (le lieu se remplit tout seul)', 'clubselect'], ['lieu', 'Lieu (modifiable)'], ['heure', 'Heure (ex : 14h00)'], ['obs', 'Remarques (ex : Limité à 48 éq.)', 'textarea'],
+      ['h', 'Liens (facultatif)'], ['lienTexte', 'Texte du 1er bouton (ex : Règlement)'], ['lien', 'Adresse du 1er lien (https://…)', 'url'], ['lien2Texte', 'Texte du 2e bouton (ex : Inscription)'], ['lien2', 'Adresse du 2e lien (https://…)', 'url']] },
+  actualites: { tab: 'Actualités', desc: 'Les informations affichées sur la page d\'accueil. Un brouillon n\'est pas visible sur le site.',
+    add: 'Ajouter une actualité', req: ['titre', 'texte'], sort: (a, b) => (b.publieLe || '').localeCompare(a.publieLe || ''),
+    group: a => a.statut || 'brouillon', glabel: k => k === 'publie' ? 'Publiées' : 'Brouillons', gorder: ['publie', 'brouillon'],
+    left: a => `<div class="dt"><b>${esc((a.publieLe || '').slice(8))}</b><span>${esc((MOIS[+(a.publieLe || '').slice(5, 7) - 1] || '').slice(0, 3).toUpperCase())}</span></div>`,
+    title: a => a.titre, sub: a => esc((a.texte || '').slice(0, 110)) + ((a.texte || '').length > 110 ? '…' : ''),
+    f: [['h', 'L\'actualité'], ['statut', 'Statut', 'select', [['publie', 'Publiée sur le site'], ['brouillon', 'Brouillon (non visible)']]], ['publieLe', 'Date', 'date'], ['titre', 'Titre'], ['texte', 'Texte', 'textarea'], ['h', 'Lien (facultatif)'], ['lienTexte', 'Texte du bouton (ex : Lire le règlement)'], ['lien', 'Adresse du lien (https://…)', 'url']] },
+  clubs: { tab: 'Clubs', desc: 'Les clubs affiliés, classés par secteur.', add: 'Ajouter un club', req: ['ville'],
+    sort: (a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'), group: c => c.secteur, glabel: k => SECT[k] || k,
+    left: c => `<div class="bd">${esc(c.num)}</div>`, title: c => `${c.ville}${c.assoc ? ' — ' + c.assoc : ''}`, sub: c => [c.president, c.tel].filter(Boolean).map(esc).join(' · '),
+    f: [['h', 'Le club'], ['num', 'N° du club (ex : 0009)'], ['secteur', 'Secteur', 'select', Object.entries(SECT)], ['ville', 'Ville (en majuscules)'], ['assoc', 'Nom de l\'association'],
+      ['h', 'Contact'], ['prLabel', 'Fonction', 'select', [['Président', 'Président'], ['Présidente', 'Présidente']]], ['president', 'Nom du responsable'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse'], ['terrain', 'Terrain de jeu']] },
+  membres: { col: 'membres', fixed: { categorie: 'comite' }, filter: m => catOf(m) === 'comite',
+    tab: 'Le Comité', desc: 'L\'organigramme du comité directeur (onglet « Membres du comité » du site). Le numéro de position règle l\'ordre d\'affichage dans chaque rang.', add: 'Ajouter un membre', req: ['nom'],
+    sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: m => m.groupe, glabel: k => GRP[k] || k, gorder: Object.keys(GRP),
+    left: m => `<div class="bd">${esc(m.ordre ?? '')}</div>`, title: m => m.nom, sub: m => [m.role, m.tel, m.email].filter(Boolean).map(esc).join(' · '),
+    f: [['h', 'Le membre'], ['groupe', 'Rang dans l\'organigramme', 'select', Object.entries(GRP)], ['role', 'Intitulé du poste (ex : Trésorier Général)'], ['nom', 'Nom et prénom'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse (facultatif)']] }
+};
+SCHEMA.arbitres = PERSON('Arbitres', 'Les arbitres affichés dans l\'onglet « Arbitres » de la page Le Comité. Ils sont regroupés selon leur niveau.', 'Ajouter un arbitre', 'Niveau (ex : Arbitre départemental, Arbitre régional)', 'arbitre');
+SCHEMA.educateurs = PERSON('Éducateurs', 'Les éducateurs et initiateurs affichés dans l\'onglet « Éducateurs / Initiateurs » de la page Le Comité. Ils sont regroupés selon leur qualification.', 'Ajouter un éducateur / initiateur', 'Qualification (ex : Initiateur, Éducateur fédéral)', 'educateur');
+SCHEMA.annuaire = {
+  tab: 'Annuaire', desc: 'Les sites des comités voisins affichés sur la page Annuaire. Le numéro de position règle l\'ordre d\'affichage.',
+  add: 'Ajouter un site', req: ['nom', 'url'],
+  sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: () => 'all', glabel: () => 'Sites référencés',
+  left: s => `<div class="bd">${esc(s.num || '—')}</div>`, title: s => s.nom, sub: s => esc(s.url),
+  f: [['h', 'Le site'], ['num', 'Numéro du département (ex : 60)'], ['nom', 'Nom (ex : Comité de l\'Oise)'], ['desc', 'Description (ex : Site du comité de l\'Oise)'],
+      ['url', 'Adresse du site (https://…)', 'url'], ['ordre', 'Position (1 = en premier)', 'number']]
+};
+const ARCCAT = [['pv','Procès-verbal'],['resultats','Résultats'],['classements','Classement'],['docs','Document'],['photos','Photos'],['autre','Autre']];
+SCHEMA.archives = {
+  tab: 'Archives', desc: 'Les documents de la page Archives (PV, résultats, classements, photos…). Chaque document est rangé par saison.',
+  add: 'Ajouter un document', req: ['titre', 'saison'],
+  sort: (a, b) => (b.saison || '').localeCompare(a.saison || '') || (a.ordre ?? 99) - (b.ordre ?? 99),
+  group: a => a.saison || 'Sans saison', glabel: k => k,
+  left: a => `<div class="bd">${esc(a.ordre ?? '')}</div>`,
+  title: a => a.titre,
+  sub: a => `<span class="pill champ">${esc(Object.fromEntries(ARCCAT)[a.categorie] || '')}</span>${(a.feuilles || []).length ? `<span class="pill concours">Tableau · ${a.feuilles.length} feuille${a.feuilles.length > 1 ? 's' : ''}</span>` : ''}${esc(a.description || '')}`,
+  f: [['h','Le document'], ['saison','Saison (ex : 2024-2025)'], ['categorie','Catégorie','select',ARCCAT], ['titre','Titre'], ['description','Description (facultatif)','textarea'], ['ordre','Position (1 = en premier)','number'],
+      ['h','Tableau Excel (facultatif)'], ['feuilles','Glisse un fichier Excel : chaque feuille s\'affichera en tableau sur le site','xlsx'],
+      ['h','Lien vers un fichier (facultatif)'], ['lienTexte','Texte du bouton (ex : Télécharger le PDF)'], ['lien','Adresse du fichier (https://…)','url']]
+};
+const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
+  ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
+  ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],
+  ['h', 'Page Archives'], ['archivesIntro', 'Texte de présentation de la page Archives', 'textarea']];
+
+/* Connexion */
+$('#eye').innerHTML = ic('eye', 20);
+$('#eye').onclick = () => { const p = $('#pw'), s = p.type === 'password'; p.type = s ? 'text' : 'password'; $('#eye').innerHTML = ic(s ? 'eyeoff' : 'eye', 20); $('#eye').setAttribute('aria-label', s ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); };
+$('#site').innerHTML = ic('ext', 16) + '<span>Voir le site</span>';
+$('#out').innerHTML = ic('out', 16) + 'Déconnexion';
+onAuthStateChanged(auth, u => { $('#login').hidden = !!u; $('#app').hidden = !u; if (u) start(); });
+$('#loginForm').onsubmit = async e => { e.preventDefault(); const er = $('#lerr'); er.hidden = true;
+  if (!$('#em').value.trim() || !$('#pw').value) { er.textContent = 'Renseigne ton email et ton mot de passe.'; er.hidden = false; return; }
+  await busy($('#lbtn'), async () => { try { await signInWithEmailAndPassword(auth, $('#em').value.trim(), $('#pw').value); } catch { er.textContent = 'Email ou mot de passe incorrect.'; er.hidden = false; } }); };
+$('#forgot').onclick = async e => { e.preventDefault(); if (!$('#em').value.trim()) return toast('Écris ton email ci-dessus, puis clique à nouveau.', 1); try { await sendPasswordResetEmail(auth, $('#em').value.trim()); toast('Email de réinitialisation envoyé.'); } catch { toast('Envoi impossible.', 1); } };
+$('#out').onclick = () => signOut(auth);
+
+/* Navigation (menu hamburger) */
+let tab = 'home', cache = {};
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], archives: ['clip', 'Archives'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const GROUPS = [['Général', ['home', 'messages', 'stats']], ['Contenu du site', ['events', 'actualites', 'clubs', 'membres', 'arbitres', 'educateurs', 'annuaire', 'archives', 'classements']], ['Outils', ['settings', 'import', 'corbeille']]];
+const drawer = $('#drawer'), scrim = $('#scrim'), burger = $('#burger');
+burger.innerHTML = ic('menu', 22) + '<span id="curname"></span>';
+$('#dclose').innerHTML = ic('x', 22);
+function openMenu() { drawer.removeAttribute('inert'); drawer.classList.add('open'); scrim.hidden = false; burger.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; (drawer.querySelector('.on') || drawer.querySelector('button')).focus(); }
+function closeMenu() { drawer.classList.remove('open'); drawer.setAttribute('inert', ''); scrim.hidden = true; burger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }
+burger.onclick = () => drawer.classList.contains('open') ? closeMenu() : openMenu();
+$('#dclose').onclick = () => { closeMenu(); burger.focus(); };
+scrim.onclick = closeMenu;
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) { closeMenu(); burger.focus(); } });
+$('#tabs').onclick = e => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; start(); window.scrollTo(0, 0); } };
+function start() {
+  $('#tabs').innerHTML = GROUPS.map(([g, ks]) => `<div class="dg">${g}</div>` + ks.map(k => `<button data-t="${k}" class="${k === tab ? 'on' : ''}" ${k === tab ? 'aria-current="page"' : ''}>${ic(NAMES[k][0], 20)}<span>${NAMES[k][1]}</span></button>`).join('')).join('');
+  $('#curname').textContent = NAMES[tab][1];
+  closeMenu(); show(); badge();
+}
+const head = (t, d) => `<div class="ph"><h1>${t}</h1><p>${d}</p></div>`;
+const empty = (m, i = 'inbox') => `<div class="empty">${ic(i, 32)}${m}</div>`;
+async function show() {
+  const m = $('#main'); m.innerHTML = empty('Chargement…', 'clip');
+  try { tab === 'home' ? await viewHome() : tab === 'settings' ? await viewSettings() : tab === 'import' ? viewImport() : tab === 'classements' ? await viewClass()
+    : tab === 'messages' ? await viewMessages() : tab === 'stats' ? await viewStats() : tab === 'corbeille' ? await viewTrash() : await viewList(tab); }
+  catch (e) { m.innerHTML = empty(`Une erreur est survenue : ${esc(e.message)}<br>Vérifie ta connexion, les règles Firestore et ton email admin.`, 'alert'); }
+}
+
+async function viewHome() {
+  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements', 'annuaire', 'archives']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
+  const people = k => n.membres.filter(m => catOf(m) === k).length;
+  const S = SCHEMA.events, up = n.events.filter(e => e.date >= today).sort(S.sort);
+  const T = (k, i, num, lab, sub) => `<button class="tile" data-go="${k}"><span class="i">${ic(i, 24)}</span><span class="n">${num}</span><b>${lab}</b><small>${sub}</small></button>`;
+  $('#main').innerHTML = `<div class="hello"><h1>Bienvenue dans l'administration</h1><p>Choisis ce que tu veux modifier. Chaque changement apparaît sur le site dès l'enregistrement.</p></div>
+  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('annuaire', 'ext', n.annuaire.length, 'Annuaire', 'Sites des comités voisins')}${T('archives', 'clip', n.archives.length, 'Archives', 'PV, résultats, classements passés')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
+  ${up.length ? `<div class="sech"><h2>Prochaines compétitions</h2><button class="lnkb" data-go="events">Voir tout le calendrier</button></div>${up.slice(0, 4).map(e => `<div class="row">${S.left(e)}<div class="m"><strong>${esc(e.titre)}</strong><small>${S.sub(e)}</small></div></div>`).join('')}` : ''}
+  ${n.events.length + n.clubs.length ? '' : `<div style="margin-top:1rem">${empty('Base vide : ouvre l\'onglet <b>Import</b> pour reprendre le contenu actuel du site.')}</div>`}`;
+  $('#main').onclick = e => { const b = e.target.closest('[data-go]'); if (b) { tab = b.dataset.go; start(); window.scrollTo(0, 0); } };
+}
+
+/* Formulaires */
+const titleCase = t => String(t || '').toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
+const clubSelect = (k, val) => {
+  const opts = (cache.clubsList || []).filter(c => c.ville).map(c => ({ label: titleCase(c.ville) + (c.assoc ? ' — ' + c.assoc : ''), lieu: titleCase(c.ville) }));
+  if (val && !opts.some(o => o.label === val)) opts.push({ label: val, lieu: '' });
+  return `<select id="x_${k}" name="${k}"><option value="">— Choisir un club —</option>${opts.map(o => `<option value="${esc(o.label)}" data-lieu="${esc(o.lieu)}" ${o.label === val ? 'selected' : ''}>${esc(o.label)}</option>`).join('')}<option value="__autre">Autre lieu (je le saisis moi-même)</option></select>`;
+};
+const field = (f, v, req = []) => { const [k, l, t = 'text', o] = f, val = v ?? '';
+  if (k === 'h') return `<h3 class="sec">${l}</h3>`;
+  const lab = `<label for="x_${k}">${l}${req.includes(k) ? '<span class="rq" aria-hidden="true">*</span>' : ''}</label>`;
+  return `<div class="f">${lab}` + (t === 'textarea' ? `<textarea id="x_${k}" name="${k}" rows="3">${esc(val)}</textarea>`
+    : t === 'clubselect' ? clubSelect(k, val)
+    : t === 'xlsx' ? '<div class="dz" id="dz" tabindex="0" role="button" aria-label="Zone de dépôt du fichier Excel"></div><p id="dzn" class="hint2" role="status"></p>'
+    : t === 'select' ? `<select id="x_${k}" name="${k}">${o.map(([a, b]) => `<option value="${esc(a)}" ${a === val ? 'selected' : ''}>${esc(b)}</option>`).join('')}</select>`
+    : `<input id="x_${k}" name="${k}" type="${t === 'url' ? 'text' : t}" ${t === 'url' ? 'inputmode="url" placeholder="https://…"' : ''} ${t === 'number' ? 'min="0"' : ''} value="${esc(val)}">`) + '</div>'; };
+const read = (fs, root) => Object.fromEntries(fs.filter(f => f[0] !== 'h' && f[2] !== 'xlsx').map(f => { const el = root.querySelector(`[name=${f[0]}]`); let v = el.value.trim();
+  if (f[2] === 'clubselect' && v === '__autre') v = ''; if (f[2] === 'number') v = Number(v) || 0; if (f[2] === 'url' && v && !/^(https?:|mailto:)/i.test(v)) v = 'https://' + v; return [f[0], v]; }));
+
+async function viewSettings() {
+  const d = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
+  $('#main').innerHTML = head('Infos du site', 'Textes et coordonnées affichés sur la page d\'accueil et en bas de chaque page.') + `<form id="sf" class="card" novalidate><div class="grid">${SETTINGS.map(f => field(f, d[f[0]])).join('')}</div><div class="savebar"><button class="btn b-or" id="ssv">${ic('save')}Enregistrer les modifications</button></div></form>`;
+  $('#sf').onsubmit = async e => { e.preventDefault(); await busy($('#ssv'), async () => { try { await setDoc(doc(db, 'settings', 'general'), read(SETTINGS, e.target), { merge: true }); toast('Enregistré — visible sur le site'); } catch (er) { toast('Échec : ' + er.message, 1); } }); };
+}
+
+async function viewList(col) {
+  const S = SCHEMA[col], C = S.col || col;   // C = collection Firestore réelle
+  cache[col] = (await getDocs(collection(db, C))).docs.map(d => ({ ...d.data(), _id: d.id })).filter(S.filter || (() => true)).sort(S.sort);
+  if (col === 'events') cache.clubsList = (await getDocs(collection(db, 'clubs'))).docs.map(d => d.data()).sort((a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'));
+  const months = col === 'events' ? [...new Set(cache[col].map(S.group))] : [];
+  let pdfCard = '', pdfBind = () => {};
+  if (col === 'events') {
+    const g = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
+    pdfCard = `<form class="card" id="pdfForm" novalidate><b>${ic('dl')}Calendrier PDF</b><p class="hint2">Le bouton de téléchargement affiché en haut de la page Calendrier du site. Pour changer de PDF, collez sa nouvelle adresse ici.</p>
+      <div class="grid"><div class="f"><label for="pdfLabel">Texte du bouton</label><input id="pdfLabel" value="${esc(g.pdfLabel)}" placeholder="Ex : Version 3 (PDF)"></div>
+      <div class="f"><label for="pdfUrl">Adresse du PDF (https://…)</label><input id="pdfUrl" inputmode="url" value="${esc(g.pdfUrl)}" placeholder="https://…"></div></div>
+      <button class="btn b-or" id="pdfSave">${ic('save')}Enregistrer le PDF</button></form>`;
+    pdfBind = () => { $('#pdfForm').onsubmit = async e => { e.preventDefault(); let u = $('#pdfUrl').value.trim(); if (u && !/^https?:/i.test(u)) u = 'https://' + u;
+      await busy($('#pdfSave'), async () => { try { await setDoc(doc(db, 'settings', 'general'), { pdfLabel: $('#pdfLabel').value.trim(), pdfUrl: u }, { merge: true }); toast('PDF enregistré — visible sur le calendrier'); } catch (er) { toast('Échec : ' + er.message, 1); } }); }; };
+  }
+  $('#main').innerHTML = head(S.tab, S.desc) + pdfCard + `<div class="bar"><div class="srch">${ic('search')}<input id="q" type="search" placeholder="Rechercher…" aria-label="Rechercher"></div>
+    ${col === 'events' ? `<select id="mo" aria-label="Mois"><option value="">Tous les mois</option>${months.map(k => `<option value="${esc(k)}">${esc(S.glabel(k))}</option>`).join('')}</select><select id="ty" aria-label="Catégorie"><option value="">Toutes catégories</option>${CATOPT.map(([a, b]) => `<option value="${a}">${b}</option>`).join('')}</select>` : ''}
+    <button class="btn b-or" id="add">${ic('plus')}${S.add}</button></div><div id="list"></div>`;
+  const draw = () => { const q = $('#q').value.toLowerCase(), mo = $('#mo')?.value, ty = $('#ty')?.value;
+    const l = cache[col].filter(x => (!q || JSON.stringify(x).toLowerCase().includes(q)) && (!mo || S.group(x) === mo) && (!ty || x.type === ty));
+    if (!l.length) return $('#list').innerHTML = empty('Aucun résultat. Utilise le bouton « Ajouter » pour en créer un.');
+    const g = {}; l.forEach(x => (g[S.group(x)] ||= []).push(x));
+    const keys = S.gorder ? S.gorder.filter(k => g[k]).concat(Object.keys(g).filter(k => !S.gorder.includes(k))) : Object.keys(g);
+    $('#list').innerHTML = keys.map(k => `<div class="gh">${esc(S.glabel(k))} <span>(${g[k].length})</span></div>` + g[k].map(x => `<div class="row ${x.date && x.date < today ? 'past' : ''}">${S.left(x)}<div class="m"><strong>${esc(S.title(x))}</strong><small>${S.sub(x)}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">${ic('edit', 16)}Modifier</button><button class="btn b-ko b-ic" data-d="${x._id}" aria-label="Supprimer" title="Supprimer">${ic('trash', 16)}</button></div></div>`).join('')).join(''); };
+  pdfBind();
+  draw(); ['#q', '#mo', '#ty'].forEach(s => $(s) && ($(s).oninput = draw));
+  $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'actualites' ? { statut: 'brouillon', publieLe: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : col === 'membres' ? { groupe: 'membre', ordre: cache[col].length + 1 } : { ordre: cache[col].length + 1 });
+  $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, x = cache[col].find(i => i._id === id);
+    if (b.dataset.e) edit(col, x); else if (await ask('Mettre à la corbeille ?', `« ${S.title(x)} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash(C, id, x); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
+}
+/* Dépôt d'un fichier Excel : chaque feuille devient un tableau (comme les classements) */
+let feuilles = [];
+const LIM = 900000;   // limite d'un document Firestore ≈ 1 Mo
+function toSheets(wb) {
+  return wb.SheetNames.map(nom => {
+    let rows = XLSX.utils.sheet_to_json(wb.Sheets[nom], { header: 1, defval: '', raw: false }).map(r => r.map(c => String(c).trim())).filter(r => r.some(Boolean));
+    if (!rows.length) return null;
+    const cnt = r => r.filter(Boolean).length, w = Math.max(...rows.slice(0, 30).map(cnt));
+    rows = rows.slice(Math.max(0, rows.slice(0, 6).findIndex(r => cnt(r) >= Math.ceil(w * .6))));   // saute les lignes de titre avant l'en-tête
+    const n = Math.max(...rows.map(r => r.length)), fix = r => Array.from({ length: n }, (_, i) => r[i] ?? '');
+    return { nom, colonnes: fix(rows[0]), lignes: rows.slice(1).map(r => ({ v: fix(r) })) };
+  }).filter(s => s && (s.lignes.length || s.colonnes.some(Boolean)));
+}
+function dzNote(m, err) { const n = $('#dzn'); if (n) { n.textContent = m; n.className = 'hint2' + (err ? ' err' : ''); } }
+function dzDraw() {
+  const z = $('#dz'); if (!z) return; z.classList.remove('over');
+  z.innerHTML = feuilles.length
+    ? `<b>${ic('ok', 18)}${feuilles.length} feuille${feuilles.length > 1 ? 's' : ''} prête${feuilles.length > 1 ? 's' : ''}</b><small>${feuilles.slice(0, 8).map(s => esc(s.nom) + ' (' + s.lignes.length + ' lignes)').join(' · ')}${feuilles.length > 8 ? ' …' : ''}</small><span class="dzb"><button type="button" class="btn b-ln" data-dz="pick">Remplacer le fichier</button><button type="button" class="btn b-ko" data-dz="del">Retirer</button></span>`
+    : `${ic('dl', 28)}<b>Glisse ton fichier Excel ici</b><small>ou clique pour le choisir (.xlsx, .xls, .csv)</small>`;
+}
+async function dzTake(file) {
+  if (!file) return;
+  try { dzNote('Lecture du fichier…'); await loadXLSX();
+    const s = toSheets(XLSX.read(await file.arrayBuffer(), { type: 'array' }));
+    if (!s.length) return dzNote('Fichier vide ou illisible.', 1);
+    if (JSON.stringify(s).length > LIM) return dzNote('Fichier trop volumineux : sépare-le en plusieurs documents.', 1);
+    feuilles = s; dzDraw(); dzNote(`${s.length} feuille${s.length > 1 ? 's' : ''} lue${s.length > 1 ? 's' : ''} — clique sur « Enregistrer » pour les publier.`);
+  } catch (er) { dzNote('Import impossible : ' + er.message, 1); }
+}
+function initDz(x) {
+  feuilles = (x.feuilles || []).slice(); dzDraw();
+  const z = $('#dz'), inp = Object.assign(document.createElement('input'), { type: 'file', accept: '.xlsx,.xls,.csv', hidden: true });
+  z.after(inp);
+  z.onclick = e => { if (e.target.closest('[data-dz=del]')) { feuilles = []; dzDraw(); dzNote('Fichier retiré — clique sur « Enregistrer » pour confirmer.'); } else inp.click(); };
+  z.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inp.click(); } };
+  z.ondragover = e => { e.preventDefault(); z.classList.add('over'); };
+  z.ondragleave = () => z.classList.remove('over');
+  z.ondrop = e => { e.preventDefault(); z.classList.remove('over'); dzTake(e.dataTransfer.files[0]); };
+  inp.onchange = () => { dzTake(inp.files[0]); inp.value = ''; };
+}
+window.addEventListener('dragover', e => e.preventDefault());   // évite que le navigateur ouvre un fichier lâché à côté de la zone
+window.addEventListener('drop', e => e.preventDefault());
+
+function edit(col, x) {
+  const S = SCHEMA[col], C = S.col || col, f = $('#dform');
+  f.innerHTML = `<h2 id="dlg-t">${x._id ? 'Modifier' : S.add}</h2><div class="grid">${S.f.map(fl => field(fl, x[fl[0]], S.req)).join('')}</div><div class="mact"><button type="button" class="btn b-ln" id="no">Annuler</button><button class="btn b-or" id="yes">${ic('save')}Enregistrer</button></div>`;
+  $('#dlg').showModal(); $('#no').onclick = () => $('#dlg').close();
+  if (f.querySelector('#dz')) initDz(x);
+  const cs = f.querySelector('[name=club]');
+  if (cs && cs.tagName === 'SELECT') cs.onchange = () => { const l = cs.selectedOptions[0]?.dataset.lieu; if (l) f.querySelector('[name=lieu]').value = l; if (cs.value === '__autre') f.querySelector('[name=lieu]').focus(); };
+  f.onsubmit = async e => { e.preventDefault(); const d = { ...read(S.f, f), ...(S.fixed || {}) }; const miss = S.req.find(k => !d[k]); if (miss) return toast('Complète le champ « ' + S.f.find(z => z[0] === miss)[1] + ' ».', 1);
+    if (S.f.some(z => z[2] === 'xlsx')) { if (JSON.stringify(feuilles).length > LIM) return dzNote('Fichier trop volumineux : sépare-le en plusieurs documents.', 1); d.feuilles = feuilles; }
+    await busy($('#yes'), async () => { try { x._id ? await setDoc(doc(db, C, x._id), d) : await addDoc(collection(db, C), d); $('#dlg').close(); toast('Enregistré — visible sur le site'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } }); };
+}
+
+/* Classements : un tableau par classement (colonnes et lignes libres) */
+let cur;
+const loadXLSX = () => window.XLSX ? Promise.resolve() : new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = () => ko(new Error('Lecteur Excel indisponible (connexion ?)')); document.head.append(s); });
+async function viewClass() {
+  const l = (await getDocs(collection(db, 'classements'))).docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+  $('#main').innerHTML = head('Classements', 'Un tableau par classement (Seniors, Féminines, Jeunes, Vétérans, Clubs…). Saisis-le à la main, colle des cellules copiées depuis Excel, ou importe directement un fichier Excel.') +
+    `<div class="bar"><button class="btn b-or" id="nw">${ic('plus')}Nouveau classement</button><button class="btn b-bl" id="xl">${ic('dl')}Importer un fichier Excel</button><input type="file" id="xf" accept=".xlsx,.xls,.csv" hidden></div>` +
+    (l.length ? l.map(c => `<div class="row"><div class="bd">${esc(c.ordre ?? '')}</div><div class="m"><strong>${esc(c.nom)}</strong><small>${esc(c.majLe || '')}${c.majLe ? ' · ' : ''}${(c.lignes || []).length} lignes · ${(c.colonnes || []).length} colonnes</small></div><div class="act"><button class="btn b-ln" data-e="${c._id}">${ic('edit', 16)}Modifier</button><button class="btn b-ko b-ic" data-d="${c._id}" aria-label="Supprimer" title="Supprimer">${ic('trash', 16)}</button></div></div>`).join('') : empty('Aucun classement pour le moment. Clique sur « Nouveau classement » ou importe un fichier Excel.'));
+  $('#nw').onclick = () => openEd({ ordre: l.length + 1 });
+  $('#xl').onclick = () => $('#xf').click();
+  $('#xf').onchange = async e => { const f = e.target.files[0]; if (!f) return;
+    try { await loadXLSX(); const ws = XLSX.read(await f.arrayBuffer()).Sheets; const sh = ws[Object.keys(ws)[0]];
+      const rows = XLSX.utils.sheet_to_json(sh, { header: 1, defval: '', raw: false }).map(r => r.map(x => String(x).trim())).filter(r => r.some(x => x));
+      if (rows.length < 2) return toast('Fichier vide ou illisible.', 1);
+      const w = Math.max(...rows.map(r => r.length)), fix = r => Array.from({ length: w }, (_, i) => r[i] ?? '');
+      openEd({ nom: f.name.replace(/\.\w+$/, ''), ordre: l.length + 1, colonnes: fix(rows[0]), lignes: rows.slice(1).map(r => ({ v: fix(r) })) });
+      toast('Fichier lu — vérifie le tableau puis enregistre.'); } catch (er) { toast('Import impossible : ' + er.message, 1); } };
+  $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, c = l.find(i => i._id === id);
+    if (b.dataset.e) openEd(c); else if (await ask('Mettre à la corbeille ?', `« ${c.nom} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash('classements', id, c); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
+}
+function openEd(c) { cur = { nom: '', majLe: '', ordre: 1, colonnes: ['Rang', 'Nom', 'Club', 'Points'], lignes: [], ...c }; drawEd(); window.scrollTo(0, 0); }
+function sync() { if (!$('#cn')) return; cur.nom = $('#cn').value; cur.majLe = $('#cm').value; cur.ordre = Number($('#co').value) || 1;
+  cur.colonnes = [...document.querySelectorAll('.th')].map(i => i.value); cur.lignes = [...document.querySelectorAll('#tb tr')].map(tr => ({ v: [...tr.querySelectorAll('.td')].map(i => i.value) })); }
+function drawEd() {
+  $('#main').innerHTML = head(cur._id ? 'Modifier le classement' : 'Nouveau classement', 'Renseigne le titre, puis remplis le tableau. Tu peux renommer les colonnes (Rang, Nom, Club, Points…).') +
+  `<div class="card"><div class="grid"><div class="f"><label for="cn">Nom du classement</label><input id="cn" value="${esc(cur.nom)}" placeholder="Ex : Seniors masculins"></div>
+   <div class="f"><label for="cm">Mention de mise à jour</label><input id="cm" value="${esc(cur.majLe)}" placeholder="Ex : Mis à jour le 21/04/2026"></div>
+   <div class="f"><label for="co">Position dans les onglets (1 = premier)</label><input id="co" type="number" min="1" value="${esc(cur.ordre)}"></div></div></div>
+  <div class="card"><b>${ic('clip')}Coller depuis Excel</b><p class="hint2">Dans Excel, sélectionne les cellules, copie (Ctrl+C), puis colle ici (Ctrl+V) et choisis une option.</p><textarea id="pa" rows="3" placeholder="Colle ici…" aria-label="Cellules copiées depuis Excel"></textarea>
+   <div class="flex" style="margin-top:.7rem"><button class="btn b-bl" id="prep">Remplacer les lignes</button><button class="btn b-ln" id="padd">Ajouter à la suite</button></div></div>
+  <div class="card"><div class="tw"><table class="tbl"><thead><tr><th></th>${cur.colonnes.map((c, i) => `<th><input class="th" value="${esc(c)}" aria-label="Nom de la colonne ${i + 1}"><button class="x" data-xc="${i}" title="Supprimer la colonne" aria-label="Supprimer la colonne ${i + 1}">${ic('x', 16)}</button></th>`).join('')}<th></th></tr></thead>
+   <tbody id="tb">${cur.lignes.map((r, i) => `<tr><td class="rn">${i + 1}</td>${cur.colonnes.map((_, j) => `<td><input class="td" value="${esc(r.v[j] ?? '')}" aria-label="Ligne ${i + 1}, colonne ${j + 1}"></td>`).join('')}<td><button class="x" data-xr="${i}" title="Supprimer la ligne" aria-label="Supprimer la ligne ${i + 1}">${ic('trash', 16)}</button></td></tr>`).join('')}</tbody></table></div>
+   <div class="flex" style="margin-top:.8rem"><button class="btn b-ln" id="ar">${ic('plus', 16)}Ajouter une ligne</button><button class="btn b-ln" id="ac">${ic('plus', 16)}Ajouter une colonne</button></div></div>
+  <div class="savebar flex"><button class="btn b-or" id="sv">${ic('save')}Enregistrer le classement</button><button class="btn b-ln" id="cx">Annuler</button></div>`;
+  $('#main').onclick = e => { const b = e.target.closest('button'); if (!b) return;
+    if (b.id === 'ar') { sync(); cur.lignes.push({ v: Array(cur.colonnes.length).fill('') }); drawEd(); }
+    else if (b.id === 'ac') { sync(); cur.colonnes.push('Colonne ' + (cur.colonnes.length + 1)); cur.lignes.forEach(r => r.v.push('')); drawEd(); }
+    else if (b.dataset.xr) { sync(); cur.lignes.splice(+b.dataset.xr, 1); drawEd(); }
+    else if (b.dataset.xc) { if (cur.colonnes.length < 2) return toast('Il faut au moins une colonne.', 1); sync(); const i = +b.dataset.xc; cur.colonnes.splice(i, 1); cur.lignes.forEach(r => r.v.splice(i, 1)); drawEd(); }
+    else if (b.id === 'prep' || b.id === 'padd') paste(b.id === 'prep');
+    else if (b.id === 'sv') busy(b, saveCl); else if (b.id === 'cx') show(); };
+}
+function paste(replace) {
+  sync(); const rows = $('#pa').value.split(/\r?\n/).filter(x => x.trim()).map(x => x.split('\t').map(y => y.trim()));
+  if (!rows.length) return toast('Colle d\'abord des cellules copiées depuis Excel.', 1);
+  const w = Math.max(...rows.map(r => r.length));
+  while (cur.colonnes.length < w) { cur.colonnes.push('Colonne ' + (cur.colonnes.length + 1)); cur.lignes.forEach(r => r.v.push('')); }
+  const add = rows.map(r => ({ v: Array.from({ length: cur.colonnes.length }, (_, i) => r[i] ?? '') }));
+  cur.lignes = replace ? add : cur.lignes.concat(add); drawEd(); toast(`${add.length} lignes ${replace ? 'chargées' : 'ajoutées'}.`);
+}
+async function saveCl() {
+  sync(); if (!cur.nom.trim()) return toast('Donne un nom au classement.', 1);
+  const d = { nom: cur.nom.trim(), majLe: cur.majLe.trim(), ordre: cur.ordre, colonnes: cur.colonnes.map(c => c.trim()), lignes: cur.lignes.filter(r => r.v.some(x => x.trim())).map(r => ({ v: r.v.map(x => x.trim()) })) };
+  try { cur._id ? await setDoc(doc(db, 'classements', cur._id), d) : await addDoc(collection(db, 'classements'), d); toast('Enregistré — visible sur le site'); show(); } catch (e) { toast('Échec : ' + e.message, 1); }
+}
+
+/* ===== Messages, Corbeille, Statistiques ===== */
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], archives: ['Archive', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
+const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
+
+async function trash(col, id, x) {
+  const { _id, ...data } = x, b = writeBatch(db);
+  b.set(doc(collection(db, 'corbeille')), { col, origId: id, data, label: KIND[col][1](data) || 'Sans titre', supprimeLe: Date.now() });
+  b.delete(doc(db, col, id)); await b.commit();
+}
+async function badge() {
+  try { document.querySelectorAll('.nb').forEach(n => n.remove());
+    const n = (await getDocs(collection(db, 'messages'))).docs.filter(d => !d.data().lu).length;
+    if (!n) return;
+    document.querySelector('#tabs [data-t=messages]')?.insertAdjacentHTML('beforeend', `<span class="nb" aria-label="${n} non lus">${n}</span>`);
+    burger.insertAdjacentHTML('beforeend', `<span class="nb dot" aria-label="${n} messages non lus"></span>`); } catch {}
+}
+
+async function viewMessages() {
+  const l = (await getDocs(collection(db, 'messages'))).docs.map(d => ({ ...d.data(), _id: d.id })).sort((a, b) => (b.creeLe || 0) - (a.creeLe || 0));
+  $('#main').innerHTML = head('Messages', 'Les messages envoyés depuis le formulaire de contact du site.') +
+    `<div class="bar"><select id="mf" aria-label="Filtrer les messages"><option value="">Tous les messages</option><option value="nl">Non lus</option><option value="nt">Non traités</option></select></div><div id="list"></div>`;
+  const draw = () => { const f = $('#mf').value, v = l.filter(m => f === 'nl' ? !m.lu : f === 'nt' ? !m.traite : true);
+    $('#list').innerHTML = v.length ? v.map(m => `<div class="card ${m.lu ? '' : 'unread'}"><strong>${esc(m.sujet || 'Sans sujet')}</strong> ${m.lu ? '' : '<span class="pill champ">Nouveau</span>'}${m.traite ? '<span class="pill concours">Traité</span>' : ''}
+      <small style="display:block;color:var(--mut)">${esc(m.nom)} · ${esc(m.email)} · ${fdate(m.creeLe)}</small>
+      <p style="white-space:pre-wrap;margin:.7rem 0">${esc(m.message)}</p>
+      <div class="flex"><a class="btn b-bl" data-a="re" data-id="${m._id}" href="mailto:${esc(m.email)}?subject=${encodeURIComponent('Re: ' + (m.sujet || ''))}">${ic('mail', 16)}Répondre</a>
+      <button class="btn b-ln" data-a="lu" data-id="${m._id}">${m.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
+      <button class="btn b-ln" data-a="tr" data-id="${m._id}">${m.traite ? 'Rouvrir' : 'Marquer traité'}</button>
+      <button class="btn b-ko b-ic" data-a="del" data-id="${m._id}" aria-label="Mettre à la corbeille" title="Mettre à la corbeille">${ic('trash', 16)}</button></div></div>`).join('')
+      : empty('Aucun message pour le moment.', 'mail'); };
+  const save = async (m, p) => { Object.assign(m, p); await setDoc(doc(db, 'messages', m._id), p, { merge: true }); badge(); draw(); };
+  draw(); $('#mf').oninput = draw;
+  $('#main').onclick = async e => { const b = e.target.closest('[data-a]'); if (!b) return; const m = l.find(i => i._id === b.dataset.id), a = b.dataset.a;
+    try { if (a === 'lu') await save(m, { lu: !m.lu }); else if (a === 'tr') await save(m, { traite: !m.traite }); else if (a === 're') { if (!m.lu) save(m, { lu: true }); }
+      else if (a === 'del' && await ask('Mettre à la corbeille ?', 'Ce message pourra être restauré pendant 30 jours.', 'Mettre à la corbeille')) { await trash('messages', m._id, m); l.splice(l.indexOf(m), 1); badge(); draw(); toast('Placé dans la corbeille'); }
+    } catch (er) { toast('Échec : ' + er.message, 1); } };
+}
+
+async function viewTrash() {
+  let l = (await getDocs(collection(db, 'corbeille'))).docs.map(d => ({ ...d.data(), _id: d.id }));
+  const old = l.filter(x => Date.now() - x.supprimeLe > 30 * 864e5);
+  for (let i = 0; i < old.length; i += 400) { const b = writeBatch(db); old.slice(i, i + 400).forEach(x => b.delete(doc(db, 'corbeille', x._id))); await b.commit(); }
+  l = l.filter(x => !old.includes(x)).sort((a, b) => b.supprimeLe - a.supprimeLe);
+  $('#main').innerHTML = head('Corbeille', 'Les éléments supprimés sont conservés 30 jours, puis effacés automatiquement.') +
+    (l.length ? `<div class="bar"><button class="btn b-ko" id="emp">${ic('trash', 16)}Vider la corbeille</button></div>` : '') +
+    (l.length ? l.map(x => `<div class="row"><div class="m"><strong>${esc(x.label)}</strong><small>${esc(x.col === 'membres' ? ({ arbitre: 'Arbitre', educateur: 'Éducateur / Initiateur' }[x.data?.categorie] || 'Membre du comité') : (KIND[x.col]?.[0] || x.col))} · supprimé le ${fdate(x.supprimeLe)} · encore ${Math.max(1, 30 - Math.floor((Date.now() - x.supprimeLe) / 864e5))} j</small></div>
+      <div class="act"><button class="btn b-ln" data-r="${x._id}">${ic('undo', 16)}Restaurer</button><button class="btn b-ko b-ic" data-x="${x._id}" aria-label="Supprimer définitivement" title="Supprimer définitivement">${ic('x', 16)}</button></div></div>`).join('')
+      : empty('La corbeille est vide.', 'trash'));
+  $('#main').onclick = async e => { const b = e.target.closest('[data-r],[data-x],#emp'); if (!b) return;
+    try { if (b.id === 'emp') { if (!await ask('Vider la corbeille ?', 'Tout sera supprimé définitivement.', 'Tout supprimer')) return;
+        for (let i = 0; i < l.length; i += 400) { const w = writeBatch(db); l.slice(i, i + 400).forEach(x => w.delete(doc(db, 'corbeille', x._id))); await w.commit(); } toast('Corbeille vidée'); }
+      else { const x = l.find(i => i._id === (b.dataset.r || b.dataset.x));
+        if (b.dataset.r) { const w = writeBatch(db); w.set(doc(db, x.col, x.origId), x.data); w.delete(doc(db, 'corbeille', x._id)); await w.commit(); toast('Restauré'); }
+        else { if (!await ask('Supprimer définitivement ?', `« ${x.label} » ne pourra plus être récupéré.`)) return; await deleteDoc(doc(db, 'corbeille', x._id)); toast('Supprimé'); } }
+      badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
+}
+
+const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives' };
+let statsDays = 30;
+async function viewStats() {
+  const snap = await getDocs(collection(db, 'stats_vues'));
+  const byDay = {};
+  snap.docs.forEach(d => { const p = {}; let t = 0; for (const [k, v] of Object.entries(d.data())) if (typeof v === 'number') { p[k] = v; t += v; } byDay[d.id] = { p, t }; });
+  const H = head('Statistiques', 'Combien de personnes consultent le site, et quelles pages elles regardent.');
+  if (!Object.values(byDay).some(x => x.t)) { $('#main').innerHTML = H + empty('Pas encore de visites enregistrées. Les chiffres apparaîtront dès que quelqu\'un ouvrira une page du site.', 'stats'); return; }
+
+  const n = statsDays, DAY = 864e5, iso = ms => new Date(ms).toISOString().slice(0, 10);
+  const range = (len, off) => Array.from({ length: len }, (_, i) => { const d = iso(Date.now() - (len - 1 - i + off) * DAY); return { d, t: byDay[d]?.t || 0, p: byDay[d]?.p || {} }; });
+  const cur = range(n, 0), prev = range(n, n), sum = a => a.reduce((x, y) => x + y.t, 0);
+  const total = sum(cur), before = sum(prev), todayN = byDay[iso(Date.now())]?.t || 0;
+  const long = d => new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  const short = d => d.slice(8) + '/' + d.slice(5, 7);
+
+  const pages = {}; cur.forEach(x => Object.entries(x.p).forEach(([k, v]) => pages[k] = (pages[k] || 0) + v));
+  const top = Object.entries(pages).sort((a, b) => b[1] - a[1]), name = k => PAGES[k] || k;
+  const best = cur.reduce((m, x) => x.t > m.t ? x : m, cur[0]);
+  const diff = before ? Math.round((total - before) / before * 100) : null;
+  const trend = diff === null ? 'Pas de période précédente à comparer' : diff === 0 ? 'Stable par rapport à la période précédente' : `<span class="${diff > 0 ? 'st-up' : 'st-dn'}">${diff > 0 ? '▲ +' : '▼ '}${diff} %</span> par rapport aux ${n} jours d'avant`;
+
+  const mx = Math.max(...cur.map(x => x.t), 1), step = Math.ceil(n / 6);
+  const lab = (x, i) => n === 7 ? ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'][new Date(x.d + 'T12:00:00').getDay()] : (i === n - 1 || i % step === 0) ? short(x.d) : '';
+  const tile = (l, v, s, cls = '') => `<div class="st-tile"><small>${l}</small><div class="v ${cls}">${v}</div><div class="s">${s}</div></div>`;
+
+  $('#main').innerHTML = H +
+    `<div class="st-top" role="group" aria-label="Période">${[7, 30, 90].map(d => `<button data-p="${d}" class="${d === n ? 'on' : ''}">${d} derniers jours</button>`).join('')}</div>` +
+    `<div class="st-tiles">${tile('Aujourd\'hui', todayN, todayN > 1 ? 'pages vues' : 'page vue')}${tile(`Vues sur ${n} jours`, total, trend)}${tile('Moyenne par jour', (total / n).toFixed(1).replace('.', ','), total ? `Meilleur jour : ${esc(long(best.d))} (${best.t})` : 'Aucune visite sur la période')}${tile('Page la plus vue', top.length ? esc(name(top[0][0])) : '—', top.length ? `${top[0][1]} vues (${Math.round(top[0][1] / total * 100)} %)` : '', 'txt')}</div>` +
+    `<div class="st-card"><h2>Visites jour après jour</h2><p>Chaque barre est un jour. Passez la souris (ou appuyez) sur une barre pour voir la date exacte. Aujourd'hui est en doré.</p>
+      <div class="st-chart" role="img" aria-label="Graphique des vues par jour sur ${n} jours, maximum ${mx} vues en un jour"><span class="mx">${mx} vues</span>${cur.map(x => `<div class="st-col ${x.d === iso(Date.now()) ? 'td' : ''}" title="${esc(long(x.d))} : ${x.t} vue${x.t > 1 ? 's' : ''}"><div class="st-bar" style="height:${x.t / mx * 100}%"></div></div>`).join('')}</div>
+      <div class="st-x" aria-hidden="true">${cur.map((x, i) => `<span>${lab(x, i)}</span>`).join('')}</div></div>` +
+    `<div class="st-card"><h2>Pages les plus consultées</h2><p>Sur les ${n} derniers jours.</p>${top.length ? top.map(([k, v]) => `<div class="st-pg"><span>${esc(name(k))}</span><div class="t"><i style="width:${v / top[0][1] * 100}%"></i></div><b>${v} <small>(${Math.round(v / total * 100)} %)</small></b></div>`).join('') : '<p class="ex-empty">Aucune visite sur cette période.</p>'}</div>` +
+    `<div class="st-help"><b>À savoir :</b> une « vue » correspond à une page ouverte par un visiteur, comptée une seule fois par visite. Aucun cookie ni donnée personnelle n'est utilisé, donc les chiffres sont des ordres de grandeur.</div>`;
+  $('#main').onclick = e => { const b = e.target.closest('[data-p]'); if (b) { statsDays = +b.dataset.p; viewStats(); } };
+}
+
+/* Import du contenu actuel */
+function viewImport() {
+  $('#main').innerHTML = head('Import', 'À faire une seule fois au départ : copie dans Firebase ce qui est écrit aujourd\'hui dans tes pages. Attention : les données déjà présentes dans la section choisie sont remplacées.') +
+  `<div class="card"><div class="flex">${[['settings', 'Infos du site'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier'], ['annuaire', 'L\'Annuaire']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}">${ic('dl', 16)}Importer : ${l}</button>`).join('')}</div><p id="imsg" role="status" style="font-weight:700;margin:1rem 0 0"></p></div>`;
+  $('#main').onclick = async e => { const b = e.target.closest('[data-i]'); if (!b) return; const k = b.dataset.i;
+    if (!await ask('Importer cette section ?', 'Les données existantes de cette section seront remplacées.', 'Importer')) return;
+    try { $('#imsg').textContent = 'Import en cours…'; const n = await IMPORT[k](); $('#imsg').textContent = `Terminé (${n} élément${n > 1 ? 's' : ''}).`; } catch (er) { $('#imsg').textContent = 'Erreur : ' + er.message; } };
+}
+const page = async u => new DOMParser().parseFromString(await (await fetch(u + '?' + Date.now())).text(), 'text/html');
+async function replaceAll(col, items, only) {
+  const old = (await getDocs(collection(db, col))).docs.filter(d => !only || only(d.data()));
+  for (let i = 0; i < old.length; i += 400) { const b = writeBatch(db); old.slice(i, i + 400).forEach(d => b.delete(d.ref)); await b.commit(); }
+  for (let i = 0; i < items.length; i += 400) { const b = writeBatch(db); items.slice(i, i + 400).forEach(it => b.set(doc(collection(db, col)), it)); await b.commit(); }
+  return items.length;
+}
+const IMPORT = {
+  async settings() {
+    const d = await page('index.html'), t = s => d.querySelector(s)?.textContent.trim() || '', s = { heroDesc: t('.hero-desc') };
+    [...d.querySelectorAll('.stat-item')].forEach((el, i) => { s[`stat${i + 1}v`] = el.querySelector('strong').textContent; s[`stat${i + 1}l`] = el.querySelector('span').textContent; });
+    const c = [...d.querySelectorAll('.contact-detail-text')];
+    s.adresse = c[0].querySelector('span').innerHTML.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').trim();
+    s.tel = c[1].querySelector('a').textContent; s.email = c[2].querySelector('a').textContent; s.emailDev = c[3].querySelector('a').textContent;
+    const pdf = (await page('calendrier.html')).querySelector('.dl-btn'); if (pdf) { s.pdfUrl = pdf.getAttribute('href'); s.pdfLabel = pdf.textContent.replace('⬇', '').trim(); }
+    await setDoc(doc(db, 'settings', 'general'), s); return 1;
+  },
+  async membres() {
+    // Seuls les membres du comité sont lus dans la page et remplacés : arbitres et éducateurs ne sont pas touchés.
+    const d = await page('comite.html'), g = ['president', 'vice', 'admin', 'membre'];
+    return replaceAll('membres', [...d.querySelectorAll('#panel-comite .org-card')].map((el, i) => { const tels = el.querySelectorAll('.org-tel');
+      return { categorie: 'comite', groupe: g.find(k => el.classList.contains(k)) || 'membre', role: el.querySelector('.org-role').textContent.trim(), nom: el.querySelector('.org-name').textContent.trim(),
+        tel: tels[0]?.textContent.trim() || '', email: el.querySelector('.org-email')?.textContent.trim() || '', adresse: tels.length > 1 ? tels[tels.length - 1].textContent.trim() : '', ordre: i + 1 }; }),
+      m => catOf(m) === 'comite');
+  },
+  async clubs() {
+    const d = await page('clubs.html'), map = { 'Président': 'president', 'Présidente': 'president', 'Adresse': 'adresse', 'Téléphone': 'tel', 'Email': 'email', 'Terrain': 'terrain' };
+    return replaceAll('clubs', [...d.querySelectorAll('.club-card')].map(el => { const c = { num: el.querySelector('.club-num').textContent, secteur: el.dataset.secteur, assoc: el.querySelector('.club-nom-assoc').textContent, ville: el.querySelector('h3').firstChild.textContent, prLabel: 'Président', tel: '', email: '', adresse: '', terrain: '', president: '' };
+      el.querySelectorAll('.club-info-row div').forEach(r => { const l = r.querySelector('.club-info-label').textContent; if (l.startsWith('Présid')) c.prLabel = l; if (map[l]) c[map[l]] = r.textContent.slice(l.length).trim(); }); return c; }));
+  },
+  async events() {
+    const txt = await (await fetch('calendrier.html?' + Date.now())).text(), m = txt.match(/const EVENTS = (\[[\s\S]*?\n\s*\]);/);
+    if (!m) throw new Error('Calendrier introuvable dans calendrier.html');
+    return replaceAll('events', new Function('return ' + m[1])().map(e => ({ date: e.date, titre: e.titre, type: e.type, lieu: e.lieu || '', heure: e.heure || '', formation: e.formation || '', obs: e.obs || '', lien: '', lienTexte: '', lien2: '', lien2Texte: '' })));
+  },
+  async annuaire() {
+    return replaceAll('annuaire', [
+      ['60', 'Comité de l\'Oise', 'https://ffpjp-comite-oise-petanque.e-monsite.com'],
+      ['59', 'Comité du Nord', 'https://ffpjp-nord.org/'],
+      ['62', 'Comité du Pas-de-Calais', 'https://www.ffpjp62.fr/'],
+      ['02', 'Comité de l\'Aisne', 'https://www.ffpjp-comite-aisne-petanque.com/']
+    ].map(([num, nom, url], i) => ({ num, nom, desc: 'Site du ' + nom.toLowerCase(), url, ordre: i + 1 })));
+  }
+};
+</script>
+</body>
+</html>
