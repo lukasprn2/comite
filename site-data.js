@@ -107,16 +107,92 @@ function watchModal() {
   new MutationObserver(fill).observe(box, { childList: true });
 }
 
-// Classements : affichage en onglets (un tableau par classement) avec recherche
+// Classements : habillage de l'ancienne page (barre de mise à jour, onglets, recherche, filtres, badges)
 function applyClassements(list) {
   list.sort((a, b) => (a.ordre ?? 99) - (b.ordre ?? 99));
+  if (!list.length) return;
   let host = $('#cms-classements') || $('.page-content');
   if (!host) { $('footer')?.insertAdjacentHTML('beforebegin', '<div class="page-content" id="cms-classements"></div>'); host = $('#cms-classements'); }
-  const css = `<style>.cms-t{display:flex;gap:.75rem;overflow-x:auto;margin-bottom:1.2rem;padding:.2rem .2rem .5rem}.cms-t button{flex-shrink:0;min-height:52px;border:2px solid #e3e0d8;background:#fff;color:#555;font:600 1.05rem 'DM Sans',sans-serif;padding:.7rem 1.6rem;border-radius:30px;cursor:pointer}.cms-t button.on,.cms-t button:hover{background:#0a2342;color:#c9a84c;border-color:#0a2342}.cms-m{color:#888;font-size:.85rem;margin:0 0 .8rem}.cms-q{width:100%;max-width:420px;min-height:44px;padding:.6rem 1rem;border:2px solid #e3e0d8;border-radius:10px;font:1rem 'DM Sans',sans-serif;margin-bottom:1rem}.cms-q:focus{outline:none;border-color:#c9a84c}.cms-w{overflow-x:auto;border:1px solid #e3e0d8;border-radius:10px;background:#fff}.cms-w table{border-collapse:collapse;width:100%;font-size:.9rem}.cms-w th{background:#0a2342;color:#c9a84c;text-align:left;padding:.7rem .8rem;white-space:nowrap}.cms-w td{padding:.55rem .8rem;border-top:1px solid #eee}.cms-w tr:nth-child(even) td{background:#faf9f5}</style>`;
-  host.innerHTML = css + `<div class="cms-t" role="tablist">${list.map((c, i) => `<button role="tab" class="${i ? '' : 'on'}" data-k="${i}">${esc(c.nom)}</button>`).join('')}</div>` +
-    list.map((c, i) => `<section class="cms-p" data-k="${i}" ${i ? 'hidden' : ''}>${c.majLe ? `<p class="cms-m">${esc(c.majLe)}</p>` : ''}<input class="cms-q" type="search" placeholder="🔍 Rechercher un joueur ou un club…" aria-label="Rechercher"><div class="cms-w"><table><thead><tr>${(c.colonnes || []).map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${(c.lignes || []).map(r => `<tr>${r.v.map(x => `<td>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`).join('');
-  $$('.cms-t button', host).forEach(b => b.onclick = () => { $$('.cms-t button', host).forEach(x => x.classList.toggle('on', x === b)); $$('.cms-p', host).forEach(p => p.hidden = p.dataset.k !== b.dataset.k); });
-  $$('.cms-q', host).forEach(q => q.oninput = () => { const v = q.value.toLowerCase(); $$('tbody tr', q.parentElement).forEach(tr => tr.hidden = v && !tr.textContent.toLowerCase().includes(v)); });
+
+  const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  const num = s => parseFloat(String(s ?? '').replace(/\s/g, '').replace(',', '.')) || 0;
+  const badge = v => { const n = norm(v); return n === 'elite' ? 'badge-Elite' : n === 'honneur' ? 'badge-Honneur' : n === 'promotion' ? 'badge-Promotion' : 'badge-Non-Class'; };
+
+  const css = `<style>.cms-rk{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:700 .85rem 'DM Sans',sans-serif}.cms-rk.r1{background:#c9a84c;color:#0a2342}.cms-rk.r2{background:#c9ced6;color:#333}.cms-rk.r3{background:#c8855a;color:#fff}</style>`;
+  const maj = list.filter(c => c.majLe).map(c => `<strong>${esc(c.nom)}</strong> — ${esc(String(c.majLe).replace(/^mis à jour( le)?\s*/i, ''))}`).join(' &nbsp;|&nbsp; ');
+
+  host.innerHTML = css
+    + (maj ? `<div class="maj-bar"><p>Dernières mises à jour : ${maj}</p></div>` : '')
+    + `<div class="cat-tabs">${list.map((c, i) => `<button class="cat-tab ${i ? '' : 'active'}" data-k="${i}">${esc(c.nom)}</button>`).join('')}</div>`
+    + `<div class="controls"><div class="search-wrap"><input type="search" id="cms-q" placeholder="Rechercher un joueur, un club…" aria-label="Rechercher"></div><select class="filter-select" id="cms-fc" aria-label="Classification"></select><select class="filter-select" id="cms-fs" aria-label="Sexe"></select></div>`
+    + `<p class="result-count" id="cms-n"></p><div class="table-wrap" id="cms-tb"></div>`;
+
+  const qEl = $('#cms-q', host), fc = $('#cms-fc', host), fs = $('#cms-fs', host);
+  let cur = 0, ix = {};
+
+  function setup() {
+    const c = list[cur], cols = (c.colonnes || []).map(norm), find = f => cols.findIndex(f);
+    ix = {
+      rang: find(h => ['rang', '#', 'place', 'rg', 'n°'].includes(h)),
+      nom: find(h => h === 'nom' || h === 'joueur'),
+      prenom: find(h => h === 'prenom'),
+      club: find(h => h === 'club'),
+      classif: find(h => h.startsWith('classif')),
+      sexe: find(h => h === 'sexe' || h === 'genre'),
+      pts: find(h => h.includes('point'))
+    };
+    const fill = (sel, idx, label) => {
+      const vals = idx < 0 ? [] : [...new Set((c.lignes || []).map(r => String(r.v[idx] ?? '').trim()).filter(Boolean))];
+      sel.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+      sel.style.display = vals.length ? '' : 'none';
+    };
+    fill(fc, ix.classif, 'Toutes les classifications');
+    fill(fs, ix.sexe, 'Tous (H/F)');
+    qEl.value = '';
+  }
+
+  function render() {
+    const c = list[cur], cols = c.colonnes || [];
+    const skip = new Set([ix.rang]); if (ix.nom >= 0 && ix.prenom >= 0) skip.add(ix.prenom);
+    const main = ix.nom >= 0 ? ix.nom : cols.findIndex((_, i) => !skip.has(i) && i !== ix.pts);
+    const show = cols.map((_, i) => i).filter(i => !skip.has(i));
+    const merged = ix.nom >= 0 && ix.prenom >= 0;
+    const q = norm(qEl.value), vc = fc.value, vs = fs.value;
+
+    const rows = (c.lignes || []).map((r, i) => ({ v: r.v, rank: ix.rang >= 0 ? (r.v[ix.rang] || i + 1) : i + 1 }))
+      .filter(r => (!q || norm(r.v.join(' ')).includes(q)) && (!vc || ix.classif < 0 || String(r.v[ix.classif] ?? '').trim() === vc) && (!vs || ix.sexe < 0 || String(r.v[ix.sexe] ?? '').trim() === vs));
+
+    $('#cms-n', host).textContent = rows.length + (ix.nom >= 0 ? ' joueur' : ' résultat') + (rows.length > 1 ? 's' : '') + (ix.nom >= 0 ? (rows.length > 1 ? ' affichés' : ' affiché') : '');
+    if (!rows.length) { $('#cms-tb', host).innerHTML = '<div class="no-result">Aucun résultat pour cette recherche.</div>'; return; }
+
+    const maxPts = Math.max(...(c.lignes || []).map(r => num(r.v[ix.pts])), 1);
+    const th = show.map(i => `<th class="${i === main || i === ix.pts ? '' : 'hide-sm'} ${i === ix.pts ? 'right' : ''}">${esc(i === main && merged ? 'Joueur' : cols[i])}</th>`).join('');
+    const body = rows.map(r => {
+      const n = parseInt(r.rank, 10);
+      const rk = n >= 1 && n <= 3 ? `<span class="cms-rk r${n}">${n}</span>` : `<span class="rank-cell">${esc(r.rank)}</span>`;
+      const tds = show.map(i => {
+        const v = esc(r.v[i] ?? '');
+        if (i === main) {
+          const name = merged ? `${v} <span style="font-weight:400;color:#555">${esc(r.v[ix.prenom] ?? '')}</span>` : v;
+          const sx = ix.sexe >= 0 ? ({ m: 'Homme', f: 'Femme' }[norm(r.v[ix.sexe])] || esc(r.v[ix.sexe] ?? '')) : '';
+          const bits = ix.nom >= 0 ? [ix.club >= 0 ? esc(r.v[ix.club] ?? '') : '', sx].filter(Boolean).join(' · ') : '';
+          const bd = ix.nom >= 0 && ix.classif >= 0 && r.v[ix.classif] ? `<span class="badge ${badge(r.v[ix.classif])}" style="margin-left:4px">${esc(r.v[ix.classif])}</span>` : '';
+          const bar = ix.nom < 0 && ix.pts >= 0 ? `<div class="club-rank-bar" style="margin-top:4px"><div class="bar-fill" style="width:${Math.round(num(r.v[ix.pts]) / maxPts * 100)}%"></div></div>` : '';
+          return `<td><div style="font-weight:600">${name}</div>${bits || bd ? `<div class="sub-mobile">${bits}${bd}</div>` : ''}${bar}</td>`;
+        }
+        if (i === ix.pts) return `<td class="right">${v}${r.v[i] !== '' && !isNaN(num(r.v[i])) ? ' pts' : ''}</td>`;
+        if (i === ix.classif) return `<td class="hide-sm">${r.v[i] ? `<span class="badge ${badge(r.v[i])}">${v}</span>` : ''}</td>`;
+        if (i === ix.club) return `<td class="hide-sm" style="color:#666;font-size:.85rem">${v}</td>`;
+        return `<td class="hide-sm" style="color:#555">${v}</td>`;
+      }).join('');
+      return `<tr><td style="text-align:center">${rk}</td>${tds}</tr>`;
+    }).join('');
+    $('#cms-tb', host).innerHTML = `<table><thead><tr><th style="width:50px;text-align:center">#</th>${th}</tr></thead><tbody>${body}</tbody></table>`;
+  }
+
+  $$('.cat-tab', host).forEach(b => b.onclick = () => { cur = +b.dataset.k; $$('.cat-tab', host).forEach(x => x.classList.toggle('active', x === b)); setup(); render(); });
+  qEl.oninput = fc.onchange = fs.onchange = render;
+  setup(); render();
 }
 
 (async () => {
