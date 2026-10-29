@@ -25,7 +25,7 @@ a{color:var(--bleu)}
 .ic{flex-shrink:0}
 
 /* Boutons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border:1.5px solid transparent;border-radius:8px;padding:.6rem 1.1rem;font-weight:700;font-size:.92rem;min-height:44px;letter-spacing:.2px;transition:background .15s,border-color .15s,box-shadow .15s,transform .1s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border:1.5px solid transparent;border-radius:8px;padding:.6rem 1.1rem;font-weight:700;font-size:.92rem;min-height:44px;letter-spacing:.2px;text-decoration:none;transition:background .15s,border-color .15s,box-shadow .15s,transform .1s}
 .btn:active{transform:translateY(1px)}
 .btn:disabled,.btn.load{opacity:.65;pointer-events:none}
 .b-or{background:var(--or);color:var(--bleu)}.b-or:hover{background:var(--orl)}
@@ -284,6 +284,7 @@ const ICON = {
   eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>',
   eyeoff: '<path d="M17.9 17.9A10.9 10.9 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.1-5.9M9.9 4.2A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M1 1l22 22"/>',
   clip: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
   x: '<path d="M18 6L6 18M6 6l12 12"/>',
   inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/>',
   mail: '<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',
@@ -371,6 +372,20 @@ SCHEMA.archives = {
       ['h','Tableau Excel (facultatif)'], ['feuilles','Glisse un fichier Excel : chaque feuille s\'affichera en tableau sur le site','xlsx'],
       ['h','Lien vers un fichier (facultatif)'], ['lienTexte','Texte du bouton (ex : Télécharger le PDF)'], ['lien','Adresse du fichier (https://…)','url']]
 };
+/* Documentations : une ligne = un document avec son lien (page publique documentations.html) */
+const DOCCAT = [['reglements','Règlements'],['formulaires','Formulaires'],['licences','Licences et affiliation'],['arbitrage','Arbitrage'],['comite','Comité et clubs'],['autre','Autres documents']];
+const DOCPILL = { reglements: 'champ', formulaires: 'concours', licences: 'gp', arbitrage: 'cdc', comite: 'regional', autre: 'veterans' };
+SCHEMA.documentations = {
+  tab: 'Documentations', desc: 'Les documents de la page Documentations du site (règlements, formulaires, licences…). Il suffit de coller l\'adresse du fichier ou de la page. Le numéro de position règle l\'ordre dans chaque catégorie.',
+  add: 'Ajouter un document', req: ['titre', 'lien'],
+  sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99) || (a.titre || '').localeCompare(b.titre || '', 'fr'),
+  group: d => d.categorie || 'autre', glabel: k => Object.fromEntries(DOCCAT)[k] || k, gorder: DOCCAT.map(c => c[0]),
+  left: d => `<div class="bd">${esc(d.ordre ?? '')}</div>`,
+  title: d => d.titre,
+  sub: d => `<span class="pill ${esc(DOCPILL[d.categorie] || 'veterans')}">${esc(Object.fromEntries(DOCCAT)[d.categorie] || 'Autres documents')}</span>${esc((d.description || '').slice(0, 90) || d.lien || '')}`,
+  f: [['h','Le document'], ['categorie','Catégorie','select',DOCCAT], ['titre','Titre (ex : Règlement des championnats)'], ['description','Description (facultatif)','textarea'], ['ordre','Position (1 = en premier)','number'],
+      ['h','Lien'], ['lien','Adresse du fichier ou de la page (https://…)','url'], ['lienTexte','Texte du bouton (facultatif, ex : Télécharger le règlement)']]
+};
 const SETTINGS = [['h', 'Page d\'accueil'], ['heroDesc', 'Texte de présentation', 'textarea'],
   ['h', 'Les 4 chiffres du bandeau doré'], ['stat1v', 'Chiffre 1 (ex : 33)'], ['stat1l', 'Légende 1 (ex : Clubs)'], ['stat2v', 'Chiffre 2'], ['stat2l', 'Légende 2'], ['stat3v', 'Chiffre 3'], ['stat3l', 'Légende 3'], ['stat4v', 'Chiffre 4'], ['stat4l', 'Légende 4'],
   ['h', 'Coordonnées (accueil et bas de page)'], ['adresse', 'Adresse du comité', 'textarea'], ['tel', 'Téléphone'], ['email', 'Email du comité'], ['emailDev', 'Email du développeur web'],
@@ -390,8 +405,8 @@ $('#out').onclick = () => signOut(auth);
 
 /* Navigation (menu hamburger) */
 let tab = 'home', cache = {};
-const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], archives: ['clip', 'Archives'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
-const GROUPS = [['Général', ['home', 'messages', 'stats']], ['Contenu du site', ['events', 'actualites', 'clubs', 'membres', 'arbitres', 'educateurs', 'annuaire', 'archives', 'classements']], ['Outils', ['settings', 'import', 'corbeille']]];
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], archives: ['clip', 'Archives'], documentations: ['file', 'Documentations'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const GROUPS = [['Général', ['home', 'messages', 'stats']], ['Contenu du site', ['events', 'actualites', 'clubs', 'membres', 'arbitres', 'educateurs', 'annuaire', 'archives', 'documentations', 'classements']], ['Outils', ['settings', 'import', 'corbeille']]];
 const drawer = $('#drawer'), scrim = $('#scrim'), burger = $('#burger');
 burger.innerHTML = ic('menu', 22) + '<span id="curname"></span>';
 $('#dclose').innerHTML = ic('x', 22);
@@ -417,12 +432,12 @@ async function show() {
 }
 
 async function viewHome() {
-  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements', 'annuaire', 'archives']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
+  const n = {}; for (const c of ['events', 'clubs', 'membres', 'classements', 'annuaire', 'archives', 'documentations']) n[c] = (await getDocs(collection(db, c))).docs.map(d => d.data());
   const people = k => n.membres.filter(m => catOf(m) === k).length;
   const S = SCHEMA.events, up = n.events.filter(e => e.date >= today).sort(S.sort);
   const T = (k, i, num, lab, sub) => `<button class="tile" data-go="${k}"><span class="i">${ic(i, 24)}</span><span class="n">${num}</span><b>${lab}</b><small>${sub}</small></button>`;
   $('#main').innerHTML = `<div class="hello"><h1>Bienvenue dans l'administration</h1><p>Choisis ce que tu veux modifier. Chaque changement apparaît sur le site dès l'enregistrement.</p></div>
-  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('annuaire', 'ext', n.annuaire.length, 'Annuaire', 'Sites des comités voisins')}${T('archives', 'clip', n.archives.length, 'Archives', 'PV, résultats, classements passés')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
+  <div class="tiles">${T('events', 'cal', n.events.length, 'Compétitions', `${up.length} à venir`)}${T('clubs', 'pin', n.clubs.length, 'Clubs', 'Coordonnées, présidents, terrains')}${T('membres', 'users', people('comite'), 'Membres du comité', 'Organigramme et contacts')}${T('arbitres', 'whistle', people('arbitre'), 'Arbitres', 'Liste des arbitres du département')}${T('educateurs', 'award', people('educateur'), 'Éducateurs / Initiateurs', 'Encadrants diplômés')}${T('annuaire', 'ext', n.annuaire.length, 'Annuaire', 'Sites des comités voisins')}${T('archives', 'clip', n.archives.length, 'Archives', 'PV, résultats, classements passés')}${T('documentations', 'file', n.documentations.length, 'Documentations', 'Règlements, formulaires, liens utiles')}${T('classements', 'chart', n.classements.length, 'Classements', 'Tableaux de points, import Excel')}${T('settings', 'sliders', '—', 'Infos du site', 'Accueil, chiffres, adresse, PDF')}</div>
   ${up.length ? `<div class="sech"><h2>Prochaines compétitions</h2><button class="lnkb" data-go="events">Voir tout le calendrier</button></div>${up.slice(0, 4).map(e => `<div class="row">${S.left(e)}<div class="m"><strong>${esc(e.titre)}</strong><small>${S.sub(e)}</small></div></div>`).join('')}` : ''}
   ${n.events.length + n.clubs.length ? '' : `<div style="margin-top:1rem">${empty('Base vide : ouvre l\'onglet <b>Import</b> pour reprendre le contenu actuel du site.')}</div>`}`;
   $('#main').onclick = e => { const b = e.target.closest('[data-go]'); if (b) { tab = b.dataset.go; start(); window.scrollTo(0, 0); } };
@@ -478,7 +493,7 @@ async function viewList(col) {
     $('#list').innerHTML = keys.map(k => `<div class="gh">${esc(S.glabel(k))} <span>(${g[k].length})</span></div>` + g[k].map(x => `<div class="row ${x.date && x.date < today ? 'past' : ''}">${S.left(x)}<div class="m"><strong>${esc(S.title(x))}</strong><small>${S.sub(x)}</small></div><div class="act"><button class="btn b-ln" data-e="${x._id}">${ic('edit', 16)}Modifier</button><button class="btn b-ko b-ic" data-d="${x._id}" aria-label="Supprimer" title="Supprimer">${ic('trash', 16)}</button></div></div>`).join('')).join(''); };
   pdfBind();
   draw(); ['#q', '#mo', '#ty'].forEach(s => $(s) && ($(s).oninput = draw));
-  $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'actualites' ? { statut: 'brouillon', publieLe: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : col === 'membres' ? { groupe: 'membre', ordre: cache[col].length + 1 } : { ordre: cache[col].length + 1 });
+  $('#add').onclick = () => edit(col, col === 'events' ? { type: 'concours', date: today } : col === 'actualites' ? { statut: 'brouillon', publieLe: today } : col === 'clubs' ? { secteur: 'centre', prLabel: 'Président' } : col === 'membres' ? { groupe: 'membre', ordre: cache[col].length + 1 } : col === 'documentations' ? { categorie: 'reglements', ordre: cache[col].length + 1 } : { ordre: cache[col].length + 1 });
   $('#main').onclick = async e => { const b = e.target.closest('[data-e],[data-d]'); if (!b) return; const id = b.dataset.e || b.dataset.d, x = cache[col].find(i => i._id === id);
     if (b.dataset.e) edit(col, x); else if (await ask('Mettre à la corbeille ?', `« ${S.title(x)} » pourra être restauré pendant 30 jours.`, 'Mettre à la corbeille')) { try { await trash(C, id, x); toast('Placé dans la corbeille'); show(); } catch (er) { toast('Échec : ' + er.message, 1); } } };
 }
@@ -594,7 +609,7 @@ async function saveCl() {
 }
 
 /* ===== Messages, Corbeille, Statistiques ===== */
-const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], archives: ['Archive', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], archives: ['Archive', d => d.titre], documentations: ['Documentation', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
 const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 
 async function trash(col, id, x) {
@@ -650,7 +665,7 @@ async function viewTrash() {
       badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
 }
 
-const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives' };
+const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives', documentations: 'Documentations' };
 let statsDays = 30;
 async function viewStats() {
   const snap = await getDocs(collection(db, 'stats_vues'));
