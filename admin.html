@@ -386,7 +386,7 @@ SCHEMA.documentations = {
   f: [['h','Le document'], ['categorie','Catégorie','select',DOCCAT], ['titre','Titre (ex : Règlement des championnats)'], ['description','Description (facultatif)','textarea'], ['ordre','Position (1 = en premier)','number'],
       ['h','Lien'], ['lien','Adresse du fichier ou de la page (https://…)','url'], ['lienTexte','Texte du bouton (facultatif, ex : Télécharger le règlement)']]
 };
-  /* Tirages, Championnats, Championnat des clubs, Résultats : même fonctionnement que les Archives */
+/* Tirages, Championnats, Championnat des clubs, Résultats : même fonctionnement que les Archives */
 const EPREUVES = [['tete','Tête à tête'],['doublette','Doublette'],['triplette','Triplette'],['mixte','Mixte'],['feminin','Féminin'],['jeunes','Jeunes'],['veterans','Vétérans'],['provencal','Jeu provençal'],['autre','Autre']];
 const DIVISIONS = [['d1','Division 1'],['d2','Division 2'],['d3','Division 3'],['coupe','Coupe'],['autre','Autre']];
 const DOCS = (tab, desc, add, cats) => ({
@@ -423,8 +423,8 @@ $('#out').onclick = () => signOut(auth);
 
 /* Navigation (menu hamburger) */
 let tab = 'home', cache = {};
-const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], archives: ['clip', 'Archives'], documentations: ['file', 'Documentations'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], tirages: ['clip', 'Tirages'], championnats: ['award', 'Championnats'], cdc: ['users', 'Champ. des clubs'], resultats: ['stats', 'Résultats'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
-const GROUPS = [['Général', ['home', 'messages', 'stats']], ['Contenu du site', ['events', 'actualites', 'clubs', 'membres', 'arbitres', 'educateurs', 'annuaire', 'archives', 'tirages', 'championnats', 'cdc', 'resultats', 'documentations', 'classements']], ['Outils', ['settings', 'import', 'corbeille']]];
+const NAMES = { home: ['grid', 'Accueil'], events: ['cal', 'Calendrier'], actualites: ['news', 'Actualités'], messages: ['mail', 'Messages'], clubs: ['pin', 'Clubs'], membres: ['users', 'Le Comité'], arbitres: ['whistle', 'Arbitres'], educateurs: ['award', 'Éducateurs'], annuaire: ['ext', 'Annuaire'], archives: ['clip', 'Archives'], documentations: ['file', 'Documentations'], classements: ['chart', 'Classements'], stats: ['stats', 'Statistiques'], tirages: ['clip', 'Tirages'], championnats: ['award', 'Championnats'], championnatsclubs: ['users', 'Champ. des clubs'], resultats: ['stats', 'Résultats'], corbeille: ['trash', 'Corbeille'], settings: ['sliders', 'Infos du site'], import: ['dl', 'Import'] };
+const GROUPS = [['Général', ['home', 'messages', 'stats']], ['Contenu du site', ['events', 'actualites', 'clubs', 'membres', 'arbitres', 'educateurs', 'annuaire', 'archives', 'tirages', 'championnats', 'championnatsclubs', 'resultats', 'documentations', 'classements']], ['Outils', ['settings', 'import', 'corbeille']]];
 const drawer = $('#drawer'), scrim = $('#scrim'), burger = $('#burger');
 burger.innerHTML = ic('menu', 22) + '<span id="curname"></span>';
 $('#dclose').innerHTML = ic('x', 22);
@@ -627,7 +627,7 @@ async function saveCl() {
 }
 
 /* ===== Messages, Corbeille, Statistiques ===== */
-const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], archives: ['Archive', d => d.titre], documentations: ['Documentation', d => d.titre], tirages: ['Tirage', d => d.titre], championnats: ['Championnat', d => d.titre], cdc: ['Champ. des clubs', d => d.titre], resultats: ['Résultat', d => d.titre],, messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
+const KIND = { events: ['Compétition', d => d.titre], clubs: ['Club', d => d.ville], membres: ['Membre', d => d.nom], classements: ['Classement', d => d.nom], actualites: ['Actualité', d => d.titre], annuaire: ['Site', d => d.nom], archives: ['Archive', d => d.titre], documentations: ['Documentation', d => d.titre], tirages: ['Tirage', d => d.titre], championnats: ['Championnat', d => d.titre], championnatsclubs: ['Champ. des clubs', d => d.titre], resultats: ['Résultat', d => d.titre], messages: ['Message', d => `${d.nom} — ${d.sujet || 'Sans sujet'}`] };
 const fdate = t => t ? new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 
 async function trash(col, id, x) {
@@ -683,7 +683,7 @@ async function viewTrash() {
       badge(); viewTrash(); } catch (er) { toast('Échec : ' + er.message, 1); } };
 }
 
-const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives', documentations: 'Documentations' };
+const PAGES = { accueil: 'Accueil', comite: 'Le Comité', clubs: 'Les clubs', calendrier: 'Calendrier', annuaire: 'Annuaire', classement: 'Classements', archives: 'Archives', documentations: 'Documentations', cdc: 'Champ. des clubs', resultats: 'Résultats' };
 let statsDays = 30;
 async function viewStats() {
   const snap = await getDocs(collection(db, 'stats_vues'));
@@ -694,18 +694,18 @@ async function viewStats() {
 
   const n = statsDays, DAY = 864e5, iso = ms => new Date(ms).toISOString().slice(0, 10);
   const range = (len, off) => Array.from({ length: len }, (_, i) => { const d = iso(Date.now() - (len - 1 - i + off) * DAY); return { d, t: byDay[d]?.t || 0, p: byDay[d]?.p || {} }; });
-  const cur = range(n, 0), prev = range(n, n), sum = a => a.reduce((x, y) => x + y.t, 0);
-  const total = sum(cur), before = sum(prev), todayN = byDay[iso(Date.now())]?.t || 0;
+  const curP = range(n, 0), prev = range(n, n), sum = a => a.reduce((x, y) => x + y.t, 0);
+  const total = sum(curP), before = sum(prev), todayN = byDay[iso(Date.now())]?.t || 0;
   const long = d => new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   const short = d => d.slice(8) + '/' + d.slice(5, 7);
 
-  const pages = {}; cur.forEach(x => Object.entries(x.p).forEach(([k, v]) => pages[k] = (pages[k] || 0) + v));
+  const pages = {}; curP.forEach(x => Object.entries(x.p).forEach(([k, v]) => pages[k] = (pages[k] || 0) + v));
   const top = Object.entries(pages).sort((a, b) => b[1] - a[1]), name = k => PAGES[k] || k;
-  const best = cur.reduce((m, x) => x.t > m.t ? x : m, cur[0]);
+  const best = curP.reduce((m, x) => x.t > m.t ? x : m, curP[0]);
   const diff = before ? Math.round((total - before) / before * 100) : null;
   const trend = diff === null ? 'Pas de période précédente à comparer' : diff === 0 ? 'Stable par rapport à la période précédente' : `<span class="${diff > 0 ? 'st-up' : 'st-dn'}">${diff > 0 ? '▲ +' : '▼ '}${diff} %</span> par rapport aux ${n} jours d'avant`;
 
-  const mx = Math.max(...cur.map(x => x.t), 1), step = Math.ceil(n / 6);
+  const mx = Math.max(...curP.map(x => x.t), 1), step = Math.ceil(n / 6);
   const lab = (x, i) => n === 7 ? ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'][new Date(x.d + 'T12:00:00').getDay()] : (i === n - 1 || i % step === 0) ? short(x.d) : '';
   const tile = (l, v, s, cls = '') => `<div class="st-tile"><small>${l}</small><div class="v ${cls}">${v}</div><div class="s">${s}</div></div>`;
 
@@ -713,14 +713,16 @@ async function viewStats() {
     `<div class="st-top" role="group" aria-label="Période">${[7, 30, 90].map(d => `<button data-p="${d}" class="${d === n ? 'on' : ''}">${d} derniers jours</button>`).join('')}</div>` +
     `<div class="st-tiles">${tile('Aujourd\'hui', todayN, todayN > 1 ? 'pages vues' : 'page vue')}${tile(`Vues sur ${n} jours`, total, trend)}${tile('Moyenne par jour', (total / n).toFixed(1).replace('.', ','), total ? `Meilleur jour : ${esc(long(best.d))} (${best.t})` : 'Aucune visite sur la période')}${tile('Page la plus vue', top.length ? esc(name(top[0][0])) : '—', top.length ? `${top[0][1]} vues (${Math.round(top[0][1] / total * 100)} %)` : '', 'txt')}</div>` +
     `<div class="st-card"><h2>Visites jour après jour</h2><p>Chaque barre est un jour. Passez la souris (ou appuyez) sur une barre pour voir la date exacte. Aujourd'hui est en doré.</p>
-      <div class="st-chart" role="img" aria-label="Graphique des vues par jour sur ${n} jours, maximum ${mx} vues en un jour"><span class="mx">${mx} vues</span>${cur.map(x => `<div class="st-col ${x.d === iso(Date.now()) ? 'td' : ''}" title="${esc(long(x.d))} : ${x.t} vue${x.t > 1 ? 's' : ''}"><div class="st-bar" style="height:${x.t / mx * 100}%"></div></div>`).join('')}</div>
-      <div class="st-x" aria-hidden="true">${cur.map((x, i) => `<span>${lab(x, i)}</span>`).join('')}</div></div>` +
+      <div class="st-chart" role="img" aria-label="Graphique des vues par jour sur ${n} jours, maximum ${mx} vues en un jour"><span class="mx">${mx} vues</span>${curP.map(x => `<div class="st-col ${x.d === iso(Date.now()) ? 'td' : ''}" title="${esc(long(x.d))} : ${x.t} vue${x.t > 1 ? 's' : ''}"><div class="st-bar" style="height:${x.t / mx * 100}%"></div></div>`).join('')}</div>
+      <div class="st-x" aria-hidden="true">${curP.map((x, i) => `<span>${lab(x, i)}</span>`).join('')}</div></div>` +
     `<div class="st-card"><h2>Pages les plus consultées</h2><p>Sur les ${n} derniers jours.</p>${top.length ? top.map(([k, v]) => `<div class="st-pg"><span>${esc(name(k))}</span><div class="t"><i style="width:${v / top[0][1] * 100}%"></i></div><b>${v} <small>(${Math.round(v / total * 100)} %)</small></b></div>`).join('') : '<p class="ex-empty">Aucune visite sur cette période.</p>'}</div>` +
     `<div class="st-help"><b>À savoir :</b> une « vue » correspond à une page ouverte par un visiteur, comptée une seule fois par visite. Aucun cookie ni donnée personnelle n'est utilisé, donc les chiffres sont des ordres de grandeur.</div>`;
   $('#main').onclick = e => { const b = e.target.closest('[data-p]'); if (b) { statsDays = +b.dataset.p; viewStats(); } };
 }
 
-/* Import du contenu actuel */
+/* Import du contenu actuel
+   Les imports « Le Comité » et « Les Clubs » sont retirés : les pages comite.html et clubs.html
+   ne contiennent plus de coordonnées, les lire effacerait les données de la base. */
 function viewImport() {
   $('#main').innerHTML = head('Import', 'À faire une seule fois au départ : copie dans Firebase ce qui est écrit aujourd\'hui dans tes pages. Attention : les données déjà présentes dans la section choisie sont remplacées.') +
   `<div class="card"><div class="flex">${[['settings', 'Infos du site'], ['events', 'Le Calendrier'], ['annuaire', 'L\'Annuaire']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}">${ic('dl', 16)}Importer : ${l}</button>`).join('')}</div><p id="imsg" role="status" style="font-weight:700;margin:1rem 0 0"></p></div>`;
@@ -744,19 +746,6 @@ const IMPORT = {
     s.tel = c[1].querySelector('a').textContent; s.email = c[2].querySelector('a').textContent; s.emailDev = c[3].querySelector('a').textContent;
     const pdf = (await page('calendrier.html')).querySelector('.dl-btn'); if (pdf) { s.pdfUrl = pdf.getAttribute('href'); s.pdfLabel = pdf.textContent.replace('⬇', '').trim(); }
     await setDoc(doc(db, 'settings', 'general'), s); return 1;
-  },
-  async membres() {
-    // Seuls les membres du comité sont lus dans la page et remplacés : arbitres et éducateurs ne sont pas touchés.
-    const d = await page('comite.html'), g = ['president', 'vice', 'admin', 'membre'];
-    return replaceAll('membres', [...d.querySelectorAll('#panel-comite .org-card')].map((el, i) => { const tels = el.querySelectorAll('.org-tel');
-      return { categorie: 'comite', groupe: g.find(k => el.classList.contains(k)) || 'membre', role: el.querySelector('.org-role').textContent.trim(), nom: el.querySelector('.org-name').textContent.trim(),
-        tel: tels[0]?.textContent.trim() || '', email: el.querySelector('.org-email')?.textContent.trim() || '', adresse: tels.length > 1 ? tels[tels.length - 1].textContent.trim() : '', ordre: i + 1 }; }),
-      m => catOf(m) === 'comite');
-  },
-  async clubs() {
-    const d = await page('clubs.html'), map = { 'Président': 'president', 'Présidente': 'president', 'Adresse': 'adresse', 'Téléphone': 'tel', 'Email': 'email', 'Terrain': 'terrain' };
-    return replaceAll('clubs', [...d.querySelectorAll('.club-card')].map(el => { const c = { num: el.querySelector('.club-num').textContent, secteur: el.dataset.secteur, assoc: el.querySelector('.club-nom-assoc').textContent, ville: el.querySelector('h3').firstChild.textContent, prLabel: 'Président', tel: '', email: '', adresse: '', terrain: '', president: '' };
-      el.querySelectorAll('.club-info-row div').forEach(r => { const l = r.querySelector('.club-info-label').textContent; if (l.startsWith('Présid')) c.prLabel = l; if (map[l]) c[map[l]] = r.textContent.slice(l.length).trim(); }); return c; }));
   },
   async events() {
     const txt = await (await fetch('calendrier.html?' + Date.now())).text(), m = txt.match(/const EVENTS = (\[[\s\S]*?\n\s*\]);/);
