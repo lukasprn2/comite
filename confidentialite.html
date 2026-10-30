@@ -247,16 +247,32 @@ window.addEventListener('scroll', () => {
 });
 </script>
 
-<!-- ── DONNÉES : lues depuis Firebase (modifiables dans admin.html, onglet « Archives ») ── -->
+<!-- ── TEXTES : lus depuis Firebase (modifiables dans admin.html, onglet « Confidentialité »).
+     Si la base est vide ou injoignable, le texte écrit dans la page reste affiché. ── -->
 <script type="module">
 import { db } from './firebase-config.js';
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+/* **gras** et [texte](lien) ; seuls les liens http(s) et mailto sont acceptés */
+const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+  .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g, (m, t, u) => `<a href="${u}"${u.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${t}</a>`);
+const blocks = txt => String(txt || '').trim().split(/\n\s*\n/).filter(Boolean).map(b => {
+  const l = b.split('\n').map(x => x.trim()).filter(Boolean);
+  return l.every(x => x.startsWith('- ')) ? '<ul>' + l.map(x => '<li>' + inline(x.slice(2)) + '</li>').join('') + '</ul>' : '<p>' + l.map(inline).join('<br>') + '</p>';
+}).join('');
 try {
-  const s = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
+  const [g, p] = await Promise.all([getDoc(doc(db, 'settings', 'general')), getDoc(doc(db, 'settings', 'confidentialite'))]);
+  const s = g.data() || {}, d = p.data();
   const adr = String(s.adresse || '').split('\n').map(x => x.trim()).filter(Boolean).join(', ');
-  if (adr) document.getElementById('resp-contact').textContent = 'Adresse : ' + adr + '.';
-  if (s.email) { const a = document.getElementById('resp-mail'); a.href = 'mailto:' + s.email; a.textContent = s.email; }
+  if (d && d.sections && d.sections.length) {
+    const sub = t => String(t || '').replaceAll('{adresse}', adr || 'indiquée en bas de page').replaceAll('{email}', s.email || 'CD80@petanque.fr');
+    const date = d.majLe ? new Date(d.majLe + 'T12:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+    document.querySelector('.legal article').innerHTML = (date ? `<p class="maj">Dernière mise à jour : ${esc(date)}</p>` : '') +
+      d.sections.map(x => `<h2>${esc(x.titre)}</h2>${blocks(sub(x.texte))}`).join('');
+  } else {
+    if (adr) document.getElementById('resp-contact').textContent = 'Adresse : ' + adr + '.';
+    if (s.email) { const a = document.getElementById('resp-mail'); a.href = 'mailto:' + s.email; a.textContent = s.email; }
+  }
 } catch (e) {}
 </script>
 
