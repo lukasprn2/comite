@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/png" href="logocomite.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidentialité — Comité de la Somme FFPJP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a2342">
+<link rel="stylesheet" href="base.css">
+<style>
+/* ── PAGE HERO (identique aux autres pages) ── */
+.page-hero { background: linear-gradient(160deg, var(--bleu) 0%, #0d3060 55%, #1a5276 100%); padding: calc(var(--nav-h) + 2rem) var(--pad-x) 2.5rem; text-align: center; position: relative; overflow: hidden; border-bottom: 3px solid var(--or); }
+.page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(201,168,76,0.12) 0%, transparent 70%); pointer-events: none; }
+.boule { position: absolute; border-radius: 50%; opacity: 0.07; background: radial-gradient(circle at 35% 35%, var(--or), var(--bleu-mid)); }
+.boule-1 { width: 200px; height: 200px; top: -60px; right: -60px; }
+.boule-2 { width: 110px; height: 110px; bottom: -20px; left: -20px; }
+.page-hero-badge { position: relative; display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35); color: var(--or-light); font-size: 0.7rem; letter-spacing: 2.5px; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 40px; margin-bottom: 1rem; }
+.page-hero h1 { position: relative; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 12vw, 4.5rem); color: #fff; letter-spacing: 2px; line-height: 1; margin-bottom: 0.5rem; }
+.page-hero h1 em { color: var(--or); font-style: normal; }
+.page-hero p { position: relative; color: rgba(255,255,255,0.55); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+.page-hero .breadcrumb { position: static; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+.page-hero .breadcrumb a { color: var(--or-light); }
+.page-hero .breadcrumb a:hover { text-decoration: underline; }
+.container { max-width: 1100px; }
+
+/* ── ARCHIVES ── */
+#archives { background: var(--bleu); padding: 2.5rem var(--pad-x) 3rem; min-height: 50vh; }
+.arc-intro { text-align: center; color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.6; max-width: 62ch; margin: 0 auto 2rem; }
+.arc-tools { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.8rem; }
+.arc-tools input, .arc-tools select { width: 100%; font: inherit; font-size: 0.9rem; color: #fff; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0.7rem 0.9rem; min-height: 44px; transition: border-color 0.2s, background 0.2s; }
+.arc-tools input::placeholder { color: rgba(255,255,255,0.4); }
+.arc-tools select option { color: #1a1f2e; background: #fff; }
+.arc-tools input:focus, .arc-tools select:focus { outline: none; border-color: var(--or); background: rgba(255,255,255,0.1); }
+.arc-year { margin-bottom: 2rem; }
+.arc-year-title { display: flex; align-items: baseline; gap: 0.7rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: var(--or); margin-bottom: 0.9rem; padding-bottom: 0.3rem; border-bottom: 1px solid rgba(201,168,76,0.3); }
+.arc-year-title span { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; letter-spacing: 1px; color: rgba(255,255,255,0.4); }
+.arc-list { display: grid; grid-template-columns: 1fr; gap: 0.7rem; }
+.arc-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+.arc-cat { align-self: flex-start; font-size: 0.64rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(201,168,76,0.8); }
+.arc-title { font-size: 1rem; font-weight: 600; color: #fff; line-height: 1.25; overflow-wrap: anywhere; }
+.arc-desc { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+.arc-btn { align-self: flex-start; margin-top: 0.2rem; display: inline-flex; align-items: center; gap: 0.4rem; background: var(--or); color: var(--bleu); font-weight: 700; font-size: 0.82rem; padding: 0.55rem 1rem; border-radius: 8px; text-decoration: none; min-height: 40px; transition: background 0.2s; }
+.arc-btn:hover { background: var(--or-light); }
+.arc-empty { text-align: center; color: rgba(255,255,255,0.55); padding: 2.5rem 1rem; border: 1px dashed rgba(201,168,76,0.3); border-radius: 10px; }
+.arc-btn { border: 0; font: inherit; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
+.arc-btn:disabled { opacity: .6; cursor: wait; }
+.arc-btn.alt { background: transparent; color: var(--or-light); border: 1px solid rgba(201,168,76,0.5); }
+.arc-btn.alt:hover { background: rgba(201,168,76,0.12); }
+.arc-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
+.arc-actions .arc-btn { margin-top: 0; }
+
+/* ── FENÊTRE DU TABLEAU ── */
+#tbDlg { border: 0; border-radius: 14px; padding: 0; width: min(1000px, 96vw); max-height: 92vh; border-top: 5px solid var(--or); background: #fff; color: #1a1f2e; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+#tbDlg::backdrop { background: rgba(10,35,66,0.7); }
+.tb-in { display: flex; flex-direction: column; max-height: 92vh; }
+.tb-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.8rem 1rem 0.8rem 1.2rem; background: var(--bleu); color: #fff; }
+.tb-head h2 { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: 2px; font-size: 1.6rem; line-height: 1.1; margin: 0; overflow-wrap: anywhere; }
+.tb-x { background: none; border: 0; color: #fff; font-size: 1.8rem; line-height: 1; min-width: 44px; min-height: 44px; border-radius: 8px; cursor: pointer; }
+.tb-x:hover { background: rgba(255,255,255,0.12); }
+.tb-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0.8rem 1.2rem; border-bottom: 1px solid #dfe3e8; align-items: center; }
+.tb-bar select, .tb-bar input { font: inherit; font-size: 0.9rem; padding: 0.55rem 0.75rem; border: 1.5px solid #dfe3e8; border-radius: 8px; min-height: 42px; background: #fff; color: #1a1f2e; }
+.tb-bar select { flex: 1; min-width: 130px; }
+.tb-bar input { flex: 2; min-width: 160px; }
+.tb-bar select:focus, .tb-bar input:focus { outline: none; border-color: var(--or); }
+.tb-wrap { overflow: auto; flex: 1; padding: 0 1.2rem 1rem; }
+.tb-wrap table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+.tb-wrap th { position: sticky; top: 0; z-index: 2; background: #faf6e8; color: var(--bleu); text-align: left; padding: 0.55rem 0.6rem; border-bottom: 2px solid var(--or); white-space: nowrap; }
+.tb-wrap td { padding: 0.45rem 0.6rem; border-bottom: 1px solid #eef0f4; }
+.tb-wrap tbody tr:nth-child(even) td { background: #fafbfc; }
+.tb-n { color: #667085; font-size: 0.8rem; margin: 0.7rem 0 0; }
+
+/* Légende des abréviations */
+.tb-leg { margin: 0 1.2rem; border-bottom: 1px solid #dfe3e8; font-size: 0.84rem; }
+.tb-leg summary { cursor: pointer; padding: 0.65rem 0; font-weight: 600; color: var(--bleu); min-height: 44px; display: flex; align-items: center; }
+.tb-leg dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.35rem 1.4rem; margin: 0 0 0.6rem; }
+.tb-leg dl div { display: flex; gap: 0.6rem; align-items: baseline; }
+.tb-leg dt { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; font-size: 1.1rem; color: var(--bleu); min-width: 3.4rem; }
+.tb-leg dd { margin: 0; color: #475066; }
+.tb-leg p { margin: 0 0 0.8rem; color: #667085; }
+.tb-note { background: #faf6e8; border-left: 4px solid var(--or); border-radius: 6px; padding: 0.65rem 0.85rem; margin: 0.9rem 0 0.2rem; font-size: 0.85rem; line-height: 1.5; color: #5b4a14; }
+
+/* Palmarès : une ligne par année, les champions les uns sous les autres */
+.pal td { vertical-align: top; }
+.pal .an { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; line-height: 1.1; color: var(--bleu); width: 5.5rem; white-space: nowrap; }
+.pal td div { padding: 1px 0; font-weight: 500; }
+.pal td em { color: #98a2b3; font-size: 0.82rem; }
+.pal tr.vide .an { color: #b5bcc8; }
+
+/* Bilan : titres par joueur */
+.bil th, .bil td { text-align: center; }
+.bil th:nth-child(2), .bil td:nth-child(2) { text-align: left; position: sticky; left: 0; background: #fff; border-right: 1px solid #eef0f4; font-weight: 600; white-space: nowrap; }
+.bil th:nth-child(2) { z-index: 3; background: #faf6e8; }
+.bil tbody tr:nth-child(even) td:nth-child(2) { background: #fafbfc; }
+.bil td:first-child { color: #667085; }
+.bil .z { color: #c3c9d4; }
+.bil th.tot, .bil td.tot { background: #fbf3d9 !important; color: var(--bleu); font-weight: 700; }
+.bil th[title] { cursor: help; }
+
+@media (min-width: 640px) {
+  .arc-tools { flex-direction: row; }
+  .arc-tools input { flex: 2; }
+  .arc-tools select { flex: 1; }
+  .arc-list { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 768px) {
+  .page-hero { padding-bottom: 3.5rem; }
+  .page-hero p { font-size: 0.82rem; letter-spacing: 3px; }
+  .boule-1 { width: 280px; height: 280px; }
+  .boule-2 { width: 140px; height: 140px; left: 4%; }
+  #archives { padding: 4rem var(--pad-x) 5rem; }
+}
+@media (hover: hover) {
+  .arc-card:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) { .arc-card, .arc-btn { transition: none; } }
+.legal { background: #fff; color: #1a1f2e; padding: 2.5rem var(--pad-x) 4rem; }
+.legal article { max-width: 760px; margin: 0 auto; line-height: 1.7; font-size: 0.95rem; }
+.legal h2 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.35rem; color: var(--bleu); margin: 2rem 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 2px solid var(--or); }
+.legal h2:first-child { margin-top: 0; }
+.legal ul { padding-left: 1.2rem; } .legal li { margin-bottom: 0.5rem; }
+.legal a { color: var(--bleu); text-decoration: underline; }
+.legal .maj { color: #667085; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav id="navbar">
+  <a class="nav-brand" href="index.html">
+    <img src="logocomite.png" alt="Logo Comité de la Somme FFPJP">
+    <div class="nav-brand-text">
+      <span>Comité de la Somme</span>
+      <small>FFPJP — Pétanque 80</small>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="comite.html">Le Comité</a></li>
+    <li><a href="clubs.html">Les Clubs</a></li>
+    <li><a href="calendrier.html">Calendrier</a></li>
+    <li><a href="annuaire.html">Annuaire</a></li>
+    <li><a href="archives.html">Archives</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+  <div class="boule boule-1"></div>
+  <div class="boule boule-2"></div>
+  <div class="page-hero-badge">FFPJP — Département 80</div>
+  <h1>Confidentialité</h1>
+  <p>Vos données personnelles</p>
+  <div class="breadcrumb">
+    <a href="index.html">Accueil</a>
+    <span>›</span>
+    <span>Confidentialité</span>
+  </div>
+</div>
+
+<section class="legal">
+<article>
+  <p class="maj">Dernière mise à jour : 30 octobre 2026</p>
+
+  <h2>1. Qui est responsable de vos données ?</h2>
+  <p>Le Comité Départemental de la Somme de la Fédération Française de Pétanque et Jeu Provençal (« le comité »). <span id="resp-contact"></span></p>
+  <p>Pour toute question sur vos données, écrivez-nous à <a id="resp-mail" href="mailto:CD80@petanque.fr">CD80@petanque.fr</a>.</p>
+
+  <h2>2. Quelles données, pourquoi, et sur quelle base ?</h2>
+  <ul>
+    <li><strong>Formulaire de contact</strong> (nom, email, sujet, message) : pour répondre à votre demande. Base : l'intérêt légitime du comité à répondre aux personnes qui le sollicitent. Conservation : le temps de traiter la demande, puis 12 mois au maximum.</li>
+    <li><strong>Coordonnées publiées</strong> (téléphone, email, adresse) des membres du comité, arbitres, éducateurs et responsables de clubs, sur les pages « Le Comité » et « Les Clubs » : pour que les licenciés et les clubs puissent les joindre. Base : <strong>votre accord</strong>, demandé et daté par le comité. Conservation : jusqu'au retrait de votre accord ou à la fin de votre fonction.</li>
+    <li><strong>Nom et fonction</strong> des dirigeants et responsables : pour informer les licenciés de l'organisation du comité. Base : l'intérêt légitime du comité.</li>
+    <li><strong>Résultats, classements et palmarès</strong> (noms, clubs, résultats) : pour l'organisation des compétitions et la mémoire sportive du département. Base : l'intérêt légitime du comité. Vous pouvez vous y opposer pour des raisons tenant à votre situation.</li>
+    <li><strong>Statistiques de fréquentation</strong> : nombre de pages vues par jour et par page, sans cookie ni identifiant personnel.</li>
+  </ul>
+
+  <h2>3. Qui reçoit ces données ?</h2>
+  <p>Les personnes habilitées du comité, qui gèrent le site avec un identifiant et un mot de passe personnels. Les prestataires techniques qui hébergent le site et sa base de données (notamment Google Firebase) agissent pour notre compte. Les informations publiées sur le site (coordonnées, résultats) sont visibles par tout visiteur.</p>
+  <p>Certains prestataires peuvent traiter des données en dehors de l'Union européenne. Dans ce cas, le comité veille à ce que les garanties prévues par le RGPD s'appliquent.</p>
+
+  <h2>4. Cookies et services tiers</h2>
+  <p>Le site n'utilise aucun cookie publicitaire ni de suivi. Pour s'afficher, ses pages chargent des polices de caractères et des bibliothèques depuis des serveurs tiers (Google, Cloudflare), qui reçoivent alors votre adresse IP.</p>
+
+  <h2>5. Vos droits</h2>
+  <p>Vous pouvez demander l'accès à vos données, leur rectification, leur effacement, la limitation de leur traitement, ou vous y opposer. Quand une donnée est publiée avec votre accord, vous pouvez le retirer à tout moment : elle sera retirée du site rapidement. Écrivez à l'adresse indiquée plus haut ; nous répondons dans un délai d'un mois.</p>
+  <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez saisir la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>, 3 Place de Fontenoy, TSA 80715, 75334 Paris Cedex 07.</p>
+</article>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logocomite.png" alt="Logo Comité de la Somme">
+      <p>Comité Départemental de la Somme (80) — Fédération Française de Pétanque et Jeu Provençal. Toutes les informations et résultats sur la pétanque de notre département.</p>
+    </div>
+    <div>
+      <h5>Rubriques</h5>
+      <ul class="footer-links">
+        <li><a href="comite.html">Le Comité</a></li>
+        <li><a href="clubs.html">Les Clubs</a></li>
+        <li><a href="calendrier.html">Calendrier 2026</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/championnats/">Championnats</a></li>
+        <li><a href="classement.html">Classements</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/resultats/">Résultats</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Liens utiles</h5>
+      <ul class="footer-links">
+        <li><a href="annuaire.html">Annuaire</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/b/">Documentations</a></li>
+        <li><a href="https://comite-de-la-somme-3.e-monsite.com/pages/nouveautes/">Nouveautés</a></li>
+        <li><a href="archives.html">Archives</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens · <a href="confidentialite.html">Confidentialité</a></span>
+    <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(r => obs.observe(r));
+
+// Navbar shadow on scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow =
+    window.scrollY > 30 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+});
+</script>
+
+<!-- ── DONNÉES : lues depuis Firebase (modifiables dans admin.html, onglet « Archives ») ── -->
+<script type="module">
+import { db } from './firebase-config.js';
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+try {
+  const s = (await getDoc(doc(db, 'settings', 'general'))).data() || {};
+  const adr = String(s.adresse || '').split('\n').map(x => x.trim()).filter(Boolean).join(', ');
+  if (adr) document.getElementById('resp-contact').textContent = 'Adresse : ' + adr + '.';
+  if (s.email) { const a = document.getElementById('resp-mail'); a.href = 'mailto:' + s.email; a.textContent = s.email; }
+} catch (e) {}
+</script>
+
+
+<script src="nav.js"></script>
+</body>
+</html>
