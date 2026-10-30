@@ -50,6 +50,8 @@
 .arc-btn.alt:hover { background: rgba(201,168,76,0.12); }
 .arc-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
 .arc-actions .arc-btn { margin-top: 0; }
+
+/* ── FENÊTRE DU TABLEAU ── */
 #tbDlg { border: 0; border-radius: 14px; padding: 0; width: min(1000px, 96vw); max-height: 92vh; border-top: 5px solid var(--or); background: #fff; color: #1a1f2e; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
 #tbDlg::backdrop { background: rgba(10,35,66,0.7); }
 .tb-in { display: flex; flex-direction: column; max-height: 92vh; }
@@ -64,10 +66,38 @@
 .tb-bar select:focus, .tb-bar input:focus { outline: none; border-color: var(--or); }
 .tb-wrap { overflow: auto; flex: 1; padding: 0 1.2rem 1rem; }
 .tb-wrap table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
-.tb-wrap th { position: sticky; top: 0; background: #faf6e8; color: var(--bleu); text-align: left; padding: 0.55rem 0.6rem; border-bottom: 2px solid var(--or); white-space: nowrap; }
+.tb-wrap th { position: sticky; top: 0; z-index: 2; background: #faf6e8; color: var(--bleu); text-align: left; padding: 0.55rem 0.6rem; border-bottom: 2px solid var(--or); white-space: nowrap; }
 .tb-wrap td { padding: 0.45rem 0.6rem; border-bottom: 1px solid #eef0f4; }
 .tb-wrap tbody tr:nth-child(even) td { background: #fafbfc; }
 .tb-n { color: #667085; font-size: 0.8rem; margin: 0.7rem 0 0; }
+
+/* Légende des abréviations */
+.tb-leg { margin: 0 1.2rem; border-bottom: 1px solid #dfe3e8; font-size: 0.84rem; }
+.tb-leg summary { cursor: pointer; padding: 0.65rem 0; font-weight: 600; color: var(--bleu); min-height: 44px; display: flex; align-items: center; }
+.tb-leg dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.35rem 1.4rem; margin: 0 0 0.6rem; }
+.tb-leg dl div { display: flex; gap: 0.6rem; align-items: baseline; }
+.tb-leg dt { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; font-size: 1.1rem; color: var(--bleu); min-width: 3.4rem; }
+.tb-leg dd { margin: 0; color: #475066; }
+.tb-leg p { margin: 0 0 0.8rem; color: #667085; }
+.tb-note { background: #faf6e8; border-left: 4px solid var(--or); border-radius: 6px; padding: 0.65rem 0.85rem; margin: 0.9rem 0 0.2rem; font-size: 0.85rem; line-height: 1.5; color: #5b4a14; }
+
+/* Palmarès : une ligne par année, les champions les uns sous les autres */
+.pal td { vertical-align: top; }
+.pal .an { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; line-height: 1.1; color: var(--bleu); width: 5.5rem; white-space: nowrap; }
+.pal td div { padding: 1px 0; font-weight: 500; }
+.pal td em { color: #98a2b3; font-size: 0.82rem; }
+.pal tr.vide .an { color: #b5bcc8; }
+
+/* Bilan : titres par joueur */
+.bil th, .bil td { text-align: center; }
+.bil th:nth-child(2), .bil td:nth-child(2) { text-align: left; position: sticky; left: 0; background: #fff; border-right: 1px solid #eef0f4; font-weight: 600; white-space: nowrap; }
+.bil th:nth-child(2) { z-index: 3; background: #faf6e8; }
+.bil tbody tr:nth-child(even) td:nth-child(2) { background: #fafbfc; }
+.bil td:first-child { color: #667085; }
+.bil .z { color: #c3c9d4; }
+.bil th.tot, .bil td.tot { background: #fbf3d9 !important; color: var(--bleu); font-weight: 700; }
+.bil th[title] { cursor: help; }
+
 @media (min-width: 640px) {
   .arc-tools { flex-direction: row; }
   .arc-tools input { flex: 2; }
@@ -151,9 +181,10 @@
     <div class="tb-head"><h2 id="tbT"></h2><button type="button" class="tb-x" id="tbClose" aria-label="Fermer">&times;</button></div>
     <div class="tb-bar">
       <select id="tbS" aria-label="Choisir la feuille"></select>
-      <input id="tbQ" type="search" placeholder="Rechercher dans le tableau…" aria-label="Rechercher dans le tableau">
+      <input id="tbQ" type="search" placeholder="Rechercher un joueur, une année, un club…" aria-label="Rechercher dans le tableau">
       <button type="button" class="arc-btn" id="tbDl">Télécharger en Excel</button>
     </div>
+    <details class="tb-leg" id="tbLeg" hidden></details>
     <div class="tb-wrap" id="tbW"></div>
   </div>
 </dialog>
@@ -241,19 +272,86 @@ function draw() {
         (acts ? `<div class="arc-actions">${acts}</div>` : '') + '</article>'; }).join('') + '</div></div>').join('');
 }
 
+/* ── Libellés lisibles (d'après les abréviations du comité) ── */
+const NOMS = {
+  x3h: 'Triplette sénior masculin', x2h: 'Doublette sénior masculin', x1h: 'Tête à tête masculin',
+  x2mixte: 'Doublette mixte', x3mixte: 'Triplette mixte',
+  x3f: 'Triplette féminin', x2f: 'Doublette féminin', x1f: 'Tête à tête féminin',
+  x3pro: 'Triplette promotion', x2pro: 'Doublette provençal', x2prov: 'Doublette provençal',
+  v: 'Vétérans', corpo: 'Corpo (championnat corporatif)', bilan: 'Bilan : titres par joueur'
+};
+const LEGENDE = [
+  ['X3', 'Triplette'], ['X2', 'Doublette'], ['X1', 'Tête à tête'], ['H', 'Masculin (homme)'], ['F', 'Féminin'], ['Mixte', 'Équipe mixte'],
+  ['Pro', 'Promotion'], ['Prov', 'Provençal'], ['V', 'Vétérans'], ['Corpo', 'Championnat corporatif']
+];
+const NOTE_CORPO = 'Le Corpo est un championnat qui n\'existe plus depuis longtemps : le championnat corporatif, qui faisait s\'affronter des triplettes d\'une même corporation (dans le travail) et qui avait son championnat de France.';
+const norm = n => String(n || '').toLowerCase().replace(/[\s_\-]+/g, '');
+const nice = n => { const k = norm(n); return NOMS[k] ? (/^x/.test(k) ? `${NOMS[k]} (${n})` : NOMS[k]) : n; };
+const fix = c => String(c ?? '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+
+/* Nettoie une feuille : espaces insécables, colonnes vides, en-tête manquant */
+function clean(s) {
+  const cols = (s.colonnes || []).map(fix), rows = (s.lignes || []).map(r => r.v.map(fix));
+  const keep = cols.map((c, i) => c || rows.some(r => r[i]));
+  const C = cols.filter((_, i) => keep[i]), R = rows.map(r => r.filter((_, i) => keep[i])).filter(r => r.some(Boolean));
+  const bilan = C.some(c => /^total$/i.test(c));
+  if (bilan && !C[0]) C[0] = 'Rang';
+  const palmares = /^ann[ée]es?$/i.test(C[0] || '') && C.length >= 2;
+  return { cols: C, rows: R, bilan, palmares };
+}
+
+/* Palmarès : l'année n'est écrite que sur la 1re ligne de chaque équipe → on regroupe */
+function equipes(cols, rows) {
+  const ic = cols.findIndex((c, i) => i > 1 && /club/i.test(c));
+  const out = []; let g = null;
+  rows.forEach(r => {
+    if (r[0]) { g = { an: r[0], noms: [], club: '' }; out.push(g); }
+    else if (!g) { g = { an: '', noms: [], club: '' }; out.push(g); }
+    if (r[1]) g.noms.push(r[1]);
+    if (ic > 0 && r[ic] && !g.club) g.club = r[ic];
+  });
+  if (out.length && out.every(g => /^\d{4}$/.test(g.an))) out.sort((a, b) => b.an - a.an);   // plus récent en premier (tri stable)
+  return { eq: out, club: out.some(g => g.club) };
+}
+
+
 /* ── Fenêtre du tableau ── */
+const count = (n, mot) => `${n} ${mot}${n > 1 ? 's' : ''}`;
+function legende() {
+  return `<summary>Signification des abréviations</summary><dl>${LEGENDE.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>` +
+    `<p>Exemples : X3H = triplette sénior masculin · X2F = doublette féminin · X1H = tête à tête masculin · X2 Prov = doublette provençal.</p>`;
+}
 function sheet() {
   const s = cur.feuilles[+$('#tbS').value] || cur.feuilles[0], q = $('#tbQ').value.toLowerCase().trim();
-  const rows = s.lignes.filter(r => !q || r.v.join(' ').toLowerCase().includes(q));
-  $('#tbW').innerHTML = `<table><thead><tr>${s.colonnes.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
-    rows.map(r => `<tr>${r.v.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('') + `</tbody></table>` +
-    `<p class="tb-n">${rows.length} ligne${rows.length > 1 ? 's' : ''}${q ? ' trouvée' + (rows.length > 1 ? 's' : '') : ''}</p>`;
+  const d = clean(s), k = norm(s.nom), leg = $('#tbLeg');
+  leg.hidden = !(NOMS[k] || d.bilan); leg.open = d.bilan;
+  let h = k === 'corpo' ? `<p class="tb-note">${esc(NOTE_CORPO)}</p>` : '';
+
+  if (d.palmares) {                       /* Palmarès : Année · Champions · Club */
+    const { eq, club } = equipes(d.cols, d.rows);
+    const l = eq.filter(g => !q || [g.an, ...g.noms, g.club].join(' ').toLowerCase().includes(q));
+    h += `<table class="pal"><thead><tr><th>Année</th><th>Champions</th>${club ? '<th>Club</th>' : ''}</tr></thead><tbody>` +
+      l.map(g => `<tr class="${g.noms.length ? '' : 'vide'}"><td class="an">${esc(g.an)}</td><td>${g.noms.length ? g.noms.map(n => `<div>${esc(n)}</div>`).join('') : '<em>Pas de titre enregistré</em>'}</td>${club ? `<td>${esc(g.club)}</td>` : ''}</tr>`).join('') +
+      `</tbody></table><p class="tb-n">${count(l.length, 'année')}${q ? ' trouvée' + (l.length > 1 ? 's' : '') : ''}</p>`;
+  } else if (d.bilan) {                   /* Bilan : nombre de titres par joueur et par épreuve */
+    const last = d.cols.length - 1, l = d.rows.filter(r => !q || r.join(' ').toLowerCase().includes(q));
+    h += `<table class="bil"><thead><tr>${d.cols.map((c, i) => `<th${i > 1 && NOMS[norm(c)] ? ` title="${esc(NOMS[norm(c)])}"` : ''}${i === last ? ' class="tot"' : ''}>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
+      l.map(r => `<tr>${r.map((c, i) => i < 2 ? `<td>${esc(c)}</td>` : `<td${i === last ? ' class="tot"' : ''}>${c === '0' || c === '' ? '<span class="z">·</span>' : esc(c)}</td>`).join('')}</tr>`).join('') +
+      `</tbody></table><p class="tb-n">${count(l.length, 'joueur')}${q ? ' trouvé' + (l.length > 1 ? 's' : '') : ''} · survole le nom d'une colonne pour voir l'épreuve</p>`;
+  } else {                                /* Tableau quelconque */
+    const l = d.rows.filter(r => !q || r.join(' ').toLowerCase().includes(q));
+    h += `<table><thead><tr>${d.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
+      l.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('') + `</tbody></table>` +
+      `<p class="tb-n">${count(l.length, 'ligne')}${q ? ' trouvée' + (l.length > 1 ? 's' : '') : ''}</p>`;
+  }
+  $('#tbW').innerHTML = h;
 }
 function openTable(x) {
   cur = x; $('#tbT').textContent = x.titre; $('#tbQ').value = '';
-  $('#tbS').innerHTML = x.feuilles.map((s, i) => `<option value="${i}">${esc(s.nom)}</option>`).join('');
+  $('#tbS').innerHTML = x.feuilles.map((s, i) => `<option value="${i}">${esc(nice(s.nom))}</option>`).join('');
   $('#tbS').hidden = x.feuilles.length < 2;
-  sheet(); $('#tbDlg').showModal();
+  $('#tbLeg').innerHTML = legende();
+  sheet(); $('#tbW').scrollTop = 0; $('#tbDlg').showModal();
 }
 const loadX = () => window.XLSX ? Promise.resolve() : new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = () => ko(new Error('x')); document.head.append(s); });
 async function download() {
