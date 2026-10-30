@@ -320,7 +320,7 @@ const PERSON = (tab, desc, add, qual, categorie) => ({
   col: 'membres', tab, desc, add, req: ['nom'], fixed: { categorie }, filter: m => catOf(m) === categorie,
   sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: m => m.role || 'Autres', glabel: k => k,
   left: m => `<div class="bd">${esc(m.ordre ?? '')}</div>`, title: m => m.nom, sub: m => [m.club, m.tel, m.email].filter(Boolean).map(esc).join(' · '),
-  f: [['h', 'La personne'], ['role', qual], ['nom', 'Nom et prénom'], ['club', 'Club (facultatif)'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email']]
+  f: [['h', 'La personne'], ['role', qual], ['nom', 'Nom et prénom'], ['club', 'Club (facultatif)'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email'], ['h', 'Protection des données'], ['consentement', 'Accord de publication reçu le (sans date, les coordonnées ne s\'affichent pas)', 'date']]
 });
 
 /* [clé, libellé, type, options] — type "h" = titre de section */
@@ -342,12 +342,12 @@ const SCHEMA = {
     sort: (a, b) => (a.ville || '').localeCompare(b.ville || '', 'fr'), group: c => c.secteur, glabel: k => SECT[k] || k,
     left: c => `<div class="bd">${esc(c.num)}</div>`, title: c => `${c.ville}${c.assoc ? ' — ' + c.assoc : ''}`, sub: c => [c.president, c.tel].filter(Boolean).map(esc).join(' · '),
     f: [['h', 'Le club'], ['num', 'N° du club (ex : 0009)'], ['secteur', 'Secteur', 'select', Object.entries(SECT)], ['ville', 'Ville (en majuscules)'], ['assoc', 'Nom de l\'association'],
-      ['h', 'Contact'], ['prLabel', 'Fonction', 'select', [['Président', 'Président'], ['Présidente', 'Présidente']]], ['president', 'Nom du responsable'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse'], ['terrain', 'Terrain de jeu']] },
+      ['h', 'Contact'], ['prLabel', 'Fonction', 'select', [['Président', 'Président'], ['Présidente', 'Présidente']]], ['president', 'Nom du responsable'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse'], ['terrain', 'Terrain de jeu'], ['h', 'Protection des données'], ['consentement', 'Accord du responsable pour publier adresse, téléphone et email, reçu le', 'date']] },
   membres: { col: 'membres', fixed: { categorie: 'comite' }, filter: m => catOf(m) === 'comite',
     tab: 'Le Comité', desc: 'L\'organigramme du comité directeur (onglet « Membres du comité » du site). Le numéro de position règle l\'ordre d\'affichage dans chaque rang.', add: 'Ajouter un membre', req: ['nom'],
     sort: (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99), group: m => m.groupe, glabel: k => GRP[k] || k, gorder: Object.keys(GRP),
     left: m => `<div class="bd">${esc(m.ordre ?? '')}</div>`, title: m => m.nom, sub: m => [m.role, m.tel, m.email].filter(Boolean).map(esc).join(' · '),
-    f: [['h', 'Le membre'], ['groupe', 'Rang dans l\'organigramme', 'select', Object.entries(GRP)], ['role', 'Intitulé du poste (ex : Trésorier Général)'], ['nom', 'Nom et prénom'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse (facultatif)']] }
+    f: [['h', 'Le membre'], ['groupe', 'Rang dans l\'organigramme', 'select', Object.entries(GRP)], ['role', 'Intitulé du poste (ex : Trésorier Général)'], ['nom', 'Nom et prénom'], ['ordre', 'Position (1 = en premier)', 'number'], ['h', 'Contact'], ['tel', 'Téléphone'], ['email', 'Email'], ['adresse', 'Adresse (facultatif)'], ['h', 'Protection des données'], ['consentement', 'Accord de publication reçu le (sans date, les coordonnées ne s\'affichent pas)', 'date']] }
 };
 SCHEMA.arbitres = PERSON('Arbitres', 'Les arbitres affichés dans l\'onglet « Arbitres » de la page Le Comité. Ils sont regroupés selon leur niveau.', 'Ajouter un arbitre', 'Niveau (ex : Arbitre départemental, Arbitre régional)', 'arbitre');
 SCHEMA.educateurs = PERSON('Éducateurs', 'Les éducateurs et initiateurs affichés dans l\'onglet « Éducateurs / Initiateurs » de la page Le Comité. Ils sont regroupés selon leur qualification.', 'Ajouter un éducateur / initiateur', 'Qualification (ex : Initiateur, Éducateur fédéral)', 'educateur');
@@ -723,7 +723,7 @@ async function viewStats() {
 /* Import du contenu actuel */
 function viewImport() {
   $('#main').innerHTML = head('Import', 'À faire une seule fois au départ : copie dans Firebase ce qui est écrit aujourd\'hui dans tes pages. Attention : les données déjà présentes dans la section choisie sont remplacées.') +
-  `<div class="card"><div class="flex">${[['settings', 'Infos du site'], ['membres', 'Le Comité'], ['clubs', 'Les Clubs'], ['events', 'Le Calendrier'], ['annuaire', 'L\'Annuaire']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}">${ic('dl', 16)}Importer : ${l}</button>`).join('')}</div><p id="imsg" role="status" style="font-weight:700;margin:1rem 0 0"></p></div>`;
+  `<div class="card"><div class="flex">${[['settings', 'Infos du site'], ['events', 'Le Calendrier'], ['annuaire', 'L\'Annuaire']].map(([k, l]) => `<button class="btn b-bl" data-i="${k}">${ic('dl', 16)}Importer : ${l}</button>`).join('')}</div><p id="imsg" role="status" style="font-weight:700;margin:1rem 0 0"></p></div>`;
   $('#main').onclick = async e => { const b = e.target.closest('[data-i]'); if (!b) return; const k = b.dataset.i;
     if (!await ask('Importer cette section ?', 'Les données existantes de cette section seront remplacées.', 'Importer')) return;
     try { $('#imsg').textContent = 'Import en cours…'; const n = await IMPORT[k](); $('#imsg').textContent = `Terminé (${n} élément${n > 1 ? 's' : ''}).`; } catch (er) { $('#imsg').textContent = 'Erreur : ' + er.message; } };
