@@ -93,6 +93,8 @@
   @media (hover: hover) {
     .org-card:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
   }
+  .org-tel a, .org-email a { color: inherit; text-decoration: none; }
+  .org-tel a:hover, .org-email a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -141,67 +143,21 @@
 
     <!-- ── COMITÉ DIRECTEUR ── -->
     <div class="org-panel" id="panel-comite">
-
       <div class="org-siege reveal">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <p>Maison des Sports, Bâtiment B — 2 Rue Lescouvé, 80000 Amiens &nbsp;·&nbsp; <a href="mailto:cd80@petanque.fr">cd80@petanque.fr</a> &nbsp;·&nbsp; Agréé par le ministère de la Jeunesse, des Sports et des Loisirs</p>
+        <p id="siege-txt">Agréé par le ministère de la Jeunesse, des Sports et des Loisirs</p>
       </div>
-
-      <div class="org-tree">
-
-        <div class="org-card president reveal">
-          <span class="org-role">Président</span>
-          <div class="org-name">Bernard PRUVOT</div>
-          <div class="org-contact">
-            <div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 30 00 93 69</div>
-            <div class="org-email">pruvotbernard@orange.fr</div>
-            <div class="org-tel" style="font-size:0.66rem;color:rgba(255,255,255,0.3);margin-top:0.15rem">3 Rue Hurtelle — 80460 Oust Marest</div>
-          </div>
-        </div>
-
-        <div class="org-connector"></div>
-
-        <div class="org-level reveal">
-          <div class="org-item"><div class="org-card vice"><span class="org-role">Vice-Président</span><div class="org-name">Mickaël MALHERBE</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 66 74 14 59</div><div class="org-email">samik80@laposte.net</div></div></div></div>
-          <div class="org-item"><div class="org-card vice"><span class="org-role">Vice-Présidente</span><div class="org-name">Pascale CONSEIL</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 09 07 75 45</div><div class="org-email">conseilpascale76@gmail.com</div></div></div></div>
-          <div class="org-item"><div class="org-card vice"><span class="org-role">Vice-Président</span><div class="org-name">Yves DECAIX</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 83 60 64 45</div><div class="org-email">yves.decaix@orange.fr</div></div></div></div>
-        </div>
-
-        <div class="org-connector"></div>
-
-        <div class="org-level reveal">
-          <div class="org-item"><div class="org-card admin"><span class="org-role">Secrétaire Général</span><div class="org-name">Bertrand DOUAY</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 59 20 80 13</div><div class="org-email">bertrand.douay80@gmail.com</div></div></div></div>
-          <div class="org-item"><div class="org-card admin"><span class="org-role">Secrétaire Adjointe</span><div class="org-name">Mégane MOREL</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 18 29 86 64</div><div class="org-email">megane.morel80@hotmail.com</div></div></div></div>
-          <div class="org-item"><div class="org-card admin"><span class="org-role">Trésorier Général</span><div class="org-name">Marc HEDOUIN</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>06 08 43 52 40</div><div class="org-email">mmf.hedouin@orange.fr</div></div></div></div>
-          <div class="org-item"><div class="org-card admin"><span class="org-role">Trésorier Adjoint</span><div class="org-name">Pascal DUROT</div><div class="org-contact"><div class="org-tel"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>07 50 40 40 38</div><div class="org-email">pdurot@orange.fr</div></div></div></div>
-        </div>
-
-        <div class="membres-section reveal">
-          <div class="org-sep"></div>
-          <span class="membres-label">Membres du Comité Directeur</span>
-          <div class="membres-grid">
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Vincent DE BENEDITTIS</div><div class="org-contact"><div class="org-tel">06 67 51 20 43</div><div class="org-email">vincent.realit@gmail.com</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Kevin EVENOU</div><div class="org-contact"><div class="org-tel">06 43 31 57 43</div><div class="org-email">polipro@yahoo.com</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Sébastien LALLOT</div><div class="org-contact"><div class="org-tel">06 16 59 63 57</div><div class="org-email">lallot.sebastien19@outlook.fr</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Sandrine MALHERBE</div><div class="org-contact"><div class="org-tel">06 66 74 60 73</div><div class="org-email">sandrinemalherbe27@hotmail.com</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Maryse MALLET</div><div class="org-contact"><div class="org-tel">06 84 48 60 84</div><div class="org-email">founou80@gmail.com</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Ophélie NATHENE</div><div class="org-contact"><div class="org-tel">06 44 94 85 75</div><div class="org-email">charlot.ophelie.0104@gmail.com</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Philippe SUSTAR</div><div class="org-contact"><div class="org-tel">06 81 87 65 90</div><div class="org-email">philippe.sustar@free.fr</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Olivier TESTELIN</div><div class="org-contact"><div class="org-tel">06 74 74 58 56</div><div class="org-email">Olt5962@gmail.com</div></div></div>
-            <div class="org-card membre"><span class="org-role">Membre</span><div class="org-name">Cyril VASSEUR</div><div class="org-contact"><div class="org-tel">06 60 89 09 31</div><div class="org-email">vasseurcyril12@gmail.com</div></div></div>
-          </div>
-        </div>
-      </div><!-- /org-tree -->
+      <div class="org-tree" id="org-tree"><p class="org-vide">Chargement…</p></div>
     </div><!-- /panel-comite -->
 
     <!-- ── ARBITRES ── -->
     <div class="org-panel" id="panel-arbitres" hidden>
-      <div class="liste"><p class="org-vide">La liste des arbitres sera bientôt disponible.</p></div>
+      <div class="liste" id="liste-arbitres"><p class="org-vide">Chargement…</p></div>
     </div>
 
     <!-- ── ÉDUCATEURS ── -->
     <div class="org-panel" id="panel-educateurs" hidden>
-      <div class="liste"><p class="org-vide">La liste des éducateurs et initiateurs sera bientôt disponible.</p></div>
+      <div class="liste" id="liste-educateurs"><p class="org-vide">Chargement…</p></div>
     </div>
 
   </div>
@@ -235,7 +191,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens</span>
+    <span>© 2026 Comité de la Somme FFPJP — 80000 Amiens · <a href="confidentialite.html">Confidentialité</a></span>
     <span>Contact : <a href="mailto:CD80@petanque.fr">CD80@petanque.fr</a></span>
   </div>
 </footer>
@@ -264,7 +220,62 @@
   tabBtns.forEach(b => b.onclick = () => { showPanel(b.dataset.p); history.replaceState(null, '', '#' + b.dataset.p); });
   showPanel(location.hash.slice(1) || 'comite');
 </script>
-<script type="module" src="site-data.js"></script>
+<script type="module">
+import { db } from './firebase-config.js';
+import { collection, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* RGPD : true = téléphone, email et adresse d'une personne ne s'affichent que si une « date d'accord » est saisie dans l'admin */
+const EXIGER_ACCORD = true;
+
+/*PURE*/
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const PH = '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><use href="#ph"/></svg>';
+const digits = s => String(s || '').replace(/[^\d+]/g, '');
+const publiable = m => !EXIGER_ACCORD || !!m.consentement;
+const byOrdre = (a, b) => (a.ordre ?? 99) - (b.ordre ?? 99);
+
+function contact(m, cls) {
+  if (!publiable(m)) return '';
+  const ico = cls === 'membre' ? '' : PH, r = [];
+  if (m.tel) r.push(`<div class="org-tel">${ico}<a href="tel:${esc(digits(m.tel))}">${esc(m.tel)}</a></div>`);
+  if (m.email) r.push(`<div class="org-email"><a href="mailto:${esc(m.email)}">${esc(m.email)}</a></div>`);
+  if (m.adresse) r.push(`<div class="org-tel" style="font-size:0.66rem;color:rgba(255,255,255,0.3);margin-top:0.15rem">${esc(m.adresse)}</div>`);
+  return r.length ? `<div class="org-contact">${r.join('')}</div>` : '';
+}
+const card = (m, cls, role) => `<div class="org-card ${cls}"><span class="org-role">${esc(role ?? m.role)}</span><div class="org-name">${esc(m.nom)}</div>${contact(m, cls)}</div>`;
+
+function arbre(list) {
+  const g = k => list.filter(m => m.groupe === k).sort(byOrdre);
+  const pres = g('president'), vice = g('vice'), adm = g('admin'), mem = g('membre');
+  const parts = [];
+  pres.forEach(m => parts.push(card(m, 'president')));
+  if (vice.length) parts.push(`<div class="org-connector"></div><div class="org-level">${vice.map(m => `<div class="org-item">${card(m, 'vice')}</div>`).join('')}</div>`);
+  if (adm.length) parts.push(`<div class="org-connector"></div><div class="org-level">${adm.map(m => `<div class="org-item">${card(m, 'admin')}</div>`).join('')}</div>`);
+  if (mem.length) parts.push(`<div class="membres-section"><div class="org-sep"></div><span class="membres-label">Membres du Comité Directeur</span><div class="membres-grid">${mem.map(m => card(m, 'membre')).join('')}</div></div>`);
+  return parts.join('');
+}
+function liste(list, vide) {
+  if (!list.length) return `<p class="org-vide">${esc(vide)}</p>`;
+  const g = {};
+  list.sort(byOrdre).forEach(m => (g[m.role || 'Autres'] ||= []).push(m));
+  return Object.entries(g).map(([k, l]) => `<span class="membres-label">${esc(k)}</span><div class="membres-grid">${l.map(m => card(m, 'membre', m.club || '')).join('')}</div>`).join('');
+}
+/*ENDPURE*/
+
+const $ = s => document.querySelector(s);
+try {
+  const [snap, gen] = await Promise.all([getDocs(collection(db, 'membres')), getDoc(doc(db, 'settings', 'general'))]);
+  const all = snap.docs.map(d => d.data()), cat = k => all.filter(m => (m.categorie || 'comite') === k);
+  $('#org-tree').innerHTML = arbre(cat('comite')) || '<p class="org-vide">Aucun membre à afficher pour le moment.</p>';
+  $('#liste-arbitres').innerHTML = liste(cat('arbitre'), 'La liste des arbitres sera bientôt disponible.');
+  $('#liste-educateurs').innerHTML = liste(cat('educateur'), 'La liste des éducateurs et initiateurs sera bientôt disponible.');
+  const s = gen.data() || {}, adr = String(s.adresse || '').split('\n').map(x => x.trim()).filter(Boolean).join(', ');
+  $('#siege-txt').innerHTML = [adr && esc(adr), s.email && `<a href="mailto:${esc(s.email)}">${esc(s.email)}</a>`, 'Agréé par le ministère de la Jeunesse, des Sports et des Loisirs'].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  if (s.email) document.querySelectorAll('.footer-bottom a[href^="mailto:"]').forEach(a => { a.href = 'mailto:' + s.email; a.textContent = s.email; });
+} catch (e) {
+  $('#org-tree').innerHTML = '<p class="org-vide">Les informations sont momentanément indisponibles.</p>';
+}
+</script>
 <script src="nav.js"></script>
 <script type="module" src="track.js"></script>
 </body>
