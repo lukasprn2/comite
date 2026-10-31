@@ -270,7 +270,7 @@ function liste(list, vide) {
   const g = {};
   list.sort(byOrdre).forEach(m => (g[m.role || 'Autres'] ||= []).push(m));   // les niveaux suivent la position du premier de chaque niveau
   return '<div class="org-tree">' + Object.entries(g).map(([k, l], i) =>
-    `${i ? '<div class="org-connector"></div>' : ''}<span class="membres-label" style="margin-bottom:0.6rem">${esc(k)}</span><div class="org-level">${l.map(m => `<div class="org-item">${card(m, 'admin', m.club || '')}</div>`).join('')}</div>`).join('') + '</div>';
+    `${i ? '<div class="org-connector"></div>' : ''}<span class="membres-label" style="margin-bottom:0.6rem">${esc(k)}</span><div class="org-level">${l.map(m => `<div class="org-item">${card(m, i === 0 ? 'president' : 'admin', m.club || '')}</div>`).join('')}</div>`).join('') + '</div>';
 }
 /*ENDPURE*/
 
