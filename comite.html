@@ -268,8 +268,9 @@ function arbre(list) {
 function liste(list, vide) {
   if (!list.length) return `<p class="org-vide">${esc(vide)}</p>`;
   const g = {};
-  list.sort(byOrdre).forEach(m => (g[m.role || 'Autres'] ||= []).push(m));
-  return Object.entries(g).map(([k, l]) => `<span class="membres-label">${esc(k)}</span><div class="membres-grid">${l.map(m => card(m, 'membre', m.club || '')).join('')}</div>`).join('');
+  list.sort(byOrdre).forEach(m => (g[m.role || 'Autres'] ||= []).push(m));   // les niveaux suivent la position du premier de chaque niveau
+  return '<div class="org-tree">' + Object.entries(g).map(([k, l], i) =>
+    `${i ? '<div class="org-connector"></div>' : ''}<span class="membres-label" style="margin-bottom:0.6rem">${esc(k)}</span><div class="org-level">${l.map(m => `<div class="org-item">${card(m, 'admin', m.club || '')}</div>`).join('')}</div>`).join('') + '</div>';
 }
 /*ENDPURE*/
 
